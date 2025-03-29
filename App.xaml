@@ -1,0 +1,11 @@
+﻿<Application x:Class="Micro.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Micro" 
+             xmlns:resources="clr-namespace:Micro.Resources"
+             StartupUri="Views/MicroView.xaml">
+    <Application.Resources>
+        <resources:ByteToHexConverter x:Key="ByteToHexConverter"/>
+        <resources:ByteToAsciiConverter x:Key="ByteToAsciiConverter"/>
+    </Application.Resources>
+</Application>
