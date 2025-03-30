@@ -7,5 +7,7 @@
     <Application.Resources>
         <resources:ByteToHexConverter x:Key="ByteToHexConverter"/>
         <resources:ByteToAsciiConverter x:Key="ByteToAsciiConverter"/>
+        <resources:RegisterLabelConverter x:Key="RegisterLabelConverter"/>
+
     </Application.Resources>
 </Application>

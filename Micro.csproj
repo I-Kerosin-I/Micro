@@ -63,6 +63,8 @@
     <Compile Include="Models\CpuState.cs" />
     <Compile Include="Resources\ByteToAsciiConverter.cs" />
     <Compile Include="Resources\ByteToHexConverter.cs" />
+    <Compile Include="Resources\RegisterConverter.cs" />
+    <Compile Include="Resources\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="Views\MicroView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -108,9 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="micro5.ico" />

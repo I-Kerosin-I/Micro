@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Micro.ViewModels
 {
-    class MicroProgramMemoryViewModel : INotifyPropertyChanged
+    internal class MicroProgramMemoryViewModel : INotifyPropertyChanged
     {
         #region Commands
 

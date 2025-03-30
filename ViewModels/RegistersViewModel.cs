@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace Micro.ViewModels
 {
-    class RegistersViewModel
+    internal class RegistersViewModel
     {
+        #region Commands
+
+
+
+        #endregion
+
+
         private readonly CpuState _cpuState;
         public RegistersViewModel(CpuState cpuState) {
             
