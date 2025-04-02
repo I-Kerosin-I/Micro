@@ -63,6 +63,7 @@
     <Compile Include="Models\CpuState.cs" />
     <Compile Include="Resources\ByteToAsciiConverter.cs" />
     <Compile Include="Resources\ByteToHexConverter.cs" />
+    <Compile Include="Resources\RegisterMemory.cs" />
     <Compile Include="Resources\RegisterConverter.cs" />
     <Compile Include="Resources\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />

@@ -17,7 +17,7 @@ namespace Micro.ViewModels
 
         public CpuState CpuState { get; }
 
-        public CpuViewModel CpuVM { get; }
+        public CpuViewModel CpuVm { get; }
         public MicroProgramMemoryViewModel MicroprogramMemoryVm { get; }
         public RamViewModel RamVm { get; }
         public RegistersViewModel RegistersVm { get; }
@@ -36,7 +36,7 @@ namespace Micro.ViewModels
             Registers = new ObservableCollection<RegisterEntry>(
             CpuState.Registers.Select(r => new RegisterEntry(r.Key, r.Value, CpuState)));
 
-            CpuVM = new CpuViewModel(CpuState);
+            CpuVm = new CpuViewModel(CpuState);
             MicroprogramMemoryVm = new MicroProgramMemoryViewModel(CpuState);
             RamVm = new RamViewModel(CpuState);
             RegistersVm = new RegistersViewModel(CpuState);

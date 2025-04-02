@@ -30,207 +30,38 @@
                     <Image Source="/Views/interface.png" Canvas.Top="30"/>
                     
                     <UniformGrid Canvas.Left="106" Canvas.Top="46" Rows="4" Columns="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="287">
-                        <Label x:Name="AX_value_block" Style="{StaticResource RegisterLabel}" >
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[0].Name"/>
-                                    <Binding Path="Registers[0].Value"/>
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                        <Label x:Name="BX_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[3].Name"/>
-                                    <Binding Path="Registers[3].Value"/>
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                        <Label x:Name="CX_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[1].Name"/>
-                                    <Binding Path="Registers[1].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="DX_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[2].Name"/>
-                                    <Binding Path="Registers[2].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="SP_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[4].Name"/>
-                                    <Binding Path="Registers[4].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="BP_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[5].Name"/>
-                                    <Binding Path="Registers[5].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="SI_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[6].Name"/>
-                                    <Binding Path="Registers[6].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="DI_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[7].Name"/>
-                                    <Binding Path="Registers[7].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="CS_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[8].Name"/>
-                                    <Binding Path="Registers[8].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="SS_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[9].Name"/>
-                                    <Binding Path="Registers[9].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="DS_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[10].Name"/>
-                                    <Binding Path="Registers[10].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="ES_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[11].Name"/>
-                                    <Binding Path="Registers[11].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="IP_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[12].Name"/>
-                                    <Binding Path="Registers[12].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="PSW_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[13].Name"/>
-                                    <Binding Path="Registers[13].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="RGK_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[14].Name"/>
-                                    <Binding Path="Registers[14].Value"/>
-                                </MultiBinding>
-                            </Label.Content></Label>
-                        <Label x:Name="RW_value_block" Style="{StaticResource RegisterLabel}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                    <Binding Path="Registers[15].Name"/>
-                                    <Binding Path="Registers[15].Value"/>
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
+                        <Label x:Name="AxValueBlock" Content='{Binding Registers[0].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="AX   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="BxValueBlock" Content='{Binding Registers[3].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="BX   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="CxValueBlock" Content='{Binding Registers[1].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CX   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="DxValueBlock" Content='{Binding Registers[2].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DX   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="SpValueBlock" Content='{Binding Registers[4].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SP   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="BpValueBlock" Content='{Binding Registers[5].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="BP   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="SiValueBlock" Content='{Binding Registers[6].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SI   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="DiValueBlock" Content='{Binding Registers[7].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DI   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="CsValueBlock" Content='{Binding Registers[8].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CS   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="DsValueBlock" Content='{Binding Registers[9].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DS   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="SsValueBlock" Content='{Binding Registers[10].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SS   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="EsValueBlock" Content='{Binding Registers[11].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ES   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="IpValueBlock" Content='{Binding Registers[12].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="IP   "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="PswValueBlock" Content='{Binding Registers[13].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="PSW  "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="RgkValueBlock" Content='{Binding Registers[14].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGK  "}'  Style="{StaticResource RegisterLabel}" />
+                        <Label x:Name="RwValueBlock" Content='{Binding Registers[15].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RW   "}'  Style="{StaticResource RegisterLabel}" />
                     </UniformGrid>
 
-                    <Label x:Name="ARAM_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[19].Name"/>
-                                <Binding Path="Registers[19].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="RGA_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="117" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[27].Name"/>
-                                <Binding Path="Registers[27].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="RGB_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[28].Name"/>
-                                <Binding Path="Registers[28].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="ALU_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[0].Name"/>
-                                <Binding Path="Registers[0].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="SDA_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[0].Name"/>
-                                <Binding Path="Registers[0].Value"/>
-                            </MultiBinding>
-                    </Label.Content>
-                    </Label>
-                    <Label x:Name="RGQ_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="296" Canvas.Top="173" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label.Content>
-                        <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                            <Binding Path="Registers[18].Name"/>
-                            <Binding Path="Registers[18].Value"/>
-                        </MultiBinding>
-                    </Label.Content>
-                    </Label>
-                    <Label x:Name="RGR_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[20].Name"/>
-                                <Binding Path="Registers[20].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="RGW_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[21].Name"/>
-                                <Binding Path="Registers[21].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="CMK_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[23].Name"/>
-                                <Binding Path="Registers[23].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-                    <Label x:Name="RACT_value_block" Style="{StaticResource RegisterLabel}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Label.Content>
-                            <MultiBinding Converter="{StaticResource RegisterLabelConverter}">
-                                <Binding Path="Registers[22].Name"/>
-                                <Binding Path="Registers[22].Value"/>
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
+                    <Label x:Name="AramValueBlock" Content='{Binding Registers[19].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ARAM "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label x:Name="RgaValueBlock" Content='{Binding Registers[27].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGA  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="117" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Label x:Name="RgbValueBlock" Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Label x:Name="AluValueBlock" Content='{Binding Registers[15].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Label x:Name="SdaValueBlock" Content='{Binding Registers[15].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label x:Name="RgqValueBlock" Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="296" Canvas.Top="173" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="RgrValueBlock" Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="RgwValueBlock" Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Label x:Name="CmkValueBlock" Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabel}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <DataGrid Canvas.Left="109" Canvas.Top="195" HorizontalAlignment="Center" VerticalAlignment="Top" Width="47" Height="98" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"></DataGrid>
 
 
-                    <Button x:Name="Restart_Button" Content="Рестарт" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
+                    <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding CpuVm.RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -239,9 +70,8 @@
                     </Button>
 
 
-                    <Button x:Name="Continue_Button" Content="Продожить" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
-                    <Button x:Name="Stop_Button" Content="Стоп" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="335" Canvas.Top="311"/>
-                    <Image Source="/Views/interface.png" Canvas.Top="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button x:Name="ContinueButton" Content="Продожить" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
+                    <Button x:Name="StopButton" Content="Стоп" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="335" Canvas.Top="311"/>
 
                 </Canvas>
             </TabItem>

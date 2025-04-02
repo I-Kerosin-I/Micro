@@ -1,14 +1,6 @@
-﻿using Micro.Models;
-using Micro.Resources;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Windows;
+using Micro.Models;
 using System.Windows.Input;
 using Micro.Infrastructure.Commands;
 
@@ -20,14 +12,8 @@ namespace Micro.ViewModels
         #region Commands
 
         public ICommand RestartCpuCommand {get; set; }
-
         private bool CanRestartCpuCommandexecute(object p) => true;
-
-        private void OnRestartCpuCommandExecuted(object p)
-        {
-
-
-        }
+        private void OnRestartCpuCommandExecuted(object p) => _cpuState.RestartCpu();
 
         #endregion
 
@@ -45,11 +31,5 @@ namespace Micro.ViewModels
             _cpuState = cpuState;
             
         }
-
-
-
-
-
-        
     }
 }

@@ -8,16 +8,16 @@ using System.Windows.Data;
 
 namespace Micro.Resources
 {
-    public class RegisterLabelConverter : IMultiValueConverter
+    public class RegisterLabelConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return $"{values[0]}  {values[1]}"; // AX 1234
+            return $"{parameter}{value}";
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); // Обратное преобразование не нужно
         }
     }
 }

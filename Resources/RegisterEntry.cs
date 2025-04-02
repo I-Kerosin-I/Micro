@@ -1,12 +1,6 @@
 ﻿using Micro.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Micro.Resources
 {
@@ -19,6 +13,11 @@ namespace Micro.Resources
         {
             Name = name;
             _cpuState = cpuState;
+            _cpuState.Registers.PropertyChanged += CpuState_PropertyChanged;
+        }
+        private void CpuState_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == Name) OnPropertyChanged(nameof(Value));
         }
 
         public string Value

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Micro.Resources;
 
 
 namespace Micro.Models 
@@ -13,43 +15,12 @@ namespace Micro.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Dictionary<string, ushort> Registers;
+        public RegisterMemory Registers;
         public ObservableCollection<MemoryRow> Memory;
         public ObservableCollection<MicroCommand> MicroProgramMemory;
         public CpuState()
         {
-            Registers = new Dictionary<string, ushort>
-        {
-            { "AX",    0x0000 },
-            { "CX",    0x0001 },
-            { "DX",    0x0002 },
-            { "BX",    0x0003 },
-            { "SP",    0x0000 },
-            { "BP",    0x0000 },
-            { "SI",    0x0000 },
-            { "DI",    0x0000 },
-            { "CS",    0x0000 },
-            { "SS",    0x0000 },
-            { "DS",    0x0000 },
-            { "ES",    0x0000 },
-            { "IP",    0x0000 },
-            { "PSW",   0x0000 },
-            { "RGK",   0x0000 },
-            { "RW",    0x0000 },
-            { "RFI",   0x0000 },
-            { "RFD",   0x0000 },
-            { "RGQ",   0x0000 },
-            { "ARAM",  0x0000 },
-            { "RGR",   0x0000 },
-            { "RGW",   0x0000 },
-            { "RACT",  0x0000 },
-            { "CMK",   0x0000 },
-            { "MUAD",  0x0000 },
-            { "STP",   0x0000 },
-            { "ERROR", 0x0000 },
-            { "RGA",   0x0000 },
-            { "RGB",   0x0000 },
-        };
+            Registers = new RegisterMemory();
 
             Memory = new ObservableCollection<MemoryRow>();
             for (int i = 0; i < 64; i++) Memory.Add(new MemoryRow(i));
@@ -72,6 +43,19 @@ namespace Micro.Models
             }
         }
 
+        public void RestartCpu()
+        {
+            Registers["RW"] = 10;
+            //OnPropertyChanged("CMK");
+        }
+
+        public void ExecuteMicroCommand()
+        {
+            MicroCommand MK = MicroProgramMemory[Registers["CMK"]];
+            //Registers[""];
+        }
+
+
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -83,8 +67,6 @@ namespace Micro.Models
     {
         public string Address { get; set; }  // HEX-адрес
         public ObservableCollection<byte> Bytes { get; set; }    // 16 байтов строки
-
-        public string AsciiRepresentation => Encoding.ASCII.GetString(Bytes.Select(b => b >= 32 && b <= 126 ? b : (byte)'.').ToArray());
 
         public MemoryRow(int address)
         {
