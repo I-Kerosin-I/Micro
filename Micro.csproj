@@ -61,6 +61,7 @@
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Models\CpuState.cs" />
+    <Compile Include="Models\MicroProgrammMemory.cs" />
     <Compile Include="Resources\ByteToAsciiConverter.cs" />
     <Compile Include="Resources\ByteToHexConverter.cs" />
     <Compile Include="Models\RegisterMemory.cs" />

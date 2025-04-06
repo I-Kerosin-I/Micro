@@ -34,7 +34,7 @@ namespace Micro.Models
             }
         }
         public ObservableCollection<MemoryRow> Memory;
-        public ObservableCollection<MicroCommand> MicroProgramMemory;
+        public MicroProgrammMemory MicroProgramMemory;
 
         public CpuState()
         {
@@ -43,8 +43,8 @@ namespace Micro.Models
             Memory = new ObservableCollection<MemoryRow>();
             for (int i = 0; i < 64; i++) Memory.Add(new MemoryRow(i));
 
-            MicroProgramMemory = new ObservableCollection<MicroCommand>();
-            for (int i = 0; i < 64; i++) MicroProgramMemory.Add(new MicroCommand(i));
+            MicroProgramMemory = new MicroProgrammMemory();
+            
 
         }
 
@@ -73,7 +73,8 @@ namespace Micro.Models
             Registers["RGB"] = Registers[mk.B];
             Registers["CMK"]++;
             Alu++;
-
+            MicroProgramMemory[0].CCX = 1;
+            
         }
 
 
@@ -103,48 +104,6 @@ namespace Micro.Models
         }
     }
 
-    public struct MicroCommand
-    {
-        public int Address { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public int MA { get; set; }
-        public int MB { get; set; }
-        public int MEM { get; set; }
-        public int SRC { get; set; }
-        public int SH { get; set; }
-        public int N { get; set; }
-        public int ALU { get; set; }
-        public int CCX { get; set; }
-        public int F { get; set; }
-        public int DST { get; set; }
-        public int WM { get; set; }
-        public int JFI { get; set; }
-        public int CC { get; set; }
-        public int CHA { get; set; }
-        public int CONST { get; set; }
-
-        public MicroCommand(int Addr)
-        {
-            Address = Addr;
-            A = 0;
-            B = 0;
-            MA = 0;
-            MB = 0;
-            MEM = 0;
-            SRC = 1;
-            SH = 0;
-            N = 0;
-            ALU = 6;
-            CCX = 0;
-            F = 0;
-            DST = 0;
-            WM = 0;
-            JFI = 0;
-            CC = 0;
-            CHA = 7;
-            CONST = 0;
-        }
-    }
+    
 
 }

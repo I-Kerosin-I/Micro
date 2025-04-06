@@ -103,7 +103,7 @@
                                     <DataGridTextColumn Header="F" Binding="{Binding F}" Width="20"/>
                                     <DataGridTextColumn Header="DST" Binding="{Binding DST}" Width="30"/>
                                     <DataGridTextColumn Header="WM" Binding="{Binding WM}" Width="40"/>
-                                    <DataGridTextColumn Header="JFI" Binding="{Binding JFI}" Width="20"/>
+                                    <DataGridTextColumn Header="JFI" Binding="{Binding JFI}" Width="30"/>
                                     <DataGridTextColumn Header="CC" Binding="{Binding CC}" Width="30"/>
                                     <DataGridTextColumn Header="CHA" Binding="{Binding CHA}" Width="40"/>
                                     <DataGridTextColumn Header="CONST" Binding="{Binding CONST}" Width="50"/>

@@ -20,15 +20,18 @@ namespace Micro.ViewModels
         #endregion
 
         private readonly CpuState _cpuState;
-        public ObservableCollection<MicroCommand> MicroProgramMemory { get; set; }
+        private readonly MicroProgrammMemory _microProgramMemory;
 
+        public ObservableCollection<MicroCommand> MicroProgramMemory => _microProgramMemory.MicroCommands;
+
+        //public ObservableCollection<MicroCommand> MicroCommands => _microProgramMemory.MicroCommands;
         public event PropertyChangedEventHandler PropertyChanged;
 
         
         public MicroProgramMemoryViewModel(CpuState cpuState)
         {
             _cpuState = cpuState;
-            MicroProgramMemory = new ObservableCollection<MicroCommand>(_cpuState.MicroProgramMemory);
+            _microProgramMemory = _cpuState.MicroProgramMemory;
         }
     }
 
