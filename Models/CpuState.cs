@@ -7,17 +7,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Micro.Resources;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 
 
 namespace Micro.Models 
 {
-    class CpuState : INotifyPropertyChanged
+    public class CpuState : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public RegisterMemory Registers;
+
+        private ushort _alu;
+        public ushort Alu {
+            get => _alu;
+            set => SetField(ref _alu, value);
+        }
+        private ushort _sda;
+        public ushort Sda {
+            get => _sda;
+            set
+            {
+                _sda = value;
+                OnPropertyChanged(nameof(Sda));
+            }
+        }
         public ObservableCollection<MemoryRow> Memory;
         public ObservableCollection<MicroCommand> MicroProgramMemory;
+
         public CpuState()
         {
             Registers = new RegisterMemory();
@@ -45,14 +63,17 @@ namespace Micro.Models
 
         public void RestartCpu()
         {
-            Registers["RW"] = 10;
-            //OnPropertyChanged("CMK");
+            Registers["CMK"] = 0;
         }
 
         public void ExecuteMicroCommand()
         {
-            MicroCommand MK = MicroProgramMemory[Registers["CMK"]];
-            //Registers[""];
+            var mk = MicroProgramMemory[Registers["CMK"]];
+            Registers["RGA"] = Registers[mk.A];
+            Registers["RGB"] = Registers[mk.B];
+            Registers["CMK"]++;
+            Alu++;
+
         }
 
 
@@ -60,7 +81,13 @@ namespace Micro.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 
     public struct MemoryRow
@@ -75,7 +102,8 @@ namespace Micro.Models
             for (int i = 0; i < 16; i++) Bytes.Add(0);
         }
     }
-    struct MicroCommand
+
+    public struct MicroCommand
     {
         public int Address { get; set; }
         public int A { get; set; }
