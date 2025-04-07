@@ -18,7 +18,7 @@ namespace Micro.Models
         public MicroProgrammMemory()
         {
             MicroCommands = new ObservableCollection<MicroCommand>();
-            for (var i = 0; i < 64; i++) MicroCommands.Add(new MicroCommand(i));
+            for (ushort i = 0; i < 64; i++) MicroCommands.Add(new MicroCommand(i));
         }
 
         public MicroCommand this[int index]
@@ -46,26 +46,26 @@ namespace Micro.Models
 
     public class MicroCommand
     {
-        public int Address { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public int MA { get; set; }
-        public int MB { get; set; }
-        public int MEM { get; set; }
-        public int SRC { get; set; }
-        public int SH { get; set; }
-        public int N { get; set; }
-        public int ALU { get; set; }
-        public int CCX { get; set; }
-        public int F { get; set; }
-        public int DST { get; set; }
-        public int WM { get; set; }
-        public int JFI { get; set; }
-        public int CC { get; set; }
-        public int CHA { get; set; }
-        public int CONST { get; set; }
+        public ushort Address { get; set; }
+        public ushort A { get; set; }
+        public ushort B { get; set; }
+        public ushort MA { get; set; }
+        public ushort MB { get; set; }
+        public ushort MEM { get; set; }
+        public ushort SRC { get; set; }
+        public ushort SH { get; set; }
+        public ushort N { get; set; }
+        public ushort ALU { get; set; }
+        public ushort CCX { get; set; }
+        public ushort F { get; set; }
+        public ushort DST { get; set; }
+        public ushort WM { get; set; }
+        public ushort JFI { get; set; }
+        public ushort CC { get; set; }
+        public ushort CHA { get; set; }
+        public ushort CONST { get; set; }
 
-        public MicroCommand(int Addr)
+        public MicroCommand(ushort Addr)
         {
             Address = Addr;
             A = 0;

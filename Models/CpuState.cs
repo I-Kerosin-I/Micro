@@ -72,8 +72,199 @@ namespace Micro.Models
             Registers["RGA"] = Registers[mk.A];
             Registers["RGB"] = Registers[mk.B];
             Registers["CMK"]++;
-            Alu++;
-            MicroProgramMemory[0].CCX = 1;
+            switch (mk.MEM) // TODO: Реализовать взаимодействие с памятью
+            {
+                case 4:
+                    Registers["RGR"] = 0;
+                    break;
+                case 5:
+                    Registers["RGR"] = 0;
+                    break;
+                case 6:
+                    Registers["RGR"] = 0;
+                    break;
+                case 7:
+                    Registers["RGR"] = 0;
+                    break;
+            }
+            
+            ushort r, s;
+            switch (mk.SRC)
+            {
+                case 0:
+                    r = 0;
+                    s = 0;
+                    break;
+                case 1:
+                    r = Registers["RGA"];
+                    s = Registers["RGB"];
+                    break;
+                case 2:
+                    r = Registers["RGA"];
+                    s = Registers["RGQ"];
+                    break;
+                case 3:
+                    r = Registers["RGA"];
+                    s = Registers["RGR"];
+                    break;
+                case 4:
+                    r = (ushort)(Registers["RGA"] << 1);
+                    s = Registers["RGB"];
+                    break;
+                case 5:
+                    r = mk.CONST;
+                    s = Registers["RGB"];
+                    break;
+                case 6:
+                    r = mk.CONST;
+                    s = Registers["RGR"];
+                    break;
+                case 7:
+                    r = mk.CONST;
+                    s = Registers["RGQ"];
+                    break;
+                default:
+                    throw new Exception("Invalid SRC value");
+            }
+            // TODO: реализовать поведение C0 в зависимости от CCX
+            ushort c0 = mk.CCX;
+            switch (mk.ALU)
+            {
+                case 0:
+                    Alu = 0;
+                    break;
+                case 1:
+                    Alu = (ushort)(s - r - 1 + c0);
+                    break;
+                case 2:
+                    Alu = (ushort)(r - s - 1 + c0);
+                    break;
+                case 3:
+                    Alu = (ushort)(r + s + c0);
+                    break;
+                case 4:
+                    Alu = (ushort)(s + c0);
+                    break;
+                case 5:
+                    Alu = (ushort)(~s + c0);
+                    break;
+                case 6:
+                    Alu = (ushort)(r + c0);
+                    break;
+                case 7:
+                    Alu = (ushort)(~r + c0);
+                    break;
+                case 8:
+                    Alu = (ushort)(r + c0); //TODO: Умножение на 2 бита
+                    break;
+                case 9:
+                    Alu = (ushort)(r & s);
+                    break;
+                case 10:
+                    Alu = Alu = (ushort)(r & ~s); ;
+                    break;
+                case 11:
+                    Alu = (ushort)~(r & s); 
+                    break;
+                case 12:
+                    Alu = (ushort)(r | s);
+                    break;
+                case 13:
+                    Alu = (ushort)~(r | s);
+                    break;
+                case 14:
+                    Alu = (ushort)(r ^ s);
+                    break;
+                case 15:
+                    Alu = (ushort)~(r ^ s);
+                    break;
+                default:
+                    throw new ArgumentException("Invalid ALU value");
+                    break;
+            }
+
+            switch (mk.SH) // TODO: Написать логику сдвигателей
+            {
+                case 0:
+                    Sda = Alu;
+                    break;
+                case 1:
+                    Sda = Alu;
+                    break;
+                case 2:
+                    Sda = (ushort)(Alu >> mk.N);
+                    break;
+                case 3:
+                    Sda = Alu;
+                    break;
+                case 4:
+                    Sda = Alu;
+                    break;
+                case 5:
+                    Sda = Alu;
+                    break;
+                case 6:
+                    Sda = Alu;
+                    Registers["RGQ"] = Alu;
+                    break;
+                case 8:
+                    Sda = (ushort)(Alu << mk.N);
+                    break;
+                case 10:
+                    Sda = Alu;
+                    break;
+                case 14:
+                    Sda = Alu;
+                    break;
+                default:
+                    throw new ArgumentException("Invalid SH value");
+            }
+
+            switch (mk.DST) //TODO: Дописать DST=2, 3
+            {
+                case 0:
+                    break;
+                case 1:
+                    Registers[mk.B] = Registers["RGR"];
+                    break;
+                case 2:
+                    Registers[mk.B] = Registers["RGR"];
+                    break;
+                case 3:
+                    Registers[mk.B] = Registers["RGR"];
+                    break;
+                case 4:
+                    Registers[mk.B] = Sda;
+                    break;
+            }
+
+            switch (mk.WM) // ✅
+            {
+                case 0:
+                    break;
+                case 1:
+                    Registers["RGW"] = Sda;
+                    break;
+                case 2:
+                    Registers["ARAM"] = Sda;
+                    break;
+                case 3:
+                    Registers["ARAM"] = Registers["RGB"];
+                    break;
+                default:
+                    throw new ArgumentException("Invalid WM value");
+            }
+
+            switch (mk.CHA)
+            {
+                case 0:
+                    Registers["CMK"] = 0;
+                    break;
+                case 1:
+                    break;
+            }
+
+            //MicroProgramMemory[0].CCX = 1; 
             
         }
 
