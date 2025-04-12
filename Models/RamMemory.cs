@@ -18,6 +18,7 @@ namespace Micro.Models
         {
             Size = size;
             _memory = new byte[Size];
+            Word = new WordAccessor(this);
         }
 
         public byte this[int address]
@@ -30,16 +31,46 @@ namespace Micro.Models
             }
         }
 
-     /*   public ushort ReadWord(int address)
+        public WordAccessor Word { get; }
+
+        public class WordAccessor
         {
-            return (ushort)(_memory[address] | (_memory[address + 1] << 8));
+            private readonly RamMemory _ram;
+
+            public WordAccessor(RamMemory ram)
+            {
+                _ram = ram;
+            }
+
+            public ushort this[int address]
+            {
+                get
+                {
+                    int low = _ram._memory[address];
+                    int high = _ram._memory[address + 1];
+                    return (ushort)((high << 8) | low); // Little-endian
+                }
+                set
+                {
+                    _ram._memory[address] = (byte)(value & 0xFF);
+                    _ram.OnPropertyChanged($"RAM[{address}]");
+
+                    _ram._memory[address + 1] = (byte)((value >> 8) & 0xFF);
+                    _ram.OnPropertyChanged($"RAM[{address + 1}]");
+                }
+            }
         }
 
-        public void WriteWord(int address, ushort value)
-        {
-            _memory[address] = (byte)(value & 0xFF);
-            _memory[address + 1] = (byte)((value >> 8) & 0xFF);
-        }*/
+        /*   public ushort ReadWord(int address)
+           {
+               return (ushort)(_memory[address] | (_memory[address + 1] << 8));
+           }
+
+           public void WriteWord(int address, ushort value)
+           {
+               _memory[address] = (byte)(value & 0xFF);
+               _memory[address + 1] = (byte)((value >> 8) & 0xFF);
+           }*/
 
         //public Span<byte> GetSpan(int start, int length) => new Span<byte>(_memory, start, length);
         public event PropertyChangedEventHandler PropertyChanged;
