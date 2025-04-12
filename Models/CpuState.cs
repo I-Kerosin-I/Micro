@@ -17,8 +17,6 @@ namespace Micro.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public RegisterMemory Registers;
-
         private ushort _alu;
         public ushort Alu {
             get => _alu;
@@ -33,19 +31,17 @@ namespace Micro.Models
                 OnPropertyChanged(nameof(Sda));
             }
         }
-        public ObservableCollection<MemoryRow> Memory;
+
+        private Stack<ushort> _stack = new Stack<ushort>(); 
         public MicroProgrammMemory MicroProgramMemory;
+        public RegisterMemory Registers;
+        public RamMemory Memory;
 
         public CpuState()
         {
-            Registers = new RegisterMemory();
-
-            Memory = new ObservableCollection<MemoryRow>();
-            for (int i = 0; i < 64; i++) Memory.Add(new MemoryRow(i));
-
             MicroProgramMemory = new MicroProgrammMemory();
-            
-
+            Registers = new RegisterMemory();
+            Memory = new RamMemory();
         }
 
         public ushort this[string register]
@@ -61,9 +57,10 @@ namespace Micro.Models
             }
         }
 
-        public void RestartCpu()
+        public void RestartCpu() //TODO: Убрать тесты ОЗУ
         {
-            Registers["CMK"] = 0;
+            Registers["CMK"] = Memory[0];
+            Memory[1] = 35;
         }
 
         public void ExecuteMicroCommand()
@@ -71,7 +68,6 @@ namespace Micro.Models
             var mk = MicroProgramMemory[Registers["CMK"]];
             Registers["RGA"] = Registers[mk.A];
             Registers["RGB"] = Registers[mk.B];
-            Registers["CMK"]++;
             switch (mk.MEM) // TODO: Реализовать взаимодействие с памятью
             {
                 case 4:
@@ -128,7 +124,7 @@ namespace Micro.Models
             }
             // TODO: реализовать поведение C0 в зависимости от CCX
             ushort c0 = mk.CCX;
-            switch (mk.ALU)
+            switch (mk.ALU) //Готово, не протестировано
             {
                 case 0:
                     Alu = 0;
@@ -180,8 +176,11 @@ namespace Micro.Models
                     break;
                 default:
                     throw new ArgumentException("Invalid ALU value");
-                    break;
             }
+
+            Registers["RFI"] = (ushort)(Alu & 0x8000); // Формирование флага N
+            Registers["RFI"] += (ushort)(Alu == 0 ? 0 : 2); // Формирование флага Z
+            //TODO: Формирование остальных флагов
 
             switch (mk.SH) // TODO: Написать логику сдвигателей
             {
@@ -238,7 +237,7 @@ namespace Micro.Models
                     break;
             }
 
-            switch (mk.WM) // ✅
+            switch (mk.WM) // Готово, протестировано
             {
                 case 0:
                     break;
@@ -255,12 +254,63 @@ namespace Micro.Models
                     throw new ArgumentException("Invalid WM value");
             }
 
+            bool jmpCond = true;
+
+            if ((mk.JFI & 4) == 0)
+            {
+                String condFlagRegister = (mk.JFI & 2) == 0 ? "RFI" : "RFD";
+
+                switch (mk.CC) //TODO: Реализовать остальные условия, и поддержку RFD
+                {
+                    case 0:
+                        jmpCond = (Registers[condFlagRegister] & 16) != 0; //P = 1   JP
+                        break;
+                    case 1:
+                        jmpCond = (Registers[condFlagRegister] & 2) != 0; //Z = 1   JZ
+                        break;
+                    case 2:
+                        jmpCond = (Registers[condFlagRegister] & 1) != 0; //N = 1   JS
+                        break;
+                }
+
+                if ((mk.JFI & 1) != 0) jmpCond = !jmpCond;
+            } // Формирование условия (преобразовано с учётом JFI)
+            
             switch (mk.CHA)
             {
                 case 0:
                     Registers["CMK"] = 0;
                     break;
                 case 1:
+                    _stack.Push((ushort)(mk.Address+1));
+                    Registers["CMK"] = mk.CONST;
+                    break;
+                case 2: //TODO: Дешифрация RGK
+                    break;
+                case 3:
+                    if (jmpCond) Registers["CMK"] = mk.CONST;
+                    else Registers["CMK"]++;
+                    break;
+                case 4: // Если RACT != 0, декремент, переход по CONST иначе CONT
+                    if (Registers["RACT"] != 0)
+                    {
+                        Registers["RACT"]--;
+                        Registers["CMK"] = mk.CONST;
+                    }
+                    else Registers["CMK"]++;
+                    break;
+                case 5:
+                    if (_stack.Count != 0)
+                        Registers["CMK"] =
+                            _stack.Pop(); //TODO:Проверить в оригинальной микре поведение при невыполнении условия
+                    else Registers["CMK"]++;
+                        break;
+                case 6:
+                    Registers["RACT"] = mk.CONST;
+                    Registers["CMK"]++;
+                    break;
+                case 7:
+                    Registers["CMK"]++;
                     break;
             }
 
@@ -282,18 +332,6 @@ namespace Micro.Models
         }
     }
 
-    public struct MemoryRow
-    {
-        public string Address { get; set; }  // HEX-адрес
-        public ObservableCollection<byte> Bytes { get; set; }    // 16 байтов строки
-
-        public MemoryRow(int address)
-        {
-            Address = address.ToString("X2");
-            Bytes = new ObservableCollection<byte>(); // Заполняем нулями по умолчанию
-            for (int i = 0; i < 16; i++) Bytes.Add(0);
-        }
-    }
 
     
 
