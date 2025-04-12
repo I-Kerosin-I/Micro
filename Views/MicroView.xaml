@@ -58,7 +58,15 @@
                     <Label x:Name="RgwValueBlock" Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     <Label x:Name="CmkValueBlock" Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabel}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <DataGrid Canvas.Left="109" Canvas.Top="195" HorizontalAlignment="Center" VerticalAlignment="Top" Width="47" Height="98" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"></DataGrid>
+                    
+                    <UniformGrid Columns="1" Rows="6" Canvas.Left="110" Canvas.Top="194">
+                        <Label x:Name="NRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label x:Name="ZRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="Z "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label x:Name="VRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="V "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label x:Name="CRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="C "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label x:Name="PRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="P "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label x:Name="MRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="M "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </UniformGrid>
 
 
                     <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding CpuVm.RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
@@ -87,7 +95,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="599" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2" Width="599">
+                            <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="610" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2" Width="610">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" IsReadOnly="True" Width="50"/>
                                     <DataGridTextColumn Header="A" Binding="{Binding A}" Width="20"/>
@@ -154,22 +162,22 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
                                     <!-- 16 колонок для каждого байта -->
-                                    <DataGridTextColumn Header="0" Binding="{Binding Bytes[0], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="1" Binding="{Binding Bytes[1], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="2" Binding="{Binding Bytes[2], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="3" Binding="{Binding Bytes[3], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="4" Binding="{Binding Bytes[4], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="5" Binding="{Binding Bytes[5], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="6" Binding="{Binding Bytes[6], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="7" Binding="{Binding Bytes[7], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="8" Binding="{Binding Bytes[8], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="9" Binding="{Binding Bytes[9], Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="A" Binding="{Binding Bytes[10], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="B" Binding="{Binding Bytes[11], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="C" Binding="{Binding Bytes[12], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="D" Binding="{Binding Bytes[13], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="E" Binding="{Binding Bytes[14], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="F" Binding="{Binding Bytes[15], Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                                    <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -177,22 +185,22 @@
                             <!-- DataGrid для ASCII-символов -->
                             <DataGrid ItemsSource="{Binding Memory}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="0" Binding="{Binding Bytes[0], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="1" Binding="{Binding Bytes[1], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="2" Binding="{Binding Bytes[2], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="3" Binding="{Binding Bytes[3], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="4" Binding="{Binding Bytes[4], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="5" Binding="{Binding Bytes[5], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="6" Binding="{Binding Bytes[6], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="7" Binding="{Binding Bytes[7], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="8" Binding="{Binding Bytes[8], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="9" Binding="{Binding Bytes[9], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="A" Binding="{Binding Bytes[10], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="B" Binding="{Binding Bytes[11], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="C" Binding="{Binding Bytes[12], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="D" Binding="{Binding Bytes[13], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="E" Binding="{Binding Bytes[14], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="F" Binding="{Binding Bytes[15], Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                                    <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 
