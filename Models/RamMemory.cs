@@ -61,18 +61,7 @@ namespace Micro.Models
             }
         }
 
-        /*   public ushort ReadWord(int address)
-           {
-               return (ushort)(_memory[address] | (_memory[address + 1] << 8));
-           }
 
-           public void WriteWord(int address, ushort value)
-           {
-               _memory[address] = (byte)(value & 0xFF);
-               _memory[address + 1] = (byte)((value >> 8) & 0xFF);
-           }*/
-
-        //public Span<byte> GetSpan(int start, int length) => new Span<byte>(_memory, start, length);
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

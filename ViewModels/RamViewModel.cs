@@ -41,11 +41,6 @@ namespace Micro.ViewModels
             }
         }
 
-        private void LoadMemory()
-        {
-
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -68,7 +63,7 @@ namespace Micro.ViewModels
         {
             Address = (address / 16).ToString("X2");
             Cells = new ObservableCollection<ByteRamCellEntry>(); // Заполняем нулями по умолчанию
-            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
+            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (byte)(i + address)));
         }
     }
 }

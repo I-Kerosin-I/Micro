@@ -19,7 +19,7 @@ namespace Micro.ViewModels
 
         #region RestartCpuCommand
         public ICommand RestartCpuCommand {get; set; }
-        private bool CanRestartCpuCommandexecute(object p) => true;
+        private bool CanRestartCpuCommandExecute(object p) => true;
         private void OnRestartCpuCommandExecuted(object p) => _cpuState.RestartCpu();
         #endregion
 
@@ -41,7 +41,7 @@ namespace Micro.ViewModels
 
             #region Commands
 
-            RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandexecute);
+            RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandExecute);
             ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted, CanExecuteMicrocommandCommandExecute);
             
             #endregion

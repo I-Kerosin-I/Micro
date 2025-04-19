@@ -34,13 +34,13 @@ namespace Micro.Models
         }
 
         private Stack<ushort> _stack = new Stack<ushort>(); 
-        public MicroProgrammMemory MicroProgramMemory;
+        public MicroProgramMemory MicroProgramMemory;
         public RegisterMemory Registers;
         public RamMemory Memory;
 
         public CpuState()
         {
-            MicroProgramMemory = new MicroProgrammMemory();
+            MicroProgramMemory = new MicroProgramMemory();
             Registers = new RegisterMemory();
             Memory = new RamMemory();
         }
@@ -64,7 +64,9 @@ namespace Micro.Models
             Memory[1] = 35;
             Memory.Word[6] = 0x1fda;
             Registers["RGR"] = Memory.Word[6];
+            MicroProgramMemory[0].A = 1;
             
+
         }
 
         public void ExecuteMicroCommand()

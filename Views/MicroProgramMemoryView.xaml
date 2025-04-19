@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Micro.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="35"/>
@@ -15,31 +15,31 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="610" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2" Width="610">
+        <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="594" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" IsReadOnly="True" Width="50"/>
-                <DataGridTextColumn Header="A" Binding="{Binding A}" Width="20"/>
-                <DataGridTextColumn Header="B" Binding="{Binding B}" Width="20"/>
-                <DataGridTextColumn Header="MA" Binding="{Binding MA}" Width="30"/>
-                <DataGridTextColumn Header="MB" Binding="{Binding MB}" Width="30"/>
-                <DataGridTextColumn Header="MEM" Binding="{Binding MEM}" Width="40"/>
-                <DataGridTextColumn Header="SRC" Binding="{Binding SRC}" Width="30"/>
-                <DataGridTextColumn Header="SH" Binding="{Binding SH}" Width="30"/>
-                <DataGridTextColumn Header="N" Binding="{Binding N}" Width="20"/>
-                <DataGridTextColumn Header="ALU" Binding="{Binding ALU}" Width="40"/>
-                <DataGridTextColumn Header="CCX" Binding="{Binding CCX}" Width="40"/>
-                <DataGridTextColumn Header="F" Binding="{Binding F}" Width="20"/>
-                <DataGridTextColumn Header="DST" Binding="{Binding DST}" Width="30"/>
-                <DataGridTextColumn Header="WM" Binding="{Binding WM}" Width="40"/>
-                <DataGridTextColumn Header="JFI" Binding="{Binding JFI}" Width="30"/>
-                <DataGridTextColumn Header="CC" Binding="{Binding CC}" Width="30"/>
-                <DataGridTextColumn Header="CHA" Binding="{Binding CHA}" Width="40"/>
-                <DataGridTextColumn Header="CONST" Binding="{Binding CONST}" Width="50"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding MicroCommand.Address, Converter={StaticResource ByteToHexConverter}}" Width="45" IsReadOnly="True"/>
+                <DataGridTextColumn Header="A"     Binding="{Binding MicroCommand.A, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
+                <DataGridTextColumn Header="B"     Binding="{Binding MicroCommand.B, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
+                <DataGridTextColumn Header="MA"    Binding="{Binding MicroCommand.MA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
+                <DataGridTextColumn Header="MB"    Binding="{Binding MicroCommand.MB, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
+                <DataGridTextColumn Header="MEM"   Binding="{Binding MicroCommand.MEM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
+                <DataGridTextColumn Header="SRC"   Binding="{Binding MicroCommand.SRC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
+                <DataGridTextColumn Header="SH"    Binding="{Binding MicroCommand.SH, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
+                <DataGridTextColumn Header="N"     Binding="{Binding MicroCommand.N, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
+                <DataGridTextColumn Header="ALU"   Binding="{Binding MicroCommand.ALU, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
+                <DataGridTextColumn Header="CCX"   Binding="{Binding MicroCommand.CCX, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
+                <DataGridTextColumn Header="F"     Binding="{Binding MicroCommand.F, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
+                <DataGridTextColumn Header="DST"   Binding="{Binding MicroCommand.DST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
+                <DataGridTextColumn Header="WM"    Binding="{Binding MicroCommand.WM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="40"/>
+                <DataGridTextColumn Header="JFI"   Binding="{Binding MicroCommand.JFI, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
+                <DataGridTextColumn Header="CC"    Binding="{Binding MicroCommand.CC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
+                <DataGridTextColumn Header="CHA"   Binding="{Binding MicroCommand.CHA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
+                <DataGridTextColumn Header="CONST" Binding="{Binding MicroCommand.CONST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X4}"   Width="50"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Загрузить" Width="100" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Grid.Row="1"/>
-        <Button Content="Сохранить" Width="100"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Загрузить" Width="100" Command="{Binding LoadMpmCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+        <Button Content="Сохранить" Width="100" Command="{Binding SaveMpmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
 
     </Grid>
 </UserControl>
