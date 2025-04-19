@@ -18,7 +18,26 @@ namespace Micro.Infrastructure.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (byte.TryParse((string)value, NumberStyles.HexNumber, null, out byte byteValue)) return byteValue;
+            string str = value as string;
+            if (string.IsNullOrWhiteSpace(str))
+                return 0;
+
+            try
+            {
+                if (targetType == typeof(byte))
+                    return byte.Parse(str, NumberStyles.HexNumber);
+                if (targetType == typeof(ushort))
+                    return ushort.Parse(str, NumberStyles.HexNumber);
+                if (targetType == typeof(uint))
+                    return uint.Parse(str, NumberStyles.HexNumber);
+                if (targetType == typeof(int))
+                    return int.Parse(str, NumberStyles.HexNumber);
+            }
+            catch
+            {
+                // Игнорируем ошибки — возвращаем 0
+            }
+
             return 0;
         }
     }
