@@ -8,8 +8,11 @@ namespace Micro.Infrastructure.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            string format = parameter as string ?? "X2";
             if (value is byte b)
-                return b.ToString("X2"); // Формат HEX
+                return b.ToString(format);
+            if (value is ushort us)
+                return us.ToString(format);
             return "00";
         }
 
