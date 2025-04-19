@@ -1,9 +1,7 @@
-﻿using Micro.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Micro
+namespace Micro.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для RegistersView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RegistersView : UserControl
     {
-        public MainWindow()
+        public RegistersView()
         {
             InitializeComponent();
-            DataContext = new MicroViewModel();
         }
     }
 }

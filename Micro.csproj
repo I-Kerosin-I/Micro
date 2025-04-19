@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>micro5.ico</ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -66,10 +66,35 @@
     <Compile Include="Resources\ByteToAsciiConverter.cs" />
     <Compile Include="Resources\ByteToHexConverter.cs" />
     <Compile Include="Models\RegisterMemory.cs" />
-    <Compile Include="Resources\RamCellEntry.cs" />
+    <Compile Include="Resources\ByteRamCellEntry.cs" />
+    <Compile Include="Resources\EnumToBoolConverter.cs" />
+    <Compile Include="Resources\HexInputValidator.cs" />
+    <Compile Include="Resources\MemoryViewTemplateSelector.cs" />
     <Compile Include="Resources\RegisterConverter.cs" />
     <Compile Include="Resources\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Views\RamView.xaml.cs">
+      <DependentUpon>RamView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegistersView.xaml.cs">
+      <DependentUpon>RegistersView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Styles\ElementStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\InputValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CpuStateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MicroProgramMemoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MicroView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,10 +109,24 @@
     <Compile Include="ViewModels\MicroViewModel.cs" />
     <Compile Include="ViewModels\RamViewModel.cs" />
     <Compile Include="ViewModels\RegistersViewModel.cs" />
+    <Compile Include="Views\CpuStateView.xaml.cs">
+      <DependentUpon>CpuStateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MicroProgramMemoryView.xaml.cs">
+      <DependentUpon>MicroProgramMemoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MicroView.xaml.cs">
       <DependentUpon>MicroView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\RamView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegistersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -116,10 +155,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="micro5.ico" />
+    <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\interface.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

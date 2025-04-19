@@ -3,275 +3,128 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Micro" xmlns:viewmodels="clr-namespace:Micro.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MicroViewModel}"
+        xmlns:local="clr-namespace:Micro" 
+        xmlns:views="clr-namespace:Micro.Views"
+        xmlns:viewmodels="clr-namespace:Micro.ViewModels"
+        xmlns:resources="clr-namespace:Micro.Resources"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MicroViewModel}"
         mc:Ignorable="d"
-        Title="Микропрограммируемый процессор" Height="430" Width="635" MinWidth="635">
+        Title="Микропрограммируемый процессор" Height="430" Width="635" MinWidth="635" MinHeight="430">
     <Window.Resources>
-        <!-- Ввод HEX 2 цифры -->
-        <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
-            <EventSetter Event="PreviewTextInput" Handler="HexTextBox_PreviewTextInput"/>
-        </Style>
+        <!-- Валидация: ввод HEX 2 цифры -->
         
-        <Style x:Key="RegisterLabel" TargetType="Label">
-            <!--<Setter Property="Height" Value="17"/>-->
-            <Setter Property="Padding" Value="0 0 0 0"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-        </Style>
+        <DataTemplate x:Key="ByteViewTemplate">
+            <StackPanel Orientation="Horizontal">
+                <!-- DataGrid для байтов -->
+                <DataGrid MaxWidth="425"  ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
+                        <!-- 16 колонок для каждого байта -->
+                        <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+                <!-- DataGrid для ASCII-символов -->
+                <DataGrid ItemsSource="{Binding Memory}" MaxWidth="339" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                        <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="WordViewTemplate">
+            <StackPanel>
+                <!-- DataGrid для байтов -->
+                <DataGrid MaxWidth="425"  ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
+                        <!-- 16 колонок для каждого байта -->
+                        <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                        <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+            </StackPanel>
+        </DataTemplate>
+
+        <resources:MemoryViewTemplateSelector
+            x:Key="MemoryViewTemplateSelector"
+            ByteTemplate="{StaticResource ByteViewTemplate}"
+            WordTemplate="{StaticResource WordViewTemplate}"/>
+
     </Window.Resources>
     <Grid>
         <TabControl x:Name="MainTabs">
             <TabItem x:Name="WorkTab" Header="Работа">
-                <Canvas>
-                    <Image Source="/Views/interface.png" Canvas.Top="30"/>
-                    
-                    <UniformGrid Canvas.Left="106" Canvas.Top="46" Rows="4" Columns="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="287">
-                        <Label x:Name="AxValueBlock" Content='{Binding Registers[0].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="AX   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="BxValueBlock" Content='{Binding Registers[3].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="BX   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="CxValueBlock" Content='{Binding Registers[1].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CX   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="DxValueBlock" Content='{Binding Registers[2].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DX   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="SpValueBlock" Content='{Binding Registers[4].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SP   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="BpValueBlock" Content='{Binding Registers[5].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="BP   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="SiValueBlock" Content='{Binding Registers[6].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SI   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="DiValueBlock" Content='{Binding Registers[7].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DI   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="CsValueBlock" Content='{Binding Registers[8].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CS   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="DsValueBlock" Content='{Binding Registers[9].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="DS   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="SsValueBlock" Content='{Binding Registers[10].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SS   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="EsValueBlock" Content='{Binding Registers[11].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ES   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="IpValueBlock" Content='{Binding Registers[12].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="IP   "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="PswValueBlock" Content='{Binding Registers[13].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="PSW  "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="RgkValueBlock" Content='{Binding Registers[14].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGK  "}'  Style="{StaticResource RegisterLabel}" />
-                        <Label x:Name="RwValueBlock" Content='{Binding Registers[15].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RW   "}'  Style="{StaticResource RegisterLabel}" />
-                    </UniformGrid>
-
-                    <Label x:Name="AramValueBlock" Content='{Binding Registers[19].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ARAM "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Label x:Name="RgaValueBlock" Content='{Binding Registers[27].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGA  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="117" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Label x:Name="RgbValueBlock" Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Label x:Name="AluValueBlock" Content='{Binding CpuVm.Alu, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Label x:Name="SdaValueBlock" Content='{Binding CpuVm.Sda, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Label x:Name="RgqValueBlock" Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="296" Canvas.Top="173" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Label x:Name="RgrValueBlock" Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Label x:Name="RgwValueBlock" Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    <Label x:Name="CmkValueBlock" Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabel}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabel}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    
-                    <UniformGrid Columns="1" Rows="6" Canvas.Left="110" Canvas.Top="194">
-                        <Label x:Name="NRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label x:Name="ZRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="Z "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label x:Name="VRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="V "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label x:Name="CRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="C "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label x:Name="PRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="P "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Label x:Name="MRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="M "}' Style="{StaticResource RegisterLabel}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    </UniformGrid>
-
-
-                    <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding CpuVm.RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="5"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-
-
-                    <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding CpuVm.ExecuteMicrocommandCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
-                    <Button x:Name="StopButton" Content="Стоп" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="335" Canvas.Top="311"/>
-
-                </Canvas>
+                <views:CpuStateView DataContext="{Binding CpuVm}"/>
             </TabItem>
+
             <TabItem x:Name="DataTab" Header="Данные">
                 <TabControl x:Name="DataTabs">
-                    <TabItem x:Name="MpmTab" Header="Микропрограммная память" DataContext="{Binding MicroprogramMemoryVm}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="35"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="610" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2" Width="610">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" IsReadOnly="True" Width="50"/>
-                                    <DataGridTextColumn Header="A" Binding="{Binding A}" Width="20"/>
-                                    <DataGridTextColumn Header="B" Binding="{Binding B}" Width="20"/>
-                                    <DataGridTextColumn Header="MA" Binding="{Binding MA}" Width="30"/>
-                                    <DataGridTextColumn Header="MB" Binding="{Binding MB}" Width="30"/>
-                                    <DataGridTextColumn Header="MEM" Binding="{Binding MEM}" Width="40"/>
-                                    <DataGridTextColumn Header="SRC" Binding="{Binding SRC}" Width="30"/>
-                                    <DataGridTextColumn Header="SH" Binding="{Binding SH}" Width="30"/>
-                                    <DataGridTextColumn Header="N" Binding="{Binding N}" Width="20"/>
-                                    <DataGridTextColumn Header="ALU" Binding="{Binding ALU}" Width="40"/>
-                                    <DataGridTextColumn Header="CCX" Binding="{Binding CCX}" Width="40"/>
-                                    <DataGridTextColumn Header="F" Binding="{Binding F}" Width="20"/>
-                                    <DataGridTextColumn Header="DST" Binding="{Binding DST}" Width="30"/>
-                                    <DataGridTextColumn Header="WM" Binding="{Binding WM}" Width="40"/>
-                                    <DataGridTextColumn Header="JFI" Binding="{Binding JFI}" Width="30"/>
-                                    <DataGridTextColumn Header="CC" Binding="{Binding CC}" Width="30"/>
-                                    <DataGridTextColumn Header="CHA" Binding="{Binding CHA}" Width="40"/>
-                                    <DataGridTextColumn Header="CONST" Binding="{Binding CONST}" Width="50"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-                            <Button Content="Загрузить" Width="100" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Grid.Row="1"/>
-                            <Button Content="Сохранить" Width="100"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
-
-                        </Grid>
+                    
+                    <TabItem x:Name="MpmTab" Header="Микропрограммная память">
+                        <views:MicroProgramMemoryView DataContext="{Binding MicroprogramMemoryVm}"/>
                     </TabItem>
-                    <TabItem x:Name="RamTab" Header="Память" DataContext="{Binding RamVm}">
-                        <Grid UseLayoutRounding="False">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="327*"/>
-                                <ColumnDefinition Width="296*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="65*"/>
-                                <RowDefinition Height="293*"/>
-                            </Grid.RowDefinitions>
-
-                            <GroupBox Header="Память" HorizontalAlignment="Center" Width="312" Height="50" VerticalAlignment="Center">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Content="Перейти по адресу (HEX)" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" UseLayoutRounding="True" Margin="0,3,0,3" Padding="10,1,10,1"/>
-                                    <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="000" VerticalAlignment="Center" Width="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="17" />
-
-                                </Grid>
-                            </GroupBox>
-                            <!-- GroupBox Представление двнных -->
-                            <GroupBox Header="Представление данных" Grid.Column="1" HorizontalAlignment="Center" Width="276" Height="50" VerticalAlignment="Center">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <RadioButton x:Name="RamModeDisplayBytes" Content="Байты" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <RadioButton x:Name="RamModeDisplayWords" Content="Слова" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
-                                </Grid>
-                            </GroupBox>
-
-                            <!-- DataGrid для байтов -->
-                            <DataGrid Grid.Column="0" ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
-                                    <!-- 16 колонок для каждого байта -->
-                                    <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                    <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-
-                            <!-- DataGrid для ASCII-символов -->
-                            <DataGrid ItemsSource="{Binding Memory}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                    <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-                        </Grid>
+                    
+                    <TabItem x:Name="RamTab" Header="Память">
+                        <views:RamView DataContext="{Binding RamVm}"/>
                     </TabItem>
+                    
                     <TabItem x:Name="RegistersTab" Header="Регистры">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="493*"/>
-                                <ColumnDefinition Width="130*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="119*"/>
-                                <RowDefinition Height="58*"/>
-                                <RowDefinition Height="140*"/>
-                                <RowDefinition Height="42*" />
-                            </Grid.RowDefinitions>
-                            <GroupBox Header="РОНы" Grid.RowSpan="2" Margin="5,0,10,0">
-                                <UniformGrid Rows="4" Columns="8">
-                                    <Label  Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="AX" ClipToBounds="True"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[0].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}"  Content="SP"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[4].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="CS"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[8].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="IP"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[12].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="BX"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[3].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="BP"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[5].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="SS"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[9].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="PSW"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[13].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="CX"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[1].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="SI"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[6].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="DS"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[10].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="RGK"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[14].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="DX"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[2].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="DI"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[7].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="ES"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[11].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                    <Label Background="#FFCACACA" Style="{StaticResource RegisterLabel}" Content="RW"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[15].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                </UniformGrid>
-                            </GroupBox>
-                            <GroupBox Header="Регистры флагов" Grid.Column="1" Margin="0,0,5,0" />
-                            <GroupBox Header="Рабочий регистр" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0"/>
-                            <GroupBox Header="Регистры блока МПУ" Grid.Column="0" Grid.Row="2" Margin="5,0,10,0" />
-                            <GroupBox Header="Регистры ОП" Grid.Column="1" Grid.Row="2" Margin="0,0,5,0" />
-                            <UniformGrid Grid.Row="3" Grid.ColumnSpan="2" Columns="4" Rows="1" >
-                                <Button Content="Загрузить" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center"/>
-                                <Button Content="Сохранить" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center"/>
-                                <Button Content="Применить"  Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                <Button Content="Сброс" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center"/>
-                            </UniformGrid>
-
-                        </Grid>
+                        <views:RegistersView DataContext="{Binding RegistersVm}"/>
                     </TabItem>
+                    
                     <TabItem x:Name="AddressTranslationTab" Header="Таблица преобразования адресов" DataContext="{Binding AddressConvertionVm}">
-                        <Grid>
-                            <!-- Разметка для таблицы -->
-                        </Grid>
+                        
                     </TabItem>
+
                 </TabControl>
             </TabItem>
         </TabControl>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Micro.ViewModels
 {
-    class MicroViewModel : INotifyPropertyChanged
+    internal class MicroViewModel : INotifyPropertyChanged
     {
 
         public CpuState CpuState { get; }
@@ -33,18 +33,15 @@ namespace Micro.ViewModels
         {
             CpuState = new CpuState();
 
-            Registers = new ObservableCollection<RegisterEntry>(
-            CpuState.Registers.Select(r => new RegisterEntry(r.Key, r.Value, CpuState)));
-
-            CpuVm = new CpuViewModel(CpuState);
+            Registers = new ObservableCollection<RegisterEntry>(CpuState.Registers.Select(r => new RegisterEntry(r.Key, r.Value, CpuState)));
+            
+            CpuVm = new CpuViewModel(CpuState, Registers);
             MicroprogramMemoryVm = new MicroProgramMemoryViewModel(CpuState);
             RamVm = new RamViewModel(CpuState);
-            RegistersVm = new RegistersViewModel(CpuState);
+            RegistersVm = new RegistersViewModel(CpuState, Registers);
             AddressConvertionVm = new AddressConvertionViewModel(CpuState);
 
             
         }
-    
     }
-    
 }

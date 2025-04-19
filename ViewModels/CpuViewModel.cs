@@ -6,6 +6,8 @@ using System.Windows;
 using Micro.Models;
 using System.Windows.Input;
 using Micro.Infrastructure.Commands;
+using Micro.Resources;
+using System.Collections.ObjectModel;
 
 namespace Micro.ViewModels
 {
@@ -29,23 +31,17 @@ namespace Micro.ViewModels
         #endregion
 
         private readonly CpuState _cpuState;
+        private readonly ObservableCollection<RegisterEntry> _registers;
+        public ObservableCollection<RegisterEntry> Registers => _registers;
+        public string Alu => _cpuState.Alu.ToString("X4");
+        public string Sda => _cpuState.Sda.ToString("X4");
 
-        public string Alu
-        {
-            get => _cpuState.Alu.ToString("X4");
-        }
-        public string Sda
-        {
-            get => _cpuState.Sda.ToString("X4");
-        }
-
-        public CpuViewModel(CpuState cpuState) {
+        public CpuViewModel(CpuState cpuState, ObservableCollection<RegisterEntry> registers) {
 
             #region Commands
 
             RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandexecute);
-            ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted,
-                CanExecuteMicrocommandCommandExecute);
+            ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted, CanExecuteMicrocommandCommandExecute);
             
             #endregion
 
@@ -62,7 +58,7 @@ namespace Micro.ViewModels
                         break;
                 }
             };
-
+            _registers = registers;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

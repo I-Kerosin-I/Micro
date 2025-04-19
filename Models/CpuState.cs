@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Micro.Resources;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Media3D;
 
 
 namespace Micro.Models 
@@ -61,6 +62,9 @@ namespace Micro.Models
         {
             Registers["CMK"] = Memory[0];
             Memory[1] = 35;
+            Memory.Word[6] = 0x1fda;
+            Registers["RGR"] = Memory.Word[6];
+            
         }
 
         public void ExecuteMicroCommand()

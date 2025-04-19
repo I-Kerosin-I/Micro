@@ -10,10 +10,10 @@ using Micro.Models;
 
 namespace Micro.Resources
 {
-    public class RamCellEntry : INotifyPropertyChanged
+    public class ByteRamCellEntry : INotifyPropertyChanged
     {
-        private RamMemory _memory;
-        private ushort _address;
+        private readonly RamMemory _memory;
+        private readonly ushort _address;
 
         public byte Value
         {
@@ -26,7 +26,7 @@ namespace Micro.Resources
             }
         }
 
-        public RamCellEntry(RamMemory memory ,ushort addres)
+        public ByteRamCellEntry(RamMemory memory ,ushort addres)
         {
             _memory = memory;
             _address = addres;

@@ -5,9 +5,16 @@
              xmlns:resources="clr-namespace:Micro.Resources"
              StartupUri="Views/MicroView.xaml">
     <Application.Resources>
-        <resources:ByteToHexConverter x:Key="ByteToHexConverter"/>
-        <resources:ByteToAsciiConverter x:Key="ByteToAsciiConverter"/>
-        <resources:RegisterLabelConverter x:Key="RegisterLabelConverter"/>
 
+        <ResourceDictionary>
+            <resources:ByteToHexConverter x:Key="ByteToHexConverter" />
+            <resources:ByteToAsciiConverter x:Key="ByteToAsciiConverter" />
+            <resources:RegisterLabelConverter x:Key="RegisterLabelConverter" />
+            <resources:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+            <resources:MemoryViewTemplateSelector x:Key="MemoryViewTemplateSelector" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/ElementStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
