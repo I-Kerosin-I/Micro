@@ -58,15 +58,9 @@ namespace Micro.Models
             }
         }
 
-        public void RestartCpu() //TODO: Убрать тесты ОЗУ
+        public void RestartCpu() 
         {
-            Registers["CMK"] = Memory[0];
-            Memory[1] = 35;
-            Memory.Word[6] = 0x1fda;
-            Registers["RGR"] = Memory.Word[6];
-            MicroProgramMemory[0].A = 1;
-            
-
+            Registers["CMK"] = 0;
         }
 
         public void ExecuteMicroCommand()
@@ -74,21 +68,6 @@ namespace Micro.Models
             var mk = MicroProgramMemory[Registers["CMK"]];
             Registers["RGA"] = Registers[mk.A];
             Registers["RGB"] = Registers[mk.B];
-            switch (mk.MEM) // TODO: Реализовать взаимодействие с памятью
-            {
-                case 4:
-                    Registers["RGR"] = 0;
-                    break;
-                case 5:
-                    Registers["RGR"] = 0;
-                    break;
-                case 6:
-                    Registers["RGR"] = 0;
-                    break;
-                case 7:
-                    Registers["RGR"] = 0;
-                    break;
-            }
             
             ushort r, s;
             switch (mk.SRC)
@@ -130,7 +109,7 @@ namespace Micro.Models
             }
             // TODO: реализовать поведение C0 в зависимости от CCX
             ushort c0 = mk.CCX;
-            switch (mk.ALU) //Готово, не протестировано
+            switch (mk.ALU) 
             {
                 case 0:
                     Alu = 0;
@@ -182,7 +161,7 @@ namespace Micro.Models
                     break;
                 default:
                     throw new ArgumentException("Invalid ALU value");
-            }
+            } //Готово, не протестировано
 
             Registers["RFI"] = (ushort)(Alu & 0x8000); // Формирование флага N
             Registers["RFI"] += (ushort)(Alu == 0 ? 0 : 2); // Формирование флага Z
@@ -260,13 +239,28 @@ namespace Micro.Models
                     throw new ArgumentException("Invalid WM value");
             }
 
+            switch (mk.MEM) 
+            {
+                case 4:
+                    Registers["RGR"] = Memory[Registers["ARAM"]];
+                    break;
+                case 5:
+                    Registers["RGR"] = Memory.Word[Registers["ARAM"]];
+                    break;
+                case 6:
+                    Memory[Registers["ARAM"]] = (byte)(Registers["RGW"] & 0xff);
+                    break;
+                case 7:
+                    Memory.Word[Registers["ARAM"]] = Registers["RGW"];
+                    break;
+            }
             bool jmpCond = true;
 
             if ((mk.JFI & 4) == 0)
             {
                 String condFlagRegister = (mk.JFI & 2) == 0 ? "RFI" : "RFD";
 
-                switch (mk.CC) //TODO: Реализовать остальные условия, и поддержку RFD
+                switch (mk.CC) //TODO: Реализовать остальные условия
                 {
                     case 0:
                         jmpCond = (Registers[condFlagRegister] & 16) != 0; //P = 1   JP
@@ -320,7 +314,6 @@ namespace Micro.Models
                     break;
             }
 
-            //MicroProgramMemory[0].CCX = 1; 
             
         }
 

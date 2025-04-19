@@ -28,10 +28,6 @@ namespace Micro.Infrastructure.Converters
                     return byte.Parse(str, NumberStyles.HexNumber);
                 if (targetType == typeof(ushort))
                     return ushort.Parse(str, NumberStyles.HexNumber);
-                if (targetType == typeof(uint))
-                    return uint.Parse(str, NumberStyles.HexNumber);
-                if (targetType == typeof(int))
-                    return int.Parse(str, NumberStyles.HexNumber);
             }
             catch
             {
