@@ -63,15 +63,15 @@
     <Compile Include="Models\CpuState.cs" />
     <Compile Include="Models\MicroProgrammMemory.cs" />
     <Compile Include="Models\RamMemory.cs" />
-    <Compile Include="Resources\ByteToAsciiConverter.cs" />
-    <Compile Include="Resources\ByteToHexConverter.cs" />
+    <Compile Include="Infrastructure\Converters\ByteToAsciiConverter.cs" />
+    <Compile Include="Infrastructure\Converters\ByteToHexConverter.cs" />
     <Compile Include="Models\RegisterMemory.cs" />
-    <Compile Include="Resources\ByteRamCellEntry.cs" />
-    <Compile Include="Resources\EnumToBoolConverter.cs" />
+    <Compile Include="Infrastructure\Entrys\ByteRamCellEntry.cs" />
+    <Compile Include="Infrastructure\Converters\EnumToBoolConverter.cs" />
     <Compile Include="Resources\HexInputValidator.cs" />
     <Compile Include="Resources\MemoryViewTemplateSelector.cs" />
-    <Compile Include="Resources\RegisterConverter.cs" />
-    <Compile Include="Resources\RegisterEntry.cs" />
+    <Compile Include="Infrastructure\Converters\RegisterConverter.cs" />
+    <Compile Include="Infrastructure\Entrys\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Views\RamView.xaml.cs">
       <DependentUpon>RamView.xaml</DependentUpon>

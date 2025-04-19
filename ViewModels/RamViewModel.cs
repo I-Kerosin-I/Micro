@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Micro.Resources;
 using System.Runtime.CompilerServices;
+using Micro.Infrastructure.Entrys;
 
 namespace Micro.ViewModels
 {

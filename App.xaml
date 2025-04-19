@@ -3,14 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Micro" 
              xmlns:resources="clr-namespace:Micro.Resources"
+             xmlns:converters="clr-namespace:Micro.Infrastructure.Converters"
              StartupUri="Views/MicroView.xaml">
     <Application.Resources>
 
         <ResourceDictionary>
-            <resources:ByteToHexConverter x:Key="ByteToHexConverter" />
-            <resources:ByteToAsciiConverter x:Key="ByteToAsciiConverter" />
-            <resources:RegisterLabelConverter x:Key="RegisterLabelConverter" />
-            <resources:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+            <converters:ByteToHexConverter x:Key="ByteToHexConverter" />
+            <converters:ByteToAsciiConverter x:Key="ByteToAsciiConverter" />
+            <converters:RegisterLabelConverter x:Key="RegisterLabelConverter" />
+            <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
             <resources:MemoryViewTemplateSelector x:Key="MemoryViewTemplateSelector" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/ElementStyles.xaml" />

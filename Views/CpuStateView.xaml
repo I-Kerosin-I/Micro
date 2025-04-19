@@ -32,8 +32,8 @@
         <Label x:Name="AramValueBlock" Content='{Binding Registers[19].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ARAM "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label x:Name="RgaValueBlock" Content='{Binding Registers[27].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="117" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Label x:Name="RgbValueBlock" Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Label x:Name="AluValueBlock" Content='{Binding CpuVm.Alu, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Label x:Name="SdaValueBlock" Content='{Binding CpuVm.Sda, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name="AluValueBlock" Content='{Binding Alu, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="SdaValueBlock" Content='{Binding Sda, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label x:Name="RgqValueBlock" Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="296" Canvas.Top="173" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="RgrValueBlock" Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="RgwValueBlock" Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -50,7 +50,7 @@
         </UniformGrid>
 
 
-        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding CpuVm.RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
+        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -59,7 +59,7 @@
         </Button>
 
 
-        <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding CpuVm.ExecuteMicrocommandCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
+        <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding ExecuteMicrocommandCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
         <Button x:Name="StopButton" Content="Стоп" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="335" Canvas.Top="311"/>
 
     </Canvas>

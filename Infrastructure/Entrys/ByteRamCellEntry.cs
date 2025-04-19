@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Micro.Models;
 
-namespace Micro.Resources
+namespace Micro.Infrastructure.Entrys
 {
     public class ByteRamCellEntry : INotifyPropertyChanged
     {

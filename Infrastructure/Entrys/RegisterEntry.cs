@@ -1,8 +1,8 @@
-﻿using Micro.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
+using Micro.Models;
 
-namespace Micro.Resources
+namespace Micro.Infrastructure.Entrys
 {
     class RegisterEntry : INotifyPropertyChanged
     {

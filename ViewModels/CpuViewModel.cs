@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Micro.Infrastructure.Commands;
 using Micro.Resources;
 using System.Collections.ObjectModel;
+using Micro.Infrastructure.Entrys;
 
 namespace Micro.ViewModels
 {
