@@ -107,65 +107,75 @@ namespace Micro.Models
                 default:
                     throw new Exception("Invalid SRC value");
             }
-            // TODO: реализовать поведение C0 в зависимости от CCX
-            ushort c0 = mk.CCX;
+            
+            byte c0 = mk.CCX;
+            if ((mk.CCX & 0b10) == 2) c0 = (byte)(Registers["RFI"] & 1);
+
+            UInt32 _alu32;
             switch (mk.ALU) 
             {
                 case 0:
-                    Alu = 0;
+                    _alu32 = 0;
                     break;
                 case 1:
-                    Alu = (ushort)(s - r - 1 + c0);
+                    _alu32 = (uint)(s - r - 1 + c0);
                     break;
                 case 2:
-                    Alu = (ushort)(r - s - 1 + c0);
+                    _alu32 = (uint)(r - s - 1 + c0);
                     break;
                 case 3:
-                    Alu = (ushort)(r + s + c0);
+                    _alu32 = (uint)(r + s + c0);
                     break;
                 case 4:
-                    Alu = (ushort)(s + c0);
+                    _alu32 = (uint)(s + c0);
                     break;
                 case 5:
-                    Alu = (ushort)(~s + c0);
+                    _alu32 = (uint)(~s + c0);
                     break;
                 case 6:
-                    Alu = (ushort)(r + c0);
+                    _alu32 = (uint)(r + c0);
                     break;
                 case 7:
-                    Alu = (ushort)(~r + c0);
+                    _alu32 = (uint)(~r + c0);
                     break;
                 case 8:
-                    Alu = (ushort)(r + c0); //TODO: Умножение на 2 бита
+                    _alu32 = (uint)(r + c0); //TODO: Умножение на 2 бита
                     break;
                 case 9:
-                    Alu = (ushort)(r & s);
+                    _alu32 = (uint)(r & s);
                     break;
                 case 10:
-                    Alu = Alu = (ushort)(r & ~s); ;
+                    _alu32 = (uint)(r & ~s); ;
                     break;
                 case 11:
-                    Alu = (ushort)~(r & s); 
+                    _alu32 = (uint)~(r & s); 
                     break;
                 case 12:
-                    Alu = (ushort)(r | s);
+                    _alu32 = (uint)(r | s);
                     break;
                 case 13:
-                    Alu = (ushort)~(r | s);
+                    _alu32 = (uint)~(r | s);
                     break;
                 case 14:
-                    Alu = (ushort)(r ^ s);
+                    _alu32 = (uint)(r ^ s);
                     break;
                 case 15:
-                    Alu = (ushort)~(r ^ s);
+                    _alu32 = (uint)~(r ^ s);
                     break;
                 default:
                     throw new ArgumentException("Invalid ALU value");
             } //Готово, не протестировано
 
-            Registers["RFI"] = (ushort)(Alu & 0x8000); // Формирование флага N
-            Registers["RFI"] += (ushort)(Alu == 0 ? 0 : 2); // Формирование флага Z
-            //TODO: Формирование остальных флагов
+            Alu = (ushort)(_alu32 & 0x0000FFFF);
+            Registers["RFI"] = (ushort)((Alu & 0x8000) >> 8) ; // Формирование флага N (S)  - 7 бит RFI
+            Registers["RFI"] |= (ushort)(Alu == 0 ? 0x40 : 0); // Формирование флага Z  - 6 бит RFI
+            Registers["RFI"] |= (ushort)((_alu32 & 0x10000) >> 16); // Формирование флага C  - 0 бит RFI
+            Registers["RFI"] |= (ushort)(((Registers["RFI"] << 4) ^ (Alu >> 4)) & 0x800); // Формирование флага V  - 11 бит RFI
+            byte p = 0;
+            for (byte i = 0; i < 8; i++) p ^= (byte)((Alu >> i) & 1); // Формирование флага P  - 2 бит RFI
+            Registers["RFI"] |= (ushort)(p << 2);
+            
+            //TODO: Узнать про формирование Pf и Vf
 
             switch (mk.SH) // TODO: Написать логику сдвигателей
             {

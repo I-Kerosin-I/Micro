@@ -41,12 +41,12 @@
         <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <UniformGrid Columns="1" Rows="6" Canvas.Left="110" Canvas.Top="194">
-            <Label x:Name="NRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="ZRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="Z "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="VRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="V "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="CRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="C "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="PRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="P "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="MRfiBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="M "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="NRfiBlock" Content='{Binding Sf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="ZRfiBlock" Content='{Binding Zf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="Z "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="VRfiBlock" Content='{Binding Vf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="V "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="CRfiBlock" Content='{Binding Cf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="C "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="PRfiBlock" Content='{Binding Pf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="P "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <!--<Label x:Name="MRfiBlock" Content='{Binding , Converter={StaticResource RegisterLabelConverter}, ConverterParameter="M "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
         </UniformGrid>
 
 

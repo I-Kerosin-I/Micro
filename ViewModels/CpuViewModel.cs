@@ -36,6 +36,12 @@ namespace Micro.ViewModels
         public ObservableCollection<RegisterEntry> Registers => _registers;
         public string Alu => _cpuState.Alu.ToString("X4");
         public string Sda => _cpuState.Sda.ToString("X4");
+        public string Sf => ((_cpuState.Registers["RFI"] >> 7) & 1).ToString(); 
+        public string Zf => ((_cpuState.Registers["RFI"] >> 6) & 1).ToString();
+        public string Vf => ((_cpuState.Registers["RFI"] >> 11) & 1).ToString();
+        public string Cf => (_cpuState.Registers["RFI"] & 1).ToString();
+        public string Pf => ((_cpuState.Registers["RFI"] >> 2) & 1).ToString(); 
+        //public string Mf => ((_cpuState.Registers["RFI"] >> 6) & 1).ToString();  
 
         public CpuViewModel(CpuState cpuState, ObservableCollection<RegisterEntry> registers) {
 
@@ -53,6 +59,7 @@ namespace Micro.ViewModels
                 {
                     case nameof(_cpuState.Alu):
                         OnPropertyChanged(nameof(_cpuState.Alu));
+                        
                         break;
                     case nameof(_cpuState.Sda):
                         OnPropertyChanged(nameof(_cpuState.Sda));
@@ -60,6 +67,17 @@ namespace Micro.ViewModels
                 }
             };
             _registers = registers;
+            _cpuState.Registers.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "RFI")
+                {
+                    OnPropertyChanged(nameof(Cf));
+                    OnPropertyChanged(nameof(Zf));
+                    OnPropertyChanged(nameof(Vf));
+                    OnPropertyChanged(nameof(Sf));
+                    OnPropertyChanged(nameof(Pf));
+                }
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
