@@ -214,7 +214,7 @@ namespace Micro.Models
                     throw new ArgumentException("Invalid SH value");
             }
 
-            switch (mk.DST) //TODO: Дописать DST=2, 3
+            switch (mk.DST) 
             {
                 case 0:
                     break;
@@ -222,10 +222,10 @@ namespace Micro.Models
                     Registers[mk.B] = Registers["RGR"];
                     break;
                 case 2:
-                    Registers[mk.B] = Registers["RGR"];
+                    Registers[mk.B] |= (ushort)(Registers["RGR"] << 8);
                     break;
                 case 3:
-                    Registers[mk.B] = Registers["RGR"];
+                    Registers[mk.B] |= (ushort)(Registers["RGR"] >> 8);
                     break;
                 case 4:
                     Registers[mk.B] = Sda;
@@ -286,14 +286,19 @@ namespace Micro.Models
                 if ((mk.JFI & 1) != 0) jmpCond = !jmpCond;
             } // Формирование условия (преобразовано с учётом JFI)
             
-            switch (mk.CHA)
+            switch (mk.CHA) // TODO: Обработка некорректного ввода адреса перехода
             {
                 case 0:
                     Registers["CMK"] = 0;
                     break;
                 case 1:
-                    _stack.Push((ushort)(mk.Address+1));
-                    Registers["CMK"] = mk.CONST;
+                    if (jmpCond)
+                    {
+                        _stack.Push((ushort)(mk.Address + 1));
+                        Registers["CMK"] = mk.CONST;
+                    }
+                    else Registers["CMK"]++;
+                    
                     break;
                 case 2: //TODO: Дешифрация RGK
                     break;
@@ -310,9 +315,17 @@ namespace Micro.Models
                     else Registers["CMK"]++;
                     break;
                 case 5:
-                    if (_stack.Count != 0)
-                        Registers["CMK"] =
-                            _stack.Pop(); //TODO:Проверить в оригинальной микре поведение при невыполнении условия
+                    if (jmpCond)
+                    {
+                        if (_stack.Count != 0)
+                            Registers["CMK"] =
+                                _stack.Pop();
+                        else
+                        {
+                            // TODO: выдавать ошибку "Пустой стэк"
+                            Registers["CMK"]++;
+                        }    
+                    }
                     else Registers["CMK"]++;
                         break;
                 case 6:
