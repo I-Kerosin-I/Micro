@@ -139,13 +139,13 @@ namespace Micro.Models
                     _alu32 = (uint)(~r + c0);
                     break;
                 case 8:
-                    _alu32 = (uint)(r + c0); //TODO: Умножение на 2 бита
+                    _alu32 = s;
                     break;
                 case 9:
                     _alu32 = (uint)(r & s);
                     break;
                 case 10:
-                    _alu32 = (uint)(r & ~s); ;
+                    _alu32 = (uint)(r & ~s);
                     break;
                 case 11:
                     _alu32 = (uint)~(r & s); 
@@ -179,60 +179,46 @@ namespace Micro.Models
 
             switch (mk.SH) // TODO: Написать логику сдвигателей
             {
-                case 0:
+                case 0:     // Без сдвига
                     Sda = Alu;
                     break;
-                case 1:
+                case 1:     // АС АЛУ вправо
+                    Sda = (ushort)((short)Alu >> mk.N);
+                    break;
+                case 2:     // ЛС ФЛУ вправо
+                    Sda = (ushort)(Alu >>> mk.N);
+                    break;
+                case 3:     // АС АЛУ, RGQ вправо
+                    Sda = (ushort)((short)Alu >> mk.N);
+                    Registers["RGQ"] = (ushort)((Registers["RGQ"] >>> mk.N) | Alu << (16 - mk.N));
+                    break;
+                case 4:     // ЛС АЛУ, RGQ вправо
+                    Sda = (ushort)(Alu >>> mk.N);
+                    Registers["RGQ"] = (ushort)((Registers["RGQ"] >>> mk.N) | Alu << (16 - mk.N));
+                    break;
+                case 5:     // ЛС RGQ вправо
                     Sda = Alu;
                     break;
-                case 2:
-                    Sda = (ushort)(Alu >> mk.N);
-                    break;
-                case 3:
-                    Sda = Alu;
-                    break;
-                case 4:
-                    Sda = Alu;
-                    break;
-                case 5:
-                    Sda = Alu;
-                    break;
-                case 6:
+                case 6:     // RGQ <= ALU
                     Sda = Alu;
                     Registers["RGQ"] = Alu;
                     break;
-                case 8:
+                case 8:     // ЛС АЛУ влево
                     Sda = (ushort)(Alu << mk.N);
                     break;
-                case 10:
-                    Sda = Alu;
+                case 10:    // ЛС АЛУ, RGQ влево
+                    Sda = (ushort)((Alu << mk.N) | Registers["RGQ"] >> (16 - mk.N));
+                    Registers["RGQ"] <<= mk.N;
                     break;
-                case 14:
+                case 14:    // Расширение знака
                     Sda = Alu;
                     break;
                 default:
                     throw new ArgumentException("Invalid SH value");
             }
 
-            switch (mk.DST) 
-            {
-                case 0:
-                    break;
-                case 1:
-                    Registers[mk.B] = Registers["RGR"];
-                    break;
-                case 2:
-                    Registers[mk.B] |= (ushort)(Registers["RGR"] << 8);
-                    break;
-                case 3:
-                    Registers[mk.B] |= (ushort)(Registers["RGR"] >> 8);
-                    break;
-                case 4:
-                    Registers[mk.B] = Sda;
-                    break;
-            }
 
-            switch (mk.WM) // Готово, протестировано
+            switch (mk.WM) 
             {
                 case 0:
                     break;
@@ -247,7 +233,7 @@ namespace Micro.Models
                     break;
                 default:
                     throw new ArgumentException("Invalid WM value");
-            }
+            }   // Готово, протестировано
 
             switch (mk.MEM) 
             {
@@ -264,6 +250,25 @@ namespace Micro.Models
                     Memory.Word[Registers["ARAM"]] = Registers["RGW"];
                     break;
             }
+
+            switch (mk.DST) 
+            {
+                case 0:
+                    break;
+                case 1:
+                    Registers[mk.B] = Registers["RGR"];
+                    break;
+                case 2:
+                    Registers[mk.B] = (ushort)((Registers[mk.B] & 0x00ff) | (Registers["RGR"] << 8));
+                    break;
+                case 3:
+                    Registers[mk.B] = (ushort)((Registers[mk.B] & 0xff00) | (Registers["RGR"] >>> 8));
+                    break;
+                case 4:
+                    Registers[mk.B] = Sda;
+                    break;
+            }
+
             bool jmpCond = true;
 
             if ((mk.JFI & 4) == 0)
