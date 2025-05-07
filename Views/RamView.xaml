@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="65*"/>
             <RowDefinition Height="293*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <GroupBox Header="Память" HorizontalAlignment="Center" Width="312" Height="50" VerticalAlignment="Center">
@@ -33,8 +34,8 @@
 
             </Grid>
         </GroupBox>
-        <!-- GroupBox Представление двнных -->
-        <GroupBox Header="Представление данных" Grid.Column="1" HorizontalAlignment="Center" Width="276" Height="50" VerticalAlignment="Center">
+        <!-- GroupBox Представление данных -->
+        <GroupBox Header="Представление данных" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Width="276" Height="50" VerticalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -91,6 +92,10 @@
                 <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button Content="Загрузить" Width="100" Command="{Binding LoadRamCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+        <Button Content="Сохранить" Width="100" Command="{Binding SaveRamCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+
 
     </Grid>
 

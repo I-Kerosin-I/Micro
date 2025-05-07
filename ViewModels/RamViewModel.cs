@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using Micro.Resources;
 using System.Runtime.CompilerServices;
 using Micro.Infrastructure.Entrys;
+using System.Windows;
+using System.IO;
+using System.Windows.Input;
+using Micro.Infrastructure.Commands;
 
 namespace Micro.ViewModels
 {
@@ -17,9 +21,42 @@ namespace Micro.ViewModels
     {
         #region Commands
 
+        #region LoadRAM
+        public ICommand LoadRamCommand { get; set; }
+        private bool CanLoadRamCommandExecute(object p) => true;
+        private void OnLoadRamCommandExecuted(object p) => LoadRam();
+        #endregion
 
+        #region SaveRAM
+        public ICommand SaveRamCommand { get; set; }
+        private bool CanSaveRamCommandExecute(object p) => true;
+        private void OnSaveRamCommandExecuted(object p) => SaveRam();
+        #endregion
 
         #endregion
+
+        private readonly FileDialogService _fileDialogService;
+
+        private void LoadRam()
+        {
+            var mpmString = File.ReadAllText(_fileDialogService.OpenFile("Оперативная память(*.RAM) | *.RAM"));
+            string[] rawRam = mpmString.Split(['\u0002'], StringSplitOptions.RemoveEmptyEntries); // Раздеоение на поля по символу STX
+
+
+            { //TODO: Добавить валидацию RAM
+                for (var i = 0; i < rawRam.Length; i++)
+                {
+                    var a = Convert.ToByte(rawRam[i], 16);
+                    _cpuState.Memory[i] = a;
+                }
+
+            }
+        }
+        private void SaveRam()
+        {
+            string ramString = _fileDialogService.SaveFile("Микропрограммная память(*.RAM) | *.RAM");
+        }
+
         private readonly CpuState _cpuState;
         public ObservableCollection<MemoryRow> Memory { get; set; }
         public enum RamViewModes {Byte, Word}
@@ -32,7 +69,11 @@ namespace Micro.ViewModels
 
         public RamViewModel(CpuState cpuState)
         {
+            LoadRamCommand = new LambdaCommand(OnLoadRamCommandExecuted, CanLoadRamCommandExecute);
+            SaveRamCommand = new LambdaCommand(OnSaveRamCommandExecuted, CanSaveRamCommandExecute);
+
             _cpuState = cpuState;
+            _fileDialogService = new FileDialogService();
             Memory = new ObservableCollection<MemoryRow>();
 
             for (var i = 0; i < _cpuState.Memory.Size; i+=16)
@@ -63,7 +104,7 @@ namespace Micro.ViewModels
         {
             Address = (address / 16).ToString("X2");
             Cells = new ObservableCollection<ByteRamCellEntry>(); // Заполняем нулями по умолчанию
-            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (byte)(i + address)));
+            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
         }
     }
 }

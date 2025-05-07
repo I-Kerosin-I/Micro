@@ -32,8 +32,8 @@ namespace Micro.ViewModels
 
         #region SaveMPM
         public ICommand SaveMpmCommand { get; set; }
-        private bool CanSaveMpmExecute(object p) => true;
-        private void OnSaveMpmExecuted(object p) => SaveMpm();
+        private bool CanSaveMpmCommandExecute(object p) => true;
+        private void OnSaveMpmCommandExecuted(object p) => SaveMpm();
         #endregion
 
         #endregion
@@ -45,8 +45,11 @@ namespace Micro.ViewModels
 
         private void LoadMpm()
         {
-            string mpmString = File.ReadAllText(_fileDialogService.OpenFile("Микропрограммная память(*.MEM) | *.MEM")).Replace('\u0001', ' ').Replace('\u0004', ' ');
-            string[] rawMpmFields = mpmString.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries);
+            var mpmString = File.ReadAllText(_fileDialogService.OpenFile("Микропрограммная память(*.MEM) | *.MEM"))
+                .Replace('\u0001', ' ')
+                .Replace('\u0004', ' '); // Открыть, считать весь текст, заменить SEP и EOT на пробел
+            string[] rawMpmFields = mpmString.Split([' '], StringSplitOptions.RemoveEmptyEntries); // Раздеоение на поля по пробелу
+
             if (rawMpmFields.Length % 17 != 0) MessageBox.Show("Файл микропрограммной памяти повреждён");
             else
             { //TODO: Добавить валидацию
@@ -84,7 +87,7 @@ namespace Micro.ViewModels
         {
             #region Commands
             LoadMpmCommand = new LambdaCommand(OnLoadMpmCommandExecuted, CanLoadMpmCommandExecute);
-            SaveMpmCommand = new LambdaCommand(OnSaveMpmExecuted, CanSaveMpmExecute);
+            SaveMpmCommand = new LambdaCommand(OnSaveMpmCommandExecuted, CanSaveMpmCommandExecute);
             #endregion
 
             _fileDialogService = new FileDialogService();
