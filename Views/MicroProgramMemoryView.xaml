@@ -15,26 +15,28 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="594" Padding="1,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2">
+        <DataGrid ItemsSource="{Binding MicroProgramMemory}" CanUserSortColumns="False" HeadersVisibility="Column" HorizontalAlignment="Left" MinWidth="594" AutoGenerateColumns="False" Padding="1,0,0,0"  CanUserReorderColumns="False" BorderBrush="#FF7B7B7B" CanUserResizeRows="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Адрес" Binding="{Binding MicroCommand.Address, Converter={StaticResource ByteToHexConverter}}" Width="45" IsReadOnly="True"/>
-                <DataGridTextColumn Header="A"     Binding="{Binding MicroCommand.A, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
-                <DataGridTextColumn Header="B"     Binding="{Binding MicroCommand.B, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
-                <DataGridTextColumn Header="MA"    Binding="{Binding MicroCommand.MA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
-                <DataGridTextColumn Header="MB"    Binding="{Binding MicroCommand.MB, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
-                <DataGridTextColumn Header="MEM"   Binding="{Binding MicroCommand.MEM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
-                <DataGridTextColumn Header="SRC"   Binding="{Binding MicroCommand.SRC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
-                <DataGridTextColumn Header="SH"    Binding="{Binding MicroCommand.SH, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
-                <DataGridTextColumn Header="N"     Binding="{Binding MicroCommand.N, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
-                <DataGridTextColumn Header="ALU"   Binding="{Binding MicroCommand.ALU, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
-                <DataGridTextColumn Header="CCX"   Binding="{Binding MicroCommand.CCX, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
-                <DataGridTextColumn Header="F"     Binding="{Binding MicroCommand.F, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20"/>
-                <DataGridTextColumn Header="DST"   Binding="{Binding MicroCommand.DST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
-                <DataGridTextColumn Header="WM"    Binding="{Binding MicroCommand.WM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="40"/>
-                <DataGridTextColumn Header="JFI"   Binding="{Binding MicroCommand.JFI, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30"/>
-                <DataGridTextColumn Header="CC"    Binding="{Binding MicroCommand.CC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30"/>
-                <DataGridTextColumn Header="CHA"   Binding="{Binding MicroCommand.CHA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40"/>
-                <DataGridTextColumn Header="CONST" Binding="{Binding MicroCommand.CONST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X4}"   Width="50"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding MicroCommand.Address, Converter={StaticResource ByteToHexConverter}}" Width="45" IsReadOnly="True" CanUserResize="False"/>
+                <DataGridTextColumn Header="A"     Binding="{Binding MicroCommand.A, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20" CanUserResize="False"/>
+                <DataGridTextColumn Header="B"     Binding="{Binding MicroCommand.B, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20" CanUserResize="False"/>
+                <DataGridTextColumn Header="MA"    Binding="{Binding MicroCommand.MA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="MB"    Binding="{Binding MicroCommand.MB, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="MEM"   Binding="{Binding MicroCommand.MEM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40" CanUserResize="False"/>
+                <DataGridTextColumn Header="SRC"   Binding="{Binding MicroCommand.SRC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="SH"    Binding="{Binding MicroCommand.SH, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="N"     Binding="{Binding MicroCommand.N, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20" CanUserResize="False"/>
+                <DataGridTextColumn Header="ALU"   Binding="{Binding MicroCommand.ALU, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40" CanUserResize="False"/>
+                <DataGridTextColumn Header="CCX"   Binding="{Binding MicroCommand.CCX, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40" CanUserResize="False"/>
+                <DataGridTextColumn Header="F"     Binding="{Binding MicroCommand.F, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"       Width="20" CanUserResize="False"/>
+                <DataGridTextColumn Header="DST"   Binding="{Binding MicroCommand.DST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="WM"    Binding="{Binding MicroCommand.WM, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="40" CanUserResize="False"/>
+                <DataGridTextColumn Header="JFI"   Binding="{Binding MicroCommand.JFI, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="CC"    Binding="{Binding MicroCommand.CC, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"      Width="30" CanUserResize="False"/>
+                <DataGridTextColumn Header="CHA"   Binding="{Binding MicroCommand.CHA, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X1}"     Width="40" CanUserResize="False"/>
+                <DataGridTextColumn Header="CONST" Binding="{Binding MicroCommand.CONST, Converter={StaticResource ByteToHexConverter}, ConverterParameter=X4}"   Width="50" CanUserResize="False"/>
+                <DataGridTextColumn Header="Комментарий" Binding="{Binding MicroCommand.Comment}" CanUserResize="True" Width="200"/>
+                
             </DataGrid.Columns>
         </DataGrid>
 

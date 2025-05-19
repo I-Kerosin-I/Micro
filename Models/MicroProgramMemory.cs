@@ -68,6 +68,7 @@ namespace Micro.Models
         private byte _cc;
         private byte _cha;
         private ushort _const;
+        private string _comment;
 
         public byte Address
         {
@@ -175,6 +176,12 @@ namespace Micro.Models
         {
             get => _const;
             set => SetField(ref _const, value);
+        }
+
+        public string Comment
+        {
+            get => _comment;
+            set => SetField(ref _comment, value);
         }
 
         public MicroCommand(byte Addr)
