@@ -72,12 +72,14 @@ namespace Micro.Models
         {
             Registers["CMK"] = 0;
             _trace.Clear();
-            _trace.Add(new List<ushort>
-            {
-                Registers["AX"], Registers["BX"], Registers["DX"], Registers["ARAM"], Registers["SI"], Registers["DI"],
-                Registers["RGQ"], Registers["RFI"], Alu, Sda, Registers["RGR"], Registers["RGW"], Registers["RGA"],
-                Registers["RGB"], Registers["RW"], Registers["CMK"], Registers["RACT"]
-            });
+            _trace.Add(
+            [
+                Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"], Registers["SP"],
+                Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"], Registers["SS"],
+                Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"], Registers["RGK"],
+                Registers["RW"], Registers["ARAM"], Registers["RGQ"], Registers["RFI"], Alu, Sda,
+                Registers["RGR"], Registers["RGW"], Registers["RGA"], Registers["RGB"], Registers["CMK"], Registers["RACT"]
+            ]);
         }
 
         public void ExecuteMicroCommand()
@@ -379,9 +381,11 @@ namespace Micro.Models
                 
                 _trace.Add(new List<ushort>
                 {
-                    Registers["AX"], Registers["BX"], Registers["DX"], Registers["ARAM"], Registers["SI"], Registers["DI"],
-                    Registers["RGQ"], Registers["RFI"], Alu, Sda, Registers["RGR"], Registers["RGW"], Registers["RGA"],
-                    Registers["RGB"], Registers["RW"], Registers["CMK"], Registers["RACT"]
+                    Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"], Registers["SP"],
+                    Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"], Registers["SS"],
+                    Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"], Registers["RGK"],
+                    Registers["RW"], Registers["ARAM"], Registers["RGQ"], Registers["RFI"], Alu, Sda,
+                    Registers["RGR"], Registers["RGW"], Registers["RGA"], Registers["RGB"], Registers["CMK"], Registers["RACT"]
                 });
                 
                 if (mk.JFI == 5)
