@@ -39,7 +39,9 @@ namespace Micro.ViewModels
 
         private void LoadRam()
         {
-            var mpmString = File.ReadAllText(_fileDialogService.OpenFile("Оперативная память(*.RAM) | *.RAM"));
+            var path = _fileDialogService.OpenFile("Оперативная память(*.RAM) | *.RAM");
+            if (path == null) return;
+            var mpmString = File.ReadAllText(path);
             string[] rawRam = mpmString.Split(['\u0002'], StringSplitOptions.RemoveEmptyEntries); // Раздеоение на поля по символу STX
 
 

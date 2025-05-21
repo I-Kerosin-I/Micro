@@ -50,17 +50,17 @@
         </UniformGrid>
 
 
-        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding RestartCpuCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="39" Canvas.Top="311">
+        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding RestartCpuCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="32" Canvas.Top="313" Height="25">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="CornerRadius" Value="7"/>
                 </Style>
             </Button.Resources>
         </Button>
 
 
-        <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding ExecuteMicrocommandCommand}" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="182" Canvas.Top="311"/>
-        <Button x:Name="StopButton" Content="Стоп" Width="100" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="335" Canvas.Top="311"/>
+        <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="176" Canvas.Top="313" Height="25"/>
+        <Button x:Name="StopButton" Content="Стоп" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
 
     </Canvas>
 </UserControl>

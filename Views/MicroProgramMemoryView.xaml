@@ -9,7 +9,7 @@
     <Grid HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="37"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -40,8 +40,8 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Загрузить" Width="100" Command="{Binding LoadMpmCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-        <Button Content="Сохранить" Width="100" Command="{Binding SaveMpmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Загрузить" Width="100" Command="{Binding LoadMpmCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Height="25"/>
+        <Button Content="Сохранить" Width="100" Command="{Binding SaveMpmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Height="25"/>
 
     </Grid>
 </UserControl>

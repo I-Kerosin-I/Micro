@@ -9,7 +9,7 @@
         xmlns:resources="clr-namespace:Micro.Resources"
         d:DataContext="{d:DesignInstance Type=viewmodels:MicroViewModel}"
         mc:Ignorable="d"
-        Title="Микропрограммируемый процессор" Height="430" Width="635" MinWidth="635" MinHeight="430">
+        Title="Микропрограммируемый процессор" Height="543" Width="888" MinWidth="635" MinHeight="430">
     <Window.Resources>
         <!-- Валидация: ввод HEX 2 цифры -->
         

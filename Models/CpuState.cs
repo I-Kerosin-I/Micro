@@ -71,6 +71,12 @@ namespace Micro.Models
         public void RestartCpu() 
         {
             Registers["CMK"] = 0;
+            Registers["RFI"] = 0;
+            Registers["RFD"] = 0;
+            Registers["RGA"] = 0;
+            Registers["RGB"] = 0;
+            Alu = 0;
+            Sda = 0;
             _trace.Clear();
             _trace.Add(
             [
