@@ -43,7 +43,7 @@ namespace Micro.Models
 
 
         private bool _autoMode = true;
-        private List<List<ushort>> _trace = [];
+        public List<List<ushort>> Trace = [];
 
 
         #region Constructor
@@ -77,14 +77,15 @@ namespace Micro.Models
             Registers["RGB"] = 0;
             Alu = 0;
             Sda = 0;
-            _trace.Clear();
-            _trace.Add(
+            Trace.Clear();
+            Trace.Add(
             [
-                Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"], Registers["SP"],
-                Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"], Registers["SS"],
-                Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"], Registers["RGK"],
-                Registers["RW"], Registers["ARAM"], Registers["RGQ"], Registers["RFI"], Alu, Sda,
-                Registers["RGR"], Registers["RGW"], Registers["RGA"], Registers["RGB"], Registers["CMK"], Registers["RACT"]
+                Registers["CMK"], Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"],
+                Registers["SP"], Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"],
+                Registers["SS"], Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"],
+                Registers["RGK"], Registers["RW"], Registers["RGA"], Registers["RGB"], Alu, Sda,
+                Registers["RGQ"], Registers["RFI"], Registers["ARAM"], Registers["RGR"],
+                Registers["RGW"], Registers["RACT"]
             ]);
         }
 
@@ -385,27 +386,25 @@ namespace Micro.Models
                         break;
                 }
                 
-                _trace.Add(new List<ushort>
-                {
-                    Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"], Registers["SP"],
-                    Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"], Registers["SS"],
-                    Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"], Registers["RGK"],
-                    Registers["RW"], Registers["ARAM"], Registers["RGQ"], Registers["RFI"], Alu, Sda,
-                    Registers["RGR"], Registers["RGW"], Registers["RGA"], Registers["RGB"], Registers["CMK"], Registers["RACT"]
-                });
+                Trace.Add(
+                [
+                    Registers["CMK"], Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"],
+                    Registers["SP"], Registers["BP"], Registers["SI"], Registers["DI"], Registers["CS"],
+                    Registers["SS"], Registers["DS"], Registers["ES"], Registers["IP"], Registers["PSW"],
+                    Registers["RGK"], Registers["RW"], Registers["RGA"], Registers["RGB"], Alu, Sda,
+                    Registers["RGQ"], Registers["RFI"], Registers["ARAM"], Registers["RGR"],
+                    Registers["RGW"], Registers["RACT"]
+                ]);
                 
                 if (mk.JFI == 5)
                 {
                     _autoMode = false;
-                    Clipboard.SetText(string.Join(", ",
-                        _trace.Select(innerList =>
-                            $"[{string.Join(",", innerList.Select(num => '"' + num.ToString("X4") + '"'))}]")));
                 }
 
 
             }
         }
-
+        
 
         protected void OnPropertyChanged(string name)
         {

@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Micro.Infrastructure.Commands;
+using Micro.Infrastructure.Entrys;
+using Micro.Models;
+using Micro.Resources;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Windows;
-using Micro.Models;
 using System.Windows.Input;
-using Micro.Infrastructure.Commands;
-using Micro.Resources;
-using System.Collections.ObjectModel;
-using Micro.Infrastructure.Entrys;
 
 namespace Micro.ViewModels
 {
@@ -29,8 +30,14 @@ namespace Micro.ViewModels
         private void OnExecuteMicrocommandCommandExecuted(object p) => _cpuState.ExecuteMicroCommand();
         #endregion
 
+        #region SaveTraceCommand
+        public ICommand SaveTraceCommand { get; set; }
+        private bool CanSaveTraceCommandExecute(object p) => true;
+        private void OnSaveTraceCommandExecuted(object p) => this.SaveTrace(_cpuState.Trace);
         #endregion
 
+        #endregion
+        private readonly FileDialogService _fileDialogService;
         private readonly CpuState _cpuState;
         private readonly ObservableCollection<RegisterEntry> _registers;
         public ObservableCollection<RegisterEntry> Registers => _registers;
@@ -40,8 +47,7 @@ namespace Micro.ViewModels
         public string Zf => ((_cpuState.Registers["RFI"] >> 6) & 1).ToString();
         public string Vf => ((_cpuState.Registers["RFI"] >> 11) & 1).ToString();
         public string Cf => (_cpuState.Registers["RFI"] & 1).ToString();
-        public string Pf => ((_cpuState.Registers["RFI"] >> 2) & 1).ToString(); 
-        //public string Mf => ((_cpuState.Registers["RFI"] >> 6) & 1).ToString();  
+        public string Pf => ((_cpuState.Registers["RFI"] >> 2) & 1).ToString();
 
         public CpuViewModel(CpuState cpuState, ObservableCollection<RegisterEntry> registers) {
 
@@ -49,9 +55,11 @@ namespace Micro.ViewModels
 
             RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandExecute);
             ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted, CanExecuteMicrocommandCommandExecute);
+            SaveTraceCommand = new LambdaCommand(OnSaveTraceCommandExecuted, CanSaveTraceCommandExecute);
             
             #endregion
 
+            _fileDialogService = new FileDialogService();
             _cpuState = cpuState;
             _cpuState.PropertyChanged += (sender, args) =>
             {
@@ -78,6 +86,58 @@ namespace Micro.ViewModels
                     OnPropertyChanged(nameof(Pf));
                 }
             };
+        }
+
+        void SaveTrace(List<List<ushort>> trace)
+        {
+            var path = _fileDialogService.SaveFile("CSV UTF-8 (Разделитель — точка с запятой) | *.csv");
+            if (path == null) return;
+            try
+            {
+
+                using (var writer = new System.IO.StreamWriter(path, false, Encoding.UTF8))
+                {
+                    // Заголовки — соответствуют полям
+                    string[] headers =
+                    {
+                        "CMK", "AX", "CX", "DX", "BX",
+                        "SP", "BP", "SI", "DI", "CS",
+                        "SS", "DS", "ES", "IP", "PSW",
+                        "RGK", "RW", "RGA", "RGB", "Alu", "Sda",
+                        "RGQ", "N", "Z", "V", "C", "P", "ARAM", "RGR",
+                        "RGW", "RACT"
+                    };
+
+                    writer.WriteLine(string.Join(";", headers));
+
+                    foreach (var row in trace)
+                    {
+                        var line = new List<string>();
+                        line.Add(row[0].ToString("X2")); // Добавление CMK
+                        
+                        for (int i = 1; i < 22; i++)
+                        {
+                            line.Add(row[i].ToString("X4")); // Добавление регистров, ALU, SDA
+                        }
+                        
+                        line.Add(((row[22] >>> 7) & 1).ToString()); // N
+                        line.Add(((row[22] >>> 6) & 1).ToString()); // Z
+                        line.Add(((row[22] >>> 11) & 1).ToString()); // V
+                        line.Add((row[22] & 1).ToString()); // C
+                        line.Add(((row[22] >>> 2) & 1).ToString()); // P
+                        for (int i = 23; i < 27; i++)
+                        {
+                            line.Add(row[i].ToString("X4")); // Добавление регистров, ALU, SDA
+                        }
+
+                        writer.WriteLine(string.Join(";", line));
+                    }
+                }
+            }
+            catch 
+            {
+                MessageBox.Show("Ошибка при сохранее файла. Вероятно файл занят другим процессом.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

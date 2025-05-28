@@ -61,6 +61,7 @@
 
         <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="176" Canvas.Top="313" Height="25"/>
         <Button x:Name="StopButton" Content="Стоп" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
+        <Button x:Name="SaveTraceButton" Content="Сохранить трассу" Command="{Binding SaveTraceCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="480" Canvas.Top="313" Height="25"/>
 
     </Canvas>
 </UserControl>
