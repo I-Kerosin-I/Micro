@@ -121,8 +121,8 @@
                         <views:RegistersView DataContext="{Binding RegistersVm}"/>
                     </TabItem>
                     
-                    <TabItem x:Name="AddressTranslationTab" Header="Таблица преобразования адресов" DataContext="{Binding AddressConvertionVm}">
-                        
+                    <TabItem x:Name="AddressTranslationTab" Header="Таблица преобразования адресов">
+                        <views:AddressTranslation DataContext="{Binding AddressTranslationVm}"/>
                     </TabItem>
 
                 </TabControl>

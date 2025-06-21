@@ -38,6 +38,7 @@ namespace Micro.Models
         public MicroProgramMemory MicroProgramMemory;
         public RegisterMemory Registers;
         public RamMemory Memory;
+        public AddressTranslationTable AddressTranslationTable;
         private Stack<ushort> _stack = new(); 
         #endregion
 
@@ -52,22 +53,10 @@ namespace Micro.Models
             MicroProgramMemory = new MicroProgramMemory();
             Registers = new RegisterMemory();
             Memory = new RamMemory();
+            AddressTranslationTable = new AddressTranslationTable();
         }
         #endregion
-/*
-        public ushort this[string register]
-        {
-            get => Registers[register];
-            set
-            {
-                if (Registers[register] != value)
-                {
-                    Registers[register] = value;
-                    OnPropertyChanged(register);
-                }
-            }
-        }
-*/
+
         public void RestartCpu() 
         {
             Registers["CMK"] = 0;
@@ -87,6 +76,8 @@ namespace Micro.Models
                 Registers["RGQ"], Registers["RFI"], Registers["ARAM"], Registers["RGR"],
                 Registers["RGW"], Registers["RACT"]
             ]);
+
+
         }
 
         public void ExecuteMicroCommand()

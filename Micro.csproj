@@ -63,6 +63,7 @@
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Infrastructure\Entrys\MicroCommandEntry.cs" />
+    <Compile Include="Models\AddressTranslationTable.cs" />
     <Compile Include="Models\CpuState.cs" />
     <Compile Include="Models\MicroProgramMemory.cs" />
     <Compile Include="Models\RamMemory.cs" />
@@ -77,6 +78,9 @@
     <Compile Include="Infrastructure\Converters\RegisterConverter.cs" />
     <Compile Include="Infrastructure\Entrys\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Views\AddressTranslation.xaml.cs">
+      <DependentUpon>AddressTranslation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RamView.xaml.cs">
       <DependentUpon>RamView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +92,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\InputValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddressTranslation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,7 +115,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\AddressConvertionViewModel.cs" />
+    <Compile Include="ViewModels\AddressTranslationViewModel.cs" />
     <Compile Include="ViewModels\CpuViewModel.cs" />
     <Compile Include="ViewModels\MicroProgramMemoryViewModel.cs" />
     <Compile Include="ViewModels\MicroViewModel.cs" />
