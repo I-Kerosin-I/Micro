@@ -3,14 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Micro.Views"
+             xmlns:local="clr-namespace:Micro.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-<UserControl.Resources>
-    <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
-        <EventSetter Event="PreviewTextInput" Handler="HexInputValidator"/>
-    </Style>
-</UserControl.Resources>
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=local:RamViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
+            <EventSetter Event="PreviewTextInput" Handler="HexInputValidator"/>
+        </Style>
+    </UserControl.Resources>
 
     <Grid UseLayoutRounding="False">
         <Grid.ColumnDefinitions>
@@ -18,8 +19,8 @@
             <ColumnDefinition Width="296*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="65*"/>
-            <RowDefinition Height="293*"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
@@ -47,7 +48,7 @@
         </GroupBox>
 
         <!-- DataGrid для байтов -->
-        <DataGrid Grid.Column="0" ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1">
+        <DataGrid Grid.Column="0" ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1" HorizontalAlignment="Right">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
                 <!-- 16 колонок для каждого байта -->
@@ -72,7 +73,7 @@
 
 
         <!-- DataGrid для ASCII-символов -->
-        <DataGrid ItemsSource="{Binding Memory}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1">
+        <DataGrid ItemsSource="{Binding Memory}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1" HorizontalAlignment="Left">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
                 <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
