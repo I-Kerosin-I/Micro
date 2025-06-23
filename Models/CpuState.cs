@@ -266,7 +266,7 @@ namespace Micro.Models
                         break;
                     default:
                         throw new ArgumentException("Invalid WM value");
-                } // Готово, протестировано
+                } 
 
                 switch (mk.MEM)
                 {
@@ -387,9 +387,10 @@ namespace Micro.Models
                     Registers["RGW"], Registers["RACT"]
                 ]);
                 
-                if (mk.JFI == 5)
+                if (mk.JFI == 5 || Registers["CMK"] > 0x3F) // TODO: Полноценная остановка процессора
                 {
                     _autoMode = false;
+                    Registers["CMK"] = 0;
                 }
 
 
