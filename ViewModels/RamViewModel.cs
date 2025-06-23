@@ -84,6 +84,7 @@ namespace Micro.ViewModels
             }
         }
 
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -96,6 +97,7 @@ namespace Micro.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
     }
     public class MemoryRow
     {

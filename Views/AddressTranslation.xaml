@@ -8,11 +8,20 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:AddressTranslationViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-        <DataGrid ItemsSource="{Binding AddressTranslationTable.Table}" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserDeleteRows="False">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding AddressTranslationTable.Table, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserDeleteRows="False" HeadersVisibility="Column">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Начальный адрес" Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="Начальный адрес" Binding="{Binding Address, Converter={StaticResource ByteToHexConverter}}"/>
                     <DataGridTextColumn Header="Код операции" Binding="{Binding Opcode}"/>
                 </DataGrid.Columns>
             </DataGrid>
+        <UniformGrid Grid.Row="1" Columns="2" VerticalAlignment="Center">
+            <Button Content="Загрузить" Width="100" Command="{Binding LoadAddressTranslationTableCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25"/>
+            <Button Content="Сохранить" Width="100" Command="{Binding SaveAddressTranslationTableCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25"/>
+
+</UniformGrid>
     </Grid>
 </UserControl>
