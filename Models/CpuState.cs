@@ -186,7 +186,7 @@ namespace Micro.Models
                         break;
                     default:
                         throw new ArgumentException("Invalid ALU value");
-                } //Готово, не протестировано
+                }
 
                 Alu = (ushort)(_alu32 & 0x0000FFFF);
 
@@ -218,7 +218,7 @@ namespace Micro.Models
                     case 1: // АС АЛУ вправо
                         Sda = (ushort)((short)Alu >> mk.N);
                         break;
-                    case 2: // ЛС ФЛУ вправо
+                    case 2: // ЛС АЛУ вправо
                         Sda = (ushort)(Alu >>> mk.N);
                         break;
                     case 3: // АС АЛУ, RGQ вправо
@@ -338,7 +338,26 @@ namespace Micro.Models
                         else Registers["CMK"]++;
 
                         break;
-                    case 2: //TODO: Дешифрация RGK
+                    case 2:
+                        var addressFound = false;
+                        foreach (var row in AddressTranslationTable.Table)
+                        {
+                            var mask = Convert.ToUInt16(row.Opcode.Replace('0', '1').Replace('X', '0'), 2);
+                            var result = Convert.ToUInt16(row.Opcode.Replace('X', '0'), 2);
+                            if ((Registers["RGK"] & mask) == result)
+                            {
+                                Registers["CMK"] = row.Address;
+                                addressFound = true;
+                                break;
+                            }
+                        }
+
+                        if (!addressFound)
+                        {
+                            MessageBox.Show("Не удалось дешифровать команду. В таблице преобразования нет указанного кода операции.");
+                            Registers["CMK"] = 0;
+                            return; // TODO: Полноценная остановка процессора
+                        }
                         break;
                     case 3:
                         if (jmpCond) Registers["CMK"] = mk.CONST;
