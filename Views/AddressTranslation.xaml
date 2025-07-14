@@ -7,21 +7,57 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:AddressTranslationViewModel, IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <Style x:Key="AddressTextBoxStyle" TargetType="TextBox">
+            <EventSetter Event="TextChanged" Handler="AddressTextChangedValidator"/>
+            <EventSetter Event="PreviewTextInput" Handler="AddressTextInputValidator"/>
+        </Style>
+
+        <Style x:Key="OpcodeTextBoxStyle" TargetType="TextBox">
+            <EventSetter Event="TextChanged" Handler="OpcodeTextChangedValidator"/>
+            <EventSetter Event="PreviewTextInput" Handler="OpcodeTextInputValidator"/>
+            <EventSetter Event="LostFocus" Handler="OpcodeLostFocusValidator"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding AddressTranslationTable.Table, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserAddRows="False" CanUserResizeRows="False" CanUserDeleteRows="False" HeadersVisibility="Column">
+        
+        <DataGrid 
+            ItemsSource="{
+                Binding AddressTranslationTable.Table,
+                UpdateSourceTrigger=PropertyChanged
+            }" 
+            Grid.Row="0"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="False"
+            CanUserResizeColumns="False"
+            CanUserSortColumns="False"
+            CanUserAddRows="False"
+            CanUserResizeRows="False"
+            CanUserDeleteRows="False"
+            HeadersVisibility="Column">
                 <DataGrid.Columns>
-                <DataGridTextColumn Header="Начальный адрес" Binding="{Binding Address, Converter={StaticResource ByteToHexConverter}}"/>
-                    <DataGridTextColumn Header="Код операции" Binding="{Binding Opcode}"/>
+                    <DataGridTextColumn Header="Начальный адрес" 
+                                        Binding="{
+                                            Binding Address, 
+                                            Converter={StaticResource ByteToHexConverter}}" 
+                                        EditingElementStyle="{StaticResource AddressTextBoxStyle}"/>
+                    
+                    <DataGridTextColumn Header="Код операции" 
+                                        Binding="{Binding Opcode}" 
+                                        EditingElementStyle="{StaticResource OpcodeTextBoxStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
+    
         <UniformGrid Grid.Row="1" Columns="2" VerticalAlignment="Center">
             <Button Content="Загрузить" Width="100" Command="{Binding LoadAddressTranslationTableCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25"/>
             <Button Content="Сохранить" Width="100" Command="{Binding SaveAddressTranslationTableCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25"/>
+        </UniformGrid>
 
-</UniformGrid>
     </Grid>
 </UserControl>

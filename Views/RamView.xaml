@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=local:RamViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
-            <EventSetter Event="PreviewTextInput" Handler="HexInputValidator"/>
+            <EventSetter Event="PreviewTextInput" Handler="RamCellInputValidator"/>
         </Style>
     </UserControl.Resources>
 
