@@ -14,7 +14,7 @@ namespace Micro.Infrastructure.Entrys
 
         private MicroProgramMemory _mpm;
         private byte _address;
-        public MicroCommand MicroCommand
+        public MicroCommand MicroCommand 
         {
             get => _mpm[_address];
             set
@@ -24,7 +24,7 @@ namespace Micro.Infrastructure.Entrys
             }
         }
 
-        public MicroCommandEntry(MicroProgramMemory Mpm, byte address)
+        public MicroCommandEntry(MicroProgramMemory Mpm, byte address) // ctor
         {
             _mpm = Mpm;
             _address = address;

@@ -22,7 +22,7 @@ namespace Micro.ViewModels
         public MicroProgramMemoryViewModel MicroprogramMemoryVm { get; }
         public RamViewModel RamVm { get; }
         public RegistersViewModel RegistersVm { get; }
-        public AddressConvertionViewModel AddressConvertionVm { get; }
+        public AddressTranslationViewModel AddressTranslationVm { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,7 +40,7 @@ namespace Micro.ViewModels
             MicroprogramMemoryVm = new MicroProgramMemoryViewModel(CpuState);
             RamVm = new RamViewModel(CpuState);
             RegistersVm = new RegistersViewModel(CpuState, Registers);
-            AddressConvertionVm = new AddressConvertionViewModel(CpuState);
+            AddressTranslationVm = new AddressTranslationViewModel(CpuState);
 
             
         }

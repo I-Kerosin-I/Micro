@@ -21,15 +21,17 @@ namespace Micro.Views
     /// </summary>
     public partial class RamView : UserControl
     {
-        public RamView()
+        public RamView() 
         {
             InitializeComponent();
         }
-        private void HexInputValidator(object sender, TextCompositionEventArgs e)
+        private void RamCellInputValidator(object sender, TextCompositionEventArgs e) // TODO: Вытащить валидатор в отдельный файл
         {
-
-            TextBox textBox = sender as TextBox;
             // Разрешаем только 0-9, A-F, a-f
+            TextBox textBox = sender as TextBox;
+            textBox.CharacterCasing = CharacterCasing.Upper; // Все символы в верхний регистр
+            // e.Text - Введённый текст
+            // textBox.Text - Текст в поле до момента ввода
             if (!Regex.IsMatch(e.Text, "^[0-9A-Fa-f]+$") || (textBox.Text.Length >= 2 && textBox.SelectionLength == 0))
             {
                 e.Handled = true; // Блокируем ввод

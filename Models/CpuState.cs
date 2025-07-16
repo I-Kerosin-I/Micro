@@ -38,6 +38,7 @@ namespace Micro.Models
         public MicroProgramMemory MicroProgramMemory;
         public RegisterMemory Registers;
         public RamMemory Memory;
+        public AddressTranslationTable AddressTranslationTable;
         private Stack<ushort> _stack = new(); 
         #endregion
 
@@ -52,22 +53,10 @@ namespace Micro.Models
             MicroProgramMemory = new MicroProgramMemory();
             Registers = new RegisterMemory();
             Memory = new RamMemory();
+            AddressTranslationTable = new AddressTranslationTable();
         }
         #endregion
-/*
-        public ushort this[string register]
-        {
-            get => Registers[register];
-            set
-            {
-                if (Registers[register] != value)
-                {
-                    Registers[register] = value;
-                    OnPropertyChanged(register);
-                }
-            }
-        }
-*/
+
         public void RestartCpu() 
         {
             Registers["CMK"] = 0;
@@ -87,18 +76,33 @@ namespace Micro.Models
                 Registers["RGQ"], Registers["RFI"], Registers["ARAM"], Registers["RGR"],
                 Registers["RGW"], Registers["RACT"]
             ]);
+
+
         }
 
         public void ExecuteMicroCommand()
         {
             //while(_autoMode)
             {
-                
                 var mk = MicroProgramMemory[Registers["CMK"]];
                 
 
-                Registers["RGA"] = Registers[mk.A];
-                Registers["RGB"] = Registers[mk.B];
+                Registers["RGA"] = mk.MA switch
+                {
+                    0 => Registers[mk.A],
+                    1 => Registers[(Registers["RGK"] & 0b0000011100000000) >> 8],
+                    2 => Registers[(Registers["RGK"] & 0b0000000000111000) >> 3],
+                    3 => Registers[(Registers["RGK"] & 0b0000000000000111)],
+                    _ => Registers["RGA"]
+                };
+                byte dst = mk.MB switch
+                {
+                    1 => (byte)((Registers["RGK"] & 0b0000011100000000) >> 8),
+                    2 => (byte)((Registers["RGK"] & 0b0000000000111000) >> 3),
+                    3 => (byte)(Registers["RGK"] & 0b0000011100000000),
+                    _ => mk.B
+                };
+                Registers["RGB"] = Registers[dst];
 
                 ushort r, s;
                 switch (mk.SRC)
@@ -142,60 +146,26 @@ namespace Micro.Models
                 byte c0 = mk.CCX;
                 if ((mk.CCX & 0b10) == 2) c0 = (byte)(Registers["RFI"] & 1);
 
-                UInt32 _alu32;
-                switch (mk.ALU)
+                UInt32 _alu32 = mk.ALU switch
                 {
-                    case 0:
-                        _alu32 = 0;
-                        break;
-                    case 1:
-                        _alu32 = (uint)(s - r - 1 + c0);
-                        break;
-                    case 2:
-                        _alu32 = (uint)(r - s - 1 + c0);
-                        break;
-                    case 3:
-                        _alu32 = (uint)(r + s + c0);
-                        break;
-                    case 4:
-                        _alu32 = (uint)(s + c0);
-                        break;
-                    case 5:
-                        _alu32 = (uint)(~s + c0);
-                        break;
-                    case 6:
-                        _alu32 = (uint)(r + c0);
-                        break;
-                    case 7:
-                        _alu32 = (uint)(~r + c0);
-                        break;
-                    case 8:
-                        _alu32 = s;
-                        break;
-                    case 9:
-                        _alu32 = (uint)(r & s);
-                        break;
-                    case 10:
-                        _alu32 = (uint)(r & ~s);
-                        break;
-                    case 11:
-                        _alu32 = (uint)~(r & s);
-                        break;
-                    case 12:
-                        _alu32 = (uint)(r | s);
-                        break;
-                    case 13:
-                        _alu32 = (uint)~(r | s);
-                        break;
-                    case 14:
-                        _alu32 = (uint)(r ^ s);
-                        break;
-                    case 15:
-                        _alu32 = (uint)~(r ^ s);
-                        break;
-                    default:
-                        throw new ArgumentException("Invalid ALU value");
-                } //Готово, не протестировано
+                    0 => 0,
+                    1 => (uint)(s - r - 1 + c0),
+                    2 => (uint)(r - s - 1 + c0),
+                    3 => (uint)(r + s + c0),
+                    4 => (uint)(s + c0),
+                    5 => (uint)(~s + c0),
+                    6 => (uint)(r + c0),
+                    7 => (uint)(~r + c0),
+                    8 => s,
+                    9 => (uint)(r & s),
+                    10 => (uint)(r & ~s),
+                    11 => (uint)~(r & s),
+                    12 => (uint)(r | s),
+                    13 => (uint)~(r | s),
+                    14 => (uint)(r ^ s),
+                    15 => (uint)~(r ^ s),
+                    _ => throw new ArgumentException("Invalid ALU value")
+                };
 
                 Alu = (ushort)(_alu32 & 0x0000FFFF);
 
@@ -219,7 +189,7 @@ namespace Micro.Models
 
                 //TODO: Узнать про формирование Pf и Vf
 
-                switch (mk.SH) // TODO: Написать логику сдвигателей
+                switch (mk.SH)
                 {
                     case 0: // Без сдвига
                         Sda = Alu;
@@ -227,7 +197,7 @@ namespace Micro.Models
                     case 1: // АС АЛУ вправо
                         Sda = (ushort)((short)Alu >> mk.N);
                         break;
-                    case 2: // ЛС ФЛУ вправо
+                    case 2: // ЛС АЛУ вправо
                         Sda = (ushort)(Alu >>> mk.N);
                         break;
                     case 3: // АС АЛУ, RGQ вправо
@@ -238,7 +208,7 @@ namespace Micro.Models
                         Sda = (ushort)(Alu >>> mk.N);
                         Registers["RGQ"] = (ushort)((Registers["RGQ"] >>> mk.N) | Alu << (16 - mk.N));
                         break;
-                    case 5: // ЛС RGQ вправо
+                    case 5: // TODO: ЛС RGQ вправо (в оригинальной микре не работает)
                         Sda = Alu;
                         break;
                     case 6: // RGQ <= ALU
@@ -252,8 +222,15 @@ namespace Micro.Models
                         Sda = (ushort)((Alu << mk.N) | Registers["RGQ"] >> (16 - mk.N));
                         Registers["RGQ"] <<= mk.N;
                         break;
-                    case 14: // Расширение знака
-                        Sda = Alu;
+                    case 14: 
+                        if ((Alu & 0x80) == 0x80)
+                        {
+                            Sda = (ushort)(Alu | 0xff00);
+                        }
+                        else
+                        {
+                            Sda = (ushort)(Alu & 0x00FF);
+                        }
                         break;
                     default:
                         throw new ArgumentException("Invalid SH value");
@@ -262,8 +239,6 @@ namespace Micro.Models
 
                 switch (mk.WM)
                 {
-                    case 0:
-                        break;
                     case 1:
                         Registers["RGW"] = Sda;
                         break;
@@ -273,8 +248,6 @@ namespace Micro.Models
                     case 3:
                         Registers["ARAM"] = Registers["RGB"];
                         break;
-                    default:
-                        throw new ArgumentException("Invalid WM value");
                 } 
 
                 switch (mk.MEM)
@@ -293,42 +266,28 @@ namespace Micro.Models
                         break;
                 }
 
-                switch (mk.DST)
+                Registers[dst] = mk.DST switch
                 {
-                    case 0:
-                        break;
-                    case 1:
-                        Registers[mk.B] = Registers["RGR"];
-                        break;
-                    case 2:
-                        Registers[mk.B] = (ushort)((Registers[mk.B] & 0x00ff) | (Registers["RGR"] << 8));
-                        break;
-                    case 3:
-                        Registers[mk.B] = (ushort)((Registers[mk.B] & 0xff00) | (Registers["RGR"] >>> 8));
-                        break;
-                    case 4:
-                        Registers[mk.B] = Sda;
-                        break;
-                }
+                    1 => Registers["RGR"],
+                    2 => (ushort)((Registers[dst] & 0x00ff) | (Registers["RGR"] << 8)),
+                    3 => (ushort)((Registers[dst] & 0xff00) | (Registers["RGR"] >>> 8)),
+                    4 => Sda,
+                    _ => Registers[dst]
+                };
 
-                bool jmpCond = true;
+                var jmpCond = true;
 
                 if ((mk.JFI & 4) == 0)
                 {
                     String condFlagRegister = (mk.JFI & 2) == 0 ? "RFI" : "RFD";
 
-                    switch (mk.CC) //TODO: Реализовать остальные условия
+                    jmpCond = mk.CC switch //TODO: Реализовать остальные условия
                     {
-                        case 0:
-                            jmpCond = (Registers[condFlagRegister] & 4) != 0; //P = 1   JP
-                            break;
-                        case 1:
-                            jmpCond = (Registers[condFlagRegister] & 64) != 0; //Z = 1   JZ
-                            break;
-                        case 2:
-                            jmpCond = (Registers[condFlagRegister] & 128) != 0; //N = 1   JS
-                            break;
-                    }
+                        0 => (Registers[condFlagRegister] & 4) != 0, //P = 1   JP
+                        1 => (Registers[condFlagRegister] & 64) != 0, //Z = 1   JZ
+                        2 => (Registers[condFlagRegister] & 128) != 0, //N = 1   JS
+                        _ => jmpCond
+                    };
 
                     if ((mk.JFI & 1) != 0) jmpCond = !jmpCond;
                 } // Формирование условия (преобразовано с учётом JFI)
@@ -347,7 +306,26 @@ namespace Micro.Models
                         else Registers["CMK"]++;
 
                         break;
-                    case 2: //TODO: Дешифрация RGK
+                    case 2:
+                        var addressFound = false;
+                        foreach (var row in AddressTranslationTable.Table)
+                        {
+                            var mask = Convert.ToUInt16(row.Opcode.Replace('0', '1').Replace('X', '0'), 2);
+                            var result = Convert.ToUInt16(row.Opcode.Replace('X', '0'), 2);
+                            if ((Registers["RGK"] & mask) == result)
+                            {
+                                Registers["CMK"] = row.Address;
+                                addressFound = true;
+                                break;
+                            }
+                        }
+
+                        if (!addressFound)
+                        {
+                            MessageBox.Show("Не удалось дешифровать команду. В таблице преобразования нет указанного кода операции.");
+                            Registers["CMK"] = 0;
+                            return; // TODO: Полноценная остановка процессора
+                        }
                         break;
                     case 3:
                         if (jmpCond) Registers["CMK"] = mk.CONST;
@@ -419,8 +397,4 @@ namespace Micro.Models
             return true;
         }
     }
-
-
-    
-
 }
