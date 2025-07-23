@@ -20,9 +20,9 @@ namespace Micro.Resources
             {
                 switch (vm.RamViewMode)
                 {
-                    case RamViewModel.RamViewModes.Byte:
+                    case RamViewModel.RamViewModes.Bytes:
                         return ByteTemplate;
-                    case RamViewModel.RamViewModes.Word:
+                    case RamViewModel.RamViewModes.Words:
                         return WordTemplate;
                     default:
                         return ByteTemplate;

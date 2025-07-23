@@ -33,35 +33,28 @@ namespace Micro.Models
 
         public WordAccessor Word { get; }
 
-        public class WordAccessor
+        public class WordAccessor(RamMemory ram)
         {
-            private readonly RamMemory _ram;
-
-            public WordAccessor(RamMemory ram)
-            {
-                _ram = ram;
-            }
-
             public ushort this[int address]
             {
                 get
                 {
-                    int low = _ram._memory[address];
-                    int high = _ram._memory[address + 1];
+                    int low = ram._memory[address];
+                    int high = ram._memory[address + 1];
                     return (ushort)((high << 8) | low); // Little-endian
                 }
                 set
                 {
-                    _ram._memory[address] = (byte)(value & 0xFF);
-                    _ram.OnPropertyChanged($"RAM[{address}]");
+                    ram._memory[address] = (byte)(value & 0xFF);
+                    ram.OnPropertyChanged($"RAM[{address}]");
 
-                    _ram._memory[address + 1] = (byte)((value >> 8) & 0xFF);
-                    _ram.OnPropertyChanged($"RAM[{address + 1}]");
+                    ram._memory[address + 1] = (byte)((value >> 8) & 0xFF);
+                    ram.OnPropertyChanged($"RAM[{address + 1}]");
                 }
             }
         }
 
-
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -76,5 +69,6 @@ namespace Micro.Models
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
     }
 }

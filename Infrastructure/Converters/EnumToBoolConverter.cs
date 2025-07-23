@@ -6,18 +6,14 @@ namespace Micro.Infrastructure.Converters
 {
     public class EnumToBoolConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) // Выдаёт true, если value (значение enum) и parameter равны
         {
             if (value == null || parameter == null)
                 return false;
-
-            string enumValue = value.ToString();
-            string targetValue = parameter.ToString();
-
-            return enumValue.Equals(targetValue, StringComparison.InvariantCultureIgnoreCase);
+            return value.ToString().Equals(parameter.ToString(), StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) // Возвращает значение enum-а targetType по строке parameter
         {
             if (parameter == null)
                 return null;
