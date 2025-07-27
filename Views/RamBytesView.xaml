@@ -16,7 +16,6 @@
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <!-- DataGrid для байтов -->
         <DataGrid ItemsSource="{Binding MemoryBytes}"
-                  Grid.Row="0" 
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column" 
                   CanUserReorderColumns="False"
@@ -48,9 +47,7 @@
 
 
         <!-- DataGrid для ASCII-символов -->
-        <DataGrid ItemsSource="{Binding MemoryBytes}"
-                  Grid.Column="1" 
-                  Grid.Row="0" 
+        <DataGrid ItemsSource="{Binding MemoryBytes, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False" 
                   HeadersVisibility="Column" 
                   CanUserReorderColumns="False" 
