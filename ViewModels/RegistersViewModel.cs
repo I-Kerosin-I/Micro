@@ -119,7 +119,23 @@ namespace Micro.ViewModels
 
         private void ResetRegisters()
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < 16; i++)
+            {
+                _cpuState.Registers[i] = 0;
+            }
+            _cpuState.Registers["RFI"] = 0;
+            _cpuState.Registers["RFD"] = 0;
+            _cpuState.Registers["RGQ"] = 0;
+            _cpuState.Registers["ARAM"] = 0;
+            _cpuState.Registers["RGR"] = 0;
+            _cpuState.Registers["RGW"] = 0;
+            _cpuState.Registers["RACT"] = 0;
+            _cpuState.Registers["CMK"] = 0;
+            _cpuState.Registers["MUAD"] = 0;
+            _cpuState.Registers["STP"] = 0;
+            _cpuState.Registers["ERROR"] = 0;
+            _cpuState.Registers["RGA"] = 0;
+            _cpuState.Registers["RGB"] = 0;
         }
 
 
@@ -134,6 +150,7 @@ namespace Micro.ViewModels
             #region Commands
             LoadRegistersCommand = new LambdaCommand(OnLoadRegistersCommandExecuted, CanLoadRegistersCommandExecute);
             SaveRegistersCommand = new LambdaCommand(OnSaveRegistersCommandExecuted, CanSaveRegistersCommandExecute);
+            ResetRegistersCommand = new LambdaCommand(OnResetRegistersCommandExecuted, CanResetRegistersCommandExecute);
             #endregion
         }
     }

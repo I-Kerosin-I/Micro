@@ -120,7 +120,7 @@
         <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Columns="3" Rows="1" >
             <Button Content="Загрузить" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="113" Command="{Binding LoadRegistersCommand}"/>
             <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="113" Command="{Binding SaveRegistersCommand}"/>
-            <Button Content="Сброс" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="113"/>
+            <Button Content="Сброс" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="113" Command="{Binding ResetRegistersCommand}"/>
         </UniformGrid>
 
     </Grid>
