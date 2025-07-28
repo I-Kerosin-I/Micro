@@ -25,16 +25,49 @@ namespace Micro.Views
         {
             InitializeComponent();
         }
-        private void RamCellInputValidator(object sender, TextCompositionEventArgs e) // TODO: Вытащить валидатор в отдельный файл
+        
+        private void RamByteTextChangedValidator(object sender, TextChangedEventArgs e)
         {
+            var textBox = sender as TextBox;
+
             // Разрешаем только 0-9, A-F, a-f
-            TextBox textBox = sender as TextBox;
-            textBox.CharacterCasing = CharacterCasing.Upper; // Все символы в верхний регистр
-            // e.Text - Введённый текст
-            // textBox.Text - Текст в поле до момента ввода
-            if (!Regex.IsMatch(e.Text, "^[0-9A-Fa-f]+$") || (textBox.Text.Length >= 2 && textBox.SelectionLength == 0))
+
+            if (!Regex.IsMatch(textBox.Text, "^[0-9A-Fa-f]*$")) // В поле не 16-ричное число
             {
-                e.Handled = true; // Блокируем ввод
+                textBox.Text = (string)textBox.Tag; // Блокируем ввод, вставляем заведомо валидное значение
+                return;
+            }
+
+            if (textBox.Text.Length == 1)
+            {
+                textBox.Text = textBox.Text.ToUpper(); // Отдельная обработка первого символа
+            }
+
+            if (textBox.Text.Length > 2) // При переполнении поля содержимое сдвигается новым символом влево если он вставлен в конец или вправо, если в середину (Ctrl + V обрабатывается)
+            {
+                if (textBox.CaretIndex - textBox.Text.Length + textBox.Tag.ToString().Length == 2)
+                {
+                    textBox.Text = textBox.Text.Substring(textBox.Text.Length - 2, 2);
+                    textBox.CaretIndex = 2;
+                }
+                else
+                {
+                    var index = textBox.CaretIndex;
+                    textBox.Text = textBox.Text.Substring(0, 2);
+                    textBox.CaretIndex = index;
+                }
+            }
+
+            textBox.Tag = textBox.Text;
+        }
+
+        private void RamByteTextInputValidator(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            if (!Regex.IsMatch(e.Text, "^[0-9A-Fa-f]+$")) // Введено не 16-ричная цифра
+            {
+                e.Handled = true;
             }
         }
     }
