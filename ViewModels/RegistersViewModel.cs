@@ -62,12 +62,13 @@ namespace Micro.ViewModels
             {
                 _cpuState.Registers[i] = ushort.Parse(registersString.Substring(i*5 + 1, 4), NumberStyles.AllowHexSpecifier);
             }
-            _cpuState.Registers["RFI"] = ushort.Parse(registersString.Substring(81,2), NumberStyles.AllowHexSpecifier);
-            _cpuState.Registers["RFD"] = ushort.Parse(registersString.Substring(84,2), NumberStyles.AllowHexSpecifier);
+            _cpuState.Registers["RFI"] = 0;
+            _cpuState.Registers["RFD"] = 0;
             /*
             ВНИМАНИЕ, МИКРОПИЗДОС: сохранение флагов в файл не обратно совместимо с классической микрой,
             т.к. здесь расположение флагов в регистре соответствует реальной x86,
-            нужно оно почти никогда, поэтому фиксить не буду
+            нужно оно почти никогда, поэтому фиксить не буду.
+            Загрузка RFI и RFD отключена во избежание непредсказуемого поведения
             */
             _cpuState.Registers["RGQ"] = ushort.Parse(registersString.Substring(87,4), NumberStyles.AllowHexSpecifier);
             _cpuState.Registers["CMK"] = ushort.Parse(registersString.Substring(92,4), NumberStyles.AllowHexSpecifier);
@@ -98,10 +99,15 @@ namespace Micro.ViewModels
             {
                 sb.Append((char)4).Append(_cpuState.Registers[i].ToString("X4")); // EOT + значение
             }
-
+            /*
+            ВНИМАНИЕ, МИКРОПИЗДОС: сохранение флагов в файл не обратно совместимо с классической микрой,
+            т.к. здесь расположение флагов в регистре соответствует реальной x86,
+            нужно оно почти никогда, поэтому фиксить не буду.
+            Сохранение RFI и RFD отключено во избежание непредсказуемого поведения
+            */
             sb
-                .Append((char)2).Append(_cpuState.Registers["RFI"].ToString("X2"))
-                .Append((char)2).Append(_cpuState.Registers["RFD"].ToString("X2"))
+                .Append((char)2).Append("00")
+                .Append((char)2).Append("00")
                 .Append((char)4).Append(_cpuState.Registers["RGQ"].ToString("X4"))
                 .Append((char)4).Append(_cpuState.Registers["CMK"].ToString("X4"))
                 .Append((char)4).Append(_cpuState.Registers["MUAD"].ToString("X4"))
