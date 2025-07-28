@@ -23,16 +23,18 @@ namespace Micro.ViewModels
         public ICommand LoadRegistersCommand { get; set; }
         private bool CanLoadRegistersCommandExecute(object p) => true;
         private void OnLoadRegistersCommandExecuted(object p) => LoadRegisters();
-
-
         #endregion
 
         #region SaveRegisters
         public ICommand SaveRegistersCommand { get; set; }
         private bool CanSaveRegistersCommandExecute(object p) => true;
         private void OnSaveRegistersCommandExecuted(object p) => SaveRegisters();
+        #endregion
 
-
+        #region ResetRegisters
+        public ICommand ResetRegistersCommand { get; set; }
+        private bool CanResetRegistersCommandExecute(object p) => true;
+        private void OnResetRegistersCommandExecuted(object p) => ResetRegisters();
         #endregion
 
         #endregion
@@ -51,7 +53,12 @@ namespace Micro.ViewModels
                 return;
             }
 
-            for (var i = 0; i < 16; i++) // Заполняем РОНы
+            _cpuState.Registers["AX"] = ushort.Parse(registersString.Substring(1,4), NumberStyles.AllowHexSpecifier);
+            _cpuState.Registers["BX"] = ushort.Parse(registersString.Substring(6,4), NumberStyles.AllowHexSpecifier);
+            _cpuState.Registers["CX"] = ushort.Parse(registersString.Substring(11,4), NumberStyles.AllowHexSpecifier);
+            _cpuState.Registers["DX"] = ushort.Parse(registersString.Substring(16, 4), NumberStyles.AllowHexSpecifier);
+
+            for (var i = 4; i < 16; i++) // Заполняем РОНы
             {
                 _cpuState.Registers[i] = ushort.Parse(registersString.Substring(i*5 + 1, 4), NumberStyles.AllowHexSpecifier);
             }
@@ -80,8 +87,14 @@ namespace Micro.ViewModels
             var path = _fileDialogService.SaveFile("Значения регистров (*.RG)|*.RG");
             if (path is null) return;
             var sb = new StringBuilder();
+            sb
+                .Append((char)4).Append(_cpuState.Registers["AX"].ToString("X4"))
+                .Append((char)4).Append(_cpuState.Registers["BX"].ToString("X4"))
+                .Append((char)4).Append(_cpuState.Registers["CX"].ToString("X4"))
+                .Append((char)4).Append(_cpuState.Registers["DX"].ToString("X4"))
+                ;
 
-            for (int i = 0; i < 16; i++) // РОНы
+            for (int i = 4; i < 16; i++) // РОНы
             {
                 sb.Append((char)4).Append(_cpuState.Registers[i].ToString("X4")); // EOT + значение
             }
@@ -103,6 +116,12 @@ namespace Micro.ViewModels
                 ;
             File.WriteAllText(path, sb.ToString());
         }
+
+        private void ResetRegisters()
+        {
+            throw new NotImplementedException();
+        }
+
 
         private readonly CpuState _cpuState;
         public ObservableCollection<RegisterEntry> Registers { get; }
