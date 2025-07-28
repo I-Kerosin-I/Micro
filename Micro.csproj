@@ -81,8 +81,14 @@
     <Compile Include="Views\AddressTranslation.xaml.cs">
       <DependentUpon>AddressTranslation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RamBytesView.xaml.cs">
+      <DependentUpon>RamBytesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RamView.xaml.cs">
       <DependentUpon>RamView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RamWordsView.xaml.cs">
+      <DependentUpon>RamWordsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegistersView.xaml.cs">
       <DependentUpon>RegistersView.xaml</DependentUpon>
@@ -131,7 +137,15 @@
       <DependentUpon>MicroView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\RamBytesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RamView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RamWordsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

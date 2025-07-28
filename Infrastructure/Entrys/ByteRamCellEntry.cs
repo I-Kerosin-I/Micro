@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using Micro.Models;
 
 namespace Micro.Infrastructure.Entrys
@@ -21,16 +22,17 @@ namespace Micro.Infrastructure.Entrys
             }
         }
 
-        public ByteRamCellEntry(RamMemory memory ,ushort addres)
+        public ByteRamCellEntry(RamMemory memory ,ushort address)
         {
             _memory = memory;
-            _address = addres;
+            _address = address;
             _memory.PropertyChanged += _memory_PropertyChanged;
         }
 
         private void _memory_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == $"RAM[{_address}]") OnPropertyChanged(nameof(Value));
+            //MessageBox.Show(_address.ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

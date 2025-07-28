@@ -16,7 +16,7 @@
         <DataTemplate x:Key="ByteViewTemplate">
             <StackPanel Orientation="Horizontal">
                 <!-- DataGrid для байтов -->
-                <DataGrid MaxWidth="425"  ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
+                <DataGrid MaxWidth="425"  ItemsSource="{Binding MemoryBytes}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
                         <!-- 16 колонок для каждого байта -->
@@ -41,7 +41,7 @@
 
 
                 <!-- DataGrid для ASCII-символов -->
-                <DataGrid ItemsSource="{Binding Memory}" MaxWidth="339" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
+                <DataGrid ItemsSource="{Binding MemoryBytes}" MaxWidth="339" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Margin="0,2,0,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
                         <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
@@ -67,7 +67,7 @@
         <DataTemplate x:Key="WordViewTemplate">
             <StackPanel>
                 <!-- DataGrid для байтов -->
-                <DataGrid MaxWidth="425"  ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1">
+                <DataGrid MaxWidth="425"  ItemsSource="{Binding MemoryBytes}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
                         <!-- 16 колонок для каждого байта -->
