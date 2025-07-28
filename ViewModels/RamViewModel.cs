@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace Micro.ViewModels
 {
@@ -57,12 +58,20 @@ namespace Micro.ViewModels
         }
         private void SaveRam()
         {
-            var ramString = _fileDialogService.SaveFile("Микропрограммная память(*.RAM) | *.RAM");
+            var path = _fileDialogService.SaveFile("Микропрограммная память(*.RAM) | *.RAM");
+            if (path == null) return;
+            var sb = new StringBuilder();
+            for (var i = 0; i < _cpuState.Memory.Size; i++)
+            {
+                sb.Append((char)2).Append(_cpuState.Memory[i].ToString("X2"));
+            }
+            File.WriteAllText(path, sb.ToString());
         }
 
         private readonly CpuState _cpuState;
         public List<MemoryByteRow> MemoryBytes { get; set; }
         public List<MemoryWordRow> MemoryWords { get; set; }
+       
         #region View modes
         public enum RamViewModes {Bytes, Words}
         private RamViewModes _ramViewMode = RamViewModes.Bytes;
@@ -114,8 +123,8 @@ namespace Micro.ViewModels
         public MemoryByteRow(RamMemory memory, int address)
         {
             Address = (address / 16).ToString("X2");
-            Cells = new List<ByteRamCellEntry>(); // Заполняем нулями по умолчанию
-            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
+            Cells = new List<ByteRamCellEntry>(); 
+            for (var i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
         }
 
     }
@@ -167,7 +176,7 @@ namespace Micro.ViewModels
         public MemoryWordRow(RamMemory memory, int address)
         {
             Address = (address / 16).ToString("X2");
-            Cells = new List<WordRamCellEntry>(); // Заполняем нулями по умолчанию
+            Cells = new List<WordRamCellEntry>();
             for (int i = 0; i < 16; i+=2) Cells.Add(new WordRamCellEntry(memory, (ushort)(i + address)));
         }
     }
