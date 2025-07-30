@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Micro.Views"
+             xmlns:vm="clr-namespace:Micro.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=vm:CpuViewModel, IsDesignTimeCreatable=True}">
 
     <Canvas>
         <Image Source="/Views/interface.png" Canvas.Top="30"/>
@@ -34,11 +36,12 @@
         <Label x:Name="RgbValueBlock"  Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Label x:Name="AluValueBlock"  Content='{Binding Alu, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Label x:Name="SdaValueBlock"  Content='{Binding Sda, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name="RgqValueBlock"  Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="296" Canvas.Top="173" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RgqValueBlock"  Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="295" Canvas.Top="173" Height="20" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label x:Name="RgrValueBlock"  Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="RgwValueBlock"  Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="260" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label x:Name="CmkValueBlock"  Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RgwValueBlock"  Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="261" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label x:Name="CmkValueBlock"  Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="79" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RactValueBlock" Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="79" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name="RgrBinValueBlock" Content='{Binding Registers[14].Value, Converter={StaticResource RgkBinaryConverter}}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="465" Canvas.Top="222" Height="20" Width="148" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <UniformGrid Columns="1" Rows="6" Canvas.Left="110" Canvas.Top="194">
             <Label x:Name="NRfiBlock" Content='{Binding Sf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>

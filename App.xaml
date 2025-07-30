@@ -12,6 +12,7 @@
             <converters:ByteToAsciiConverter x:Key="ByteToAsciiConverter" />
             <converters:RegisterLabelConverter x:Key="RegisterLabelConverter" />
             <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+            <converters:RgkBinaryConverter x:Key="RgkBinaryConverter" />
             <resources:MemoryViewTemplateSelector x:Key="MemoryViewTemplateSelector" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/ElementStyles.xaml" />
