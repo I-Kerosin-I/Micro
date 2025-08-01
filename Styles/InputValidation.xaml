@@ -1,7 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Валидация: ввод HEX 2 цифры -->
-    <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
-        <!--<EventSetter Event="PreviewTextInput" Handler="HexTextBox_PreviewTextInput"/>-->
-    </Style>
-</ResourceDictionary>
