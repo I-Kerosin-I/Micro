@@ -72,12 +72,14 @@
     <Compile Include="Models\RegisterMemory.cs" />
     <Compile Include="Infrastructure\Entrys\ByteRamCellEntry.cs" />
     <Compile Include="Infrastructure\Converters\EnumToBoolConverter.cs" />
+    <Compile Include="Models\UpdateService.cs" />
     <Compile Include="Resources\FileDialogService.cs" />
     <Compile Include="Resources\HexInputValidator.cs" />
     <Compile Include="Resources\MemoryViewTemplateSelector.cs" />
     <Compile Include="Infrastructure\Converters\RegisterConverter.cs" />
     <Compile Include="Infrastructure\Entrys\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\AddressTranslation.xaml.cs">
       <DependentUpon>AddressTranslation.xaml</DependentUpon>
     </Compile>
@@ -92,6 +94,9 @@
     </Compile>
     <Compile Include="Views\RegistersView.xaml.cs">
       <DependentUpon>RegistersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpdateWindow.xaml.cs">
+      <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Styles\ElementStyles.xaml">
       <SubType>Designer</SubType>
@@ -150,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegistersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
