@@ -18,7 +18,7 @@ namespace Micro
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            UpdateService.TryReplaceOldExeIfNeeded();
             UpdateService.CheckForUpdateAsync();
 
         }

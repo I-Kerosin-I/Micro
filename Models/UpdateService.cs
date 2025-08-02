@@ -15,9 +15,9 @@ namespace Micro.Models
 {
     public static class UpdateService
     {
-        private const string VersionUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/master/App.xaml";
-        private const string NotesUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/master/App.xaml";
-        private const string BinaryBaseUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/master/App.xaml";
+        private const string VersionUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/binaries/latestversion.txt";
+        private const string NotesUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/binaries/releasenotes.txt";
+        private const string BinaryBaseUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/binaries/Micro.exe";
 
         private const string CurrentVersion = "1.0.0";
 
@@ -28,49 +28,48 @@ namespace Micro.Models
             var version = (await http.GetStringAsync(VersionUrl)).Trim();
             if (version == CurrentVersion) return;
             var notes = await http.GetStringAsync(NotesUrl);
-            
             var updateWindow = new UpdateWindow
             {
-                DataContext = new UpdateViewModel(version, notes, BinaryBaseUrl + $"myapp-v{version}.exe")
+                DataContext = new UpdateViewModel(version, notes, BinaryBaseUrl)
             };
+            updateWindow.Owner = Application.Current.MainWindow;
             updateWindow.ShowDialog();
         }
 
         public static async Task<string> DownloadUpdateAsync()
         {
-            var tempPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(BinaryBaseUrl));
-            MessageBox.Show(tempPath);
+            var tempPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(BinaryBaseUrl)); // Качаем обнову во временные файлы
             using var http = new HttpClient();
             var data = await http.GetByteArrayAsync(BinaryBaseUrl);
-            using var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true);
+            var fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true);
             await fs.WriteAsync(data, 0, data.Length);
+            fs.Dispose(); // using не канает, Process.Start не может запустить exe-шник, пришлось вручную закрыть
 
+            ApplyUpdate(tempPath); // Запускаем обновлённую версию, чтоб она заменяла старую
             return tempPath;
         }
 
         public static void ApplyUpdate(string newExePath)
         {
-            string currentExe = Process.GetCurrentProcess().MainModule.FileName;
+            var currentExe = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(new ProcessStartInfo
             {
-                FileName = newExePath,
-                Arguments = $"--update \"{currentExe}\"",
+                FileName = newExePath, // Путь к обновлённому exe-шнику
+                Arguments = $"--update \"{currentExe}\"", // Передаём путь к текущему exe-шнику, чтобы он его заменил
                 UseShellExecute = false
             });
-            Environment.Exit(0);
+
+            Application.Current.Shutdown(); // Закрываем старую версию
         }
 
         public static void TryReplaceOldExeIfNeeded()
         {
             var args = Environment.GetCommandLineArgs();
+            if (args.Length < 3 || args[1] != "--update") return; // Если не обновление, то выходим
             
-            if (args.Length < 3 || args[1] != "--update") return;
-            
-            var oldPath = args[2];
-            Thread.Sleep(1000);
-            File.Copy(Process.GetCurrentProcess().MainModule.FileName, oldPath, true);
-            Process.Start(oldPath);
-            Environment.Exit(0);
+            var oldPath = args[2]; // Получаем путь к старому exe-шнику
+            //Thread.Sleep(1000);
+            File.Copy(Process.GetCurrentProcess().MainModule.FileName, oldPath, true); // Заменяем старый exe-шник на новый
         }
     }
 }

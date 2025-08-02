@@ -21,9 +21,8 @@ namespace Micro.ViewModels
 
     
         #endregion
-        private void Update()
+        private static void Update()
         {
-            //MessageBox.Show("Just kidding, there is no update yet");
             UpdateService.DownloadUpdateAsync();
         }
 
