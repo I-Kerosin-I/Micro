@@ -19,14 +19,12 @@ namespace Micro.Models
         private const string NotesUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/binaries/releasenotes.txt";
         private const string BinaryBaseUrl = "https://raw.githubusercontent.com/I-Kerosin-I/Micro/binaries/Micro.exe";
 
-        private const string CurrentVersion = "1.0.0";
-
         public static async void CheckForUpdateAsync()
         {
             using var http = new HttpClient();
 
             var version = (await http.GetStringAsync(VersionUrl)).Trim();
-            if (version == CurrentVersion) return;
+            if (version == FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion) return;
             var notes = await http.GetStringAsync(NotesUrl);
             var updateWindow = new UpdateWindow
             {
