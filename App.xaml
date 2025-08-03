@@ -5,6 +5,7 @@
              xmlns:resources="clr-namespace:Micro.Resources"
              xmlns:converters="clr-namespace:Micro.Infrastructure.Converters"
              StartupUri="Views/MicroView.xaml">
+    
     <Application.Resources>
 
         <ResourceDictionary>
@@ -13,9 +14,12 @@
             <converters:RegisterLabelConverter x:Key="RegisterLabelConverter" />
             <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
             <resources:MemoryViewTemplateSelector x:Key="MemoryViewTemplateSelector" />
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/ElementStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Application.Resources>
+
 </Application>
