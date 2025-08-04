@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <DrawingImage x:Key="IconPlay">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#8fe48f" Geometry="F1 M 10,0 L 10,20 L 30,10 Z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="IconStop">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="Red" Geometry="M 10,0 L 30,0 L 30,20 L 10,20 Z"/>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

@@ -1,4 +1,5 @@
-﻿using Micro.Infrastructure.Commands;
+﻿using System;
+using Micro.Infrastructure.Commands;
 using Micro.Infrastructure.Entrys;
 using Micro.Models;
 using Micro.Resources;
@@ -10,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+
 
 namespace Micro.ViewModels
 {
@@ -26,8 +28,16 @@ namespace Micro.ViewModels
 
         #region ExecuteMicrocommandCommand
         public ICommand ExecuteMicrocommandCommand {get; set; }
-        private bool CanExecuteMicrocommandCommandExecute(object p) => true;
-        private void OnExecuteMicrocommandCommandExecuted(object p) => _cpuState.ExecuteMicroCommand();
+        private bool CanExecuteMicrocommandCommandExecute(object p) => CpuExecutionState != CpuState.ExecutionState.Running;
+        private void OnExecuteMicrocommandCommandExecuted(object p) => _cpuState.Step();
+        #endregion
+
+        #region RunMicroprogrammCommand
+
+        public ICommand RunMicroprogrammCommand { get; set; }
+        private bool CanRunMicroprogrammCommandExecute(object p) => true;
+        private void OnRunMicroprogrammCommandExecuted(object p) => _cpuState.RunMicroprogramm();
+
         #endregion
 
         #region SaveTraceCommand
@@ -37,10 +47,13 @@ namespace Micro.ViewModels
         #endregion
 
         #endregion
+
+        
         private readonly FileDialogService _fileDialogService;
         private readonly CpuState _cpuState;
-        private readonly ObservableCollection<RegisterEntry> _registers;
-        public ObservableCollection<RegisterEntry> Registers => _registers;
+        public ObservableCollection<RegisterEntry> Registers { get; }
+        public CpuState.ExecutionState CpuExecutionState => _cpuState.CpuExecutionState;
+        #region Fields
         public string Alu => _cpuState.Alu.ToString("X4");
         public string Sda => _cpuState.Sda.ToString("X4");
         public string Sf => ((_cpuState.Registers["RFI"] >> 7) & 1).ToString(); 
@@ -48,6 +61,7 @@ namespace Micro.ViewModels
         public string Vf => ((_cpuState.Registers["RFI"] >> 11) & 1).ToString();
         public string Cf => (_cpuState.Registers["RFI"] & 1).ToString();
         public string Pf => ((_cpuState.Registers["RFI"] >> 2) & 1).ToString();
+        #endregion
 
         public CpuViewModel(CpuState cpuState, ObservableCollection<RegisterEntry> registers) {
 
@@ -56,6 +70,7 @@ namespace Micro.ViewModels
             RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandExecute);
             ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted, CanExecuteMicrocommandCommandExecute);
             SaveTraceCommand = new LambdaCommand(OnSaveTraceCommandExecuted, CanSaveTraceCommandExecute);
+            RunMicroprogrammCommand = new LambdaCommand(OnRunMicroprogrammCommandExecuted, CanRunMicroprogrammCommandExecute);
             
             #endregion
 
@@ -72,9 +87,13 @@ namespace Micro.ViewModels
                     case nameof(_cpuState.Sda):
                         OnPropertyChanged(nameof(_cpuState.Sda));
                         break;
+                    case nameof(_cpuState.CpuExecutionState):
+                        OnPropertyChanged(nameof(_cpuState.CpuExecutionState));
+                        break;
+
                 }
             };
-            _registers = registers;
+            Registers = registers;
             _cpuState.Registers.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "RFI")
@@ -88,7 +107,7 @@ namespace Micro.ViewModels
             };
         }
 
-        void SaveTrace(List<List<ushort>> trace)
+        private void SaveTrace(List<List<ushort>> trace)
         {
             var path = _fileDialogService.SaveFile("CSV UTF-8 (Разделитель — точка с запятой) | *.csv");
             if (path == null) return;
@@ -99,14 +118,14 @@ namespace Micro.ViewModels
                 {
                     // Заголовки — соответствуют полям
                     string[] headers =
-                    {
+                    [
                         "CMK", "AX", "CX", "DX", "BX",
                         "SP", "BP", "SI", "DI", "CS",
                         "SS", "DS", "ES", "IP", "PSW",
                         "RGK", "RW", "RGA", "RGB", "Alu", "Sda",
                         "RGQ", "N", "Z", "V", "C", "P", "ARAM", "RGR",
                         "RGW", "RACT"
-                    };
+                    ];
 
                     writer.WriteLine(string.Join(";", headers));
 
@@ -115,7 +134,7 @@ namespace Micro.ViewModels
                         var line = new List<string>();
                         line.Add(row[0].ToString("X2")); // Добавление CMK
                         
-                        for (int i = 1; i < 22; i++)
+                        for (var i = 1; i < 22; i++)
                         {
                             line.Add(row[i].ToString("X4")); // Добавление регистров, ALU, SDA
                         }
@@ -125,7 +144,7 @@ namespace Micro.ViewModels
                         line.Add(((row[22] >>> 11) & 1).ToString()); // V
                         line.Add((row[22] & 1).ToString()); // C
                         line.Add(((row[22] >>> 2) & 1).ToString()); // P
-                        for (int i = 23; i < 27; i++)
+                        for (var i = 23; i < 27; i++)
                         {
                             line.Add(row[i].ToString("X4")); // Добавление регистров, ALU, SDA
                         }
@@ -136,7 +155,7 @@ namespace Micro.ViewModels
             }
             catch 
             {
-                MessageBox.Show("Ошибка при сохранее файла. Вероятно файл занят другим процессом.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ошибка при сохрании файла. Вероятно файл занят другим процессом.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -61,10 +61,55 @@
             </Button.Resources>
         </Button>
 
+        <Button x:Name="RunMicroprogrammButton" Command="{Binding RunMicroprogrammCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="176" Canvas.Top="313" Height="25">
+            <Button.Content>
+                <StackPanel x:Name="Panel" Orientation="Horizontal">
+                    <Image x:Name="RunButtonIcon" Height="15" Width="30">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <!--RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Running">
+                                        <Setter  Property="Source" Value="{StaticResource IconStop}"/>
+                                    </DataTrigger>
+                                    <!--NOT RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Stopped">
+                                        <Setter Property="Source" Value="{StaticResource IconPlay}"/>
+                                    </DataTrigger>
+                                    <!--PAUSED-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Paused">
+                                        <Setter Property="Source" Value="{StaticResource IconPlay}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock x:Name="RunButtonText">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <!--RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Running">
+                                        <Setter Property="Text" Value="Стоп"/>
+                                    </DataTrigger>
+                                    <!--NOT RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Stopped">
+                                        <Setter Property="Text" Value="Пуск"/>
+                                    </DataTrigger>
+                                    <!--PAUSED-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="Paused">
+                                        <Setter Property="Text" Value="Продолжить"/>
+                                    </DataTrigger>
 
-        <Button x:Name="ContinueButton" Content="Продожить" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="176" Canvas.Top="313" Height="25"/>
-        <Button x:Name="StopButton" Content="Стоп" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <Button x:Name="ExecuteMicrocommandButton" Content="Шаг" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
         <Button x:Name="SaveTraceButton" Content="Сохранить трассу" Command="{Binding SaveTraceCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="480" Canvas.Top="313" Height="25"/>
-
+        
     </Canvas>
 </UserControl>

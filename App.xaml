@@ -18,6 +18,7 @@
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/ElementStyles.xaml" />
+                <ResourceDictionary Source="Resources/ResourceDictionaries/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
