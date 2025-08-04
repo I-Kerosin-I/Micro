@@ -17,16 +17,16 @@ using System.Windows.Shapes;
 namespace Micro.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RegistersView.xaml
+    /// Логика взаимодействия для RamBytesView.xaml
     /// </summary>
-    public partial class RegistersView : UserControl
+    public partial class RamBytesView : UserControl
     {
-        public RegistersView()
+        public RamBytesView()
         {
             InitializeComponent();
         }
-
-        private void RegisterTextChangedValidator(object sender, TextChangedEventArgs e)
+        
+        private void RamByteTextChangedValidator(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
 
@@ -43,17 +43,17 @@ namespace Micro.Views
                 textBox.Text = textBox.Text.ToUpper(); // Отдельная обработка первого символа
             }
 
-            if (textBox.Text.Length > 4) // При переполнении поля содержимое сдвигается новым символом влево если он вставлен в конец или вправо, если в середину (Ctrl + V обрабатывается)
+            if (textBox.Text.Length > 2) // При переполнении поля содержимое сдвигается новым символом влево если он вставлен в конец или вправо, если в середину (Ctrl + V обрабатывается)
             {
-                if (textBox.CaretIndex - textBox.Text.Length + textBox.Tag.ToString().Length == 4)
+                if (textBox.CaretIndex - textBox.Text.Length + textBox.Tag.ToString().Length == 2)
                 {
-                    textBox.Text = textBox.Text.Substring(textBox.Text.Length - 4, 4);
-                    textBox.CaretIndex = 4;
+                    textBox.Text = textBox.Text.Substring(textBox.Text.Length - 2, 2);
+                    textBox.CaretIndex = 2;
                 }
                 else
                 {
                     var index = textBox.CaretIndex;
-                    textBox.Text = textBox.Text.Substring(0, 4);
+                    textBox.Text = textBox.Text.Substring(0, 2);
                     textBox.CaretIndex = index;
                 }
             }
@@ -61,7 +61,7 @@ namespace Micro.Views
             textBox.Tag = textBox.Text;
         }
 
-        private void RegisterTextInputValidator(object sender, TextCompositionEventArgs e)
+        private void RamByteTextInputValidator(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;
 

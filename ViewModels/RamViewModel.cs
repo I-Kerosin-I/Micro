@@ -1,19 +1,21 @@
-﻿using Micro.Models;
+﻿using Micro.Infrastructure.Commands;
+using Micro.Infrastructure.Entrys;
+using Micro.Models;
+using Micro.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Micro.Resources;
-using System.Runtime.CompilerServices;
-using Micro.Infrastructure.Entrys;
 using System.Windows;
-using System.IO;
 using System.Windows.Input;
-using Micro.Infrastructure.Commands;
+using System.Windows.Shapes;
 
 namespace Micro.ViewModels
 {
@@ -42,7 +44,7 @@ namespace Micro.ViewModels
             var path = _fileDialogService.OpenFile("Оперативная память(*.RAM) | *.RAM");
             if (path == null) return;
             var mpmString = File.ReadAllText(path);
-            string[] rawRam = mpmString.Split(['\u0002'], StringSplitOptions.RemoveEmptyEntries); // Раздеоение на поля по символу STX
+            var rawRam = mpmString.Split(['\u0002'], StringSplitOptions.RemoveEmptyEntries); // Разделение на поля по символу STX
 
 
             { //TODO: Добавить валидацию RAM
@@ -56,34 +58,49 @@ namespace Micro.ViewModels
         }
         private void SaveRam()
         {
-            string ramString = _fileDialogService.SaveFile("Микропрограммная память(*.RAM) | *.RAM");
+            var path = _fileDialogService.SaveFile("Микропрограммная память(*.RAM) | *.RAM");
+            if (path == null) return;
+            var sb = new StringBuilder();
+            for (var i = 0; i < _cpuState.Memory.Size; i++)
+            {
+                sb.Append((char)2).Append(_cpuState.Memory[i].ToString("X2"));
+            }
+            File.WriteAllText(path, sb.ToString());
         }
 
         private readonly CpuState _cpuState;
-        public ObservableCollection<MemoryRow> Memory { get; set; }
-        public enum RamViewModes {Byte, Word}
-        private RamViewModes _ramViewMode = RamViewModes.Byte;
+        public List<MemoryByteRow> MemoryBytes { get; set; }
+        public List<MemoryWordRow> MemoryWords { get; set; }
+       
+        #region View modes
+        public enum RamViewModes {Bytes, Words}
+        private RamViewModes _ramViewMode = RamViewModes.Bytes;
         public RamViewModes RamViewMode
         {
             get => _ramViewMode;
             set => SetField(ref _ramViewMode, value);
         }
+        #endregion
 
         public RamViewModel(CpuState cpuState)
         {
+            #region Commands
             LoadRamCommand = new LambdaCommand(OnLoadRamCommandExecuted, CanLoadRamCommandExecute);
             SaveRamCommand = new LambdaCommand(OnSaveRamCommandExecuted, CanSaveRamCommandExecute);
+            #endregion
 
             _cpuState = cpuState;
             _fileDialogService = new FileDialogService();
-            Memory = new ObservableCollection<MemoryRow>();
-
+            MemoryBytes = new List<MemoryByteRow>();
+            MemoryWords = new List<MemoryWordRow>();
             for (var i = 0; i < _cpuState.Memory.Size; i+=16)
             {
-                Memory.Add(new MemoryRow(_cpuState.Memory, i));
+                MemoryBytes.Add(new MemoryByteRow(_cpuState.Memory, i));
+                MemoryWords.Add(new MemoryWordRow(_cpuState.Memory, i));
             }
         }
 
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -96,17 +113,71 @@ namespace Micro.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
     }
-    public class MemoryRow
+    public class MemoryByteRow
     {
         public string Address { get; set; }  // HEX-адрес
-        public ObservableCollection<ByteRamCellEntry> Cells { get; set; }    // 16 байтов строки
+        public List<ByteRamCellEntry> Cells { get; set; }    // 16 байтов строки
 
-        public MemoryRow(RamMemory memory, int address)
+        public MemoryByteRow(RamMemory memory, int address)
         {
             Address = (address / 16).ToString("X2");
-            Cells = new ObservableCollection<ByteRamCellEntry>(); // Заполняем нулями по умолчанию
-            for (int i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
+            Cells = new List<ByteRamCellEntry>(); 
+            for (var i = 0; i < 16; i++) Cells.Add(new ByteRamCellEntry(memory, (ushort)(i + address)));
+        }
+
+    }
+    public class MemoryWordRow
+    {
+        public class WordRamCellEntry : INotifyPropertyChanged
+        {
+            private readonly RamMemory _memory;
+            private readonly ushort _address;
+            public ushort Value
+            {
+                get => _memory.Word[_address];
+                set
+                {
+                    _memory.Word[_address] = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public WordRamCellEntry(RamMemory memory, ushort address)
+            {
+                _memory = memory;
+                _address = address;
+                _memory.PropertyChanged += _memory_PropertyChanged;
+            }
+            private void _memory_PropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == $"RAM[{_address}]" || e.PropertyName == $"RAM[{_address+1}]") OnPropertyChanged(nameof(Value));
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+            {
+                if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+        }
+        public string Address { get; set; }  // HEX-адрес
+        public List<WordRamCellEntry> Cells { get; set; }
+
+        public MemoryWordRow(RamMemory memory, int address)
+        {
+            Address = (address / 16).ToString("X2");
+            Cells = new List<WordRamCellEntry>();
+            for (int i = 0; i < 16; i+=2) Cells.Add(new WordRamCellEntry(memory, (ushort)(i + address)));
         }
     }
 }

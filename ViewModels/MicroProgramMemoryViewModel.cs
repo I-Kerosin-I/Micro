@@ -53,35 +53,37 @@ namespace Micro.ViewModels
                     .Replace('\u0001', ' ')
                     .Replace('\u0004', ' '); // Открыть, считать весь текст, заменить SEP и EOT на пробел
                 string[] rawMpmFields =
-                    mpmString.Split([' '], StringSplitOptions.RemoveEmptyEntries); // Раздеоение на поля по пробелу
+                    mpmString.Split([' '], StringSplitOptions.RemoveEmptyEntries); // Разделение на поля по пробелу
 
-                if (rawMpmFields.Length % 17 != 0) MessageBox.Show("Файл микропрограммной памяти повреждён");
-                else
+                if (rawMpmFields.Length % 17 != 0)
                 {
-                    //TODO: Добавить валидацию
-                    for (int i = 0; i < rawMpmFields.Length / 17; i++)
-                    {
-                        _microProgramMemory[i].A = Convert.ToByte(rawMpmFields[i * 17], 16);
-                        _microProgramMemory[i].B = Convert.ToByte(rawMpmFields[i * 17 + 1], 16);
-                        _microProgramMemory[i].MA = Convert.ToByte(rawMpmFields[i * 17 + 2], 16);
-                        _microProgramMemory[i].MB = Convert.ToByte(rawMpmFields[i * 17 + 3], 16);
-                        _microProgramMemory[i].MEM = Convert.ToByte(rawMpmFields[i * 17 + 4], 16);
-                        _microProgramMemory[i].SRC = Convert.ToByte(rawMpmFields[i * 17 + 5], 16);
-                        _microProgramMemory[i].SH = Convert.ToByte(rawMpmFields[i * 17 + 6], 16);
-                        _microProgramMemory[i].N = Convert.ToByte(rawMpmFields[i * 17 + 7], 16);
-                        _microProgramMemory[i].ALU = Convert.ToByte(rawMpmFields[i * 17 + 8], 16);
-                        _microProgramMemory[i].CCX = Convert.ToByte(rawMpmFields[i * 17 + 9], 16);
-                        _microProgramMemory[i].F = Convert.ToByte(rawMpmFields[i * 17 + 10], 16);
-                        _microProgramMemory[i].DST = Convert.ToByte(rawMpmFields[i * 17 + 11], 16);
-                        _microProgramMemory[i].WM = Convert.ToByte(rawMpmFields[i * 17 + 12], 16);
-                        _microProgramMemory[i].JFI = Convert.ToByte(rawMpmFields[i * 17 + 13], 16);
-                        _microProgramMemory[i].CC = Convert.ToByte(rawMpmFields[i * 17 + 14], 16);
-                        _microProgramMemory[i].CHA = Convert.ToByte(rawMpmFields[i * 17 + 15], 16);
-                        _microProgramMemory[i].CONST = Convert.ToUInt16(rawMpmFields[i * 17 + 16], 16);
-
-                    }
+                    MessageBox.Show("Файл микропрограммной памяти повреждён");
+                    return;
+                }
+                //TODO: Добавить валидацию
+                for (int i = 0; i < rawMpmFields.Length / 17; i++)
+                {
+                    _microProgramMemory[i].A = Convert.ToByte(rawMpmFields[i * 17], 16);
+                    _microProgramMemory[i].B = Convert.ToByte(rawMpmFields[i * 17 + 1], 16);
+                    _microProgramMemory[i].MA = Convert.ToByte(rawMpmFields[i * 17 + 2], 16);
+                    _microProgramMemory[i].MB = Convert.ToByte(rawMpmFields[i * 17 + 3], 16);
+                    _microProgramMemory[i].MEM = Convert.ToByte(rawMpmFields[i * 17 + 4], 16);
+                    _microProgramMemory[i].SRC = Convert.ToByte(rawMpmFields[i * 17 + 5], 16);
+                    _microProgramMemory[i].SH = Convert.ToByte(rawMpmFields[i * 17 + 6], 16);
+                    _microProgramMemory[i].N = Convert.ToByte(rawMpmFields[i * 17 + 7], 16);
+                    _microProgramMemory[i].ALU = Convert.ToByte(rawMpmFields[i * 17 + 8], 16);
+                    _microProgramMemory[i].CCX = Convert.ToByte(rawMpmFields[i * 17 + 9], 16);
+                    _microProgramMemory[i].F = Convert.ToByte(rawMpmFields[i * 17 + 10], 16);
+                    _microProgramMemory[i].DST = Convert.ToByte(rawMpmFields[i * 17 + 11], 16);
+                    _microProgramMemory[i].WM = Convert.ToByte(rawMpmFields[i * 17 + 12], 16);
+                    _microProgramMemory[i].JFI = Convert.ToByte(rawMpmFields[i * 17 + 13], 16);
+                    _microProgramMemory[i].CC = Convert.ToByte(rawMpmFields[i * 17 + 14], 16);
+                    _microProgramMemory[i].CHA = Convert.ToByte(rawMpmFields[i * 17 + 15], 16);
+                    _microProgramMemory[i].CONST = Convert.ToUInt16(rawMpmFields[i * 17 + 16], 16);
 
                 }
+
+                
             }
             else if(path.EndsWith(".XMEM", StringComparison.OrdinalIgnoreCase))
             {

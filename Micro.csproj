@@ -63,6 +63,7 @@
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Infrastructure\Entrys\MicroCommandEntry.cs" />
+    <Compile Include="Models\AddressTranslationTable.cs" />
     <Compile Include="Models\CpuState.cs" />
     <Compile Include="Models\MicroProgramMemory.cs" />
     <Compile Include="Models\RamMemory.cs" />
@@ -71,23 +72,41 @@
     <Compile Include="Models\RegisterMemory.cs" />
     <Compile Include="Infrastructure\Entrys\ByteRamCellEntry.cs" />
     <Compile Include="Infrastructure\Converters\EnumToBoolConverter.cs" />
+    <Compile Include="Models\UpdateService.cs" />
     <Compile Include="Resources\FileDialogService.cs" />
     <Compile Include="Resources\HexInputValidator.cs" />
     <Compile Include="Resources\MemoryViewTemplateSelector.cs" />
     <Compile Include="Infrastructure\Converters\RegisterConverter.cs" />
     <Compile Include="Infrastructure\Entrys\RegisterEntry.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
+    <Compile Include="Views\AddressTranslation.xaml.cs">
+      <DependentUpon>AddressTranslation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RamBytesView.xaml.cs">
+      <DependentUpon>RamBytesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RamView.xaml.cs">
       <DependentUpon>RamView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RamWordsView.xaml.cs">
+      <DependentUpon>RamWordsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegistersView.xaml.cs">
       <DependentUpon>RegistersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpdateWindow.xaml.cs">
+      <DependentUpon>UpdateWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Styles\ElementStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\InputValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddressTranslation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,7 +126,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\AddressConvertionViewModel.cs" />
+    <Compile Include="ViewModels\AddressTranslationViewModel.cs" />
     <Compile Include="ViewModels\CpuViewModel.cs" />
     <Compile Include="ViewModels\MicroProgramMemoryViewModel.cs" />
     <Compile Include="ViewModels\MicroViewModel.cs" />
@@ -123,11 +142,23 @@
       <DependentUpon>MicroView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\RamBytesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RamView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RamWordsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RegistersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Micro.ViewModels"
+             xmlns:views="clr-namespace:Micro.Views"
+             xmlns:vm="clr-namespace:Micro.ViewModels"
+             xmlns:converters="clr-namespace:Micro.Infrastructure.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=local:RamViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=vm:RamViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <Style x:Key="HexTextBoxStyle" TargetType="TextBox">
-            <EventSetter Event="PreviewTextInput" Handler="HexInputValidator"/>
-        </Style>
+        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
     </UserControl.Resources>
 
     <Grid UseLayoutRounding="False">
@@ -42,58 +42,59 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <RadioButton x:Name="RamModeDisplayBytes" Content="Байты" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <RadioButton x:Name="RamModeDisplayWords" Content="Слова" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
+                <RadioButton 
+                    IsChecked="{Binding RamViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Bytes}"
+                    Content="Байты"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Grid.Column="0"/>
+                <RadioButton 
+                    IsChecked="{Binding RamViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Words}"
+                    Content="Слова" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Grid.Column="1"/>
             </Grid>
         </GroupBox>
 
-        <!-- DataGrid для байтов -->
-        <DataGrid Grid.Column="0" ItemsSource="{Binding Memory}" AutoGenerateColumns="False" CanUserReorderColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserSortColumns="False" Margin="0,2,0,0" Grid.Row="1" HorizontalAlignment="Right">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Ад" Binding="{Binding Address}" Width="24" IsReadOnly="True" />
-                <!-- 16 колонок для каждого байта -->
-                <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToHexConverter}}" Width="23" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-                <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToHexConverter}}" Width="25" EditingElementStyle="{StaticResource HexTextBoxStyle}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!--<ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding RamViewMode }"></ContentControl>-->
+        <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding}">
+            
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock Text="Слава Устюкову" />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
 
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RamViewMode}" Value="Bytes">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <views:RamBytesView DataContext="{Binding}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
-        <!-- DataGrid для ASCII-символов -->
-        <DataGrid ItemsSource="{Binding Memory}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1" HorizontalAlignment="Left">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="0" Binding="{Binding Cells[0].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="1" Binding="{Binding Cells[1].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="2" Binding="{Binding Cells[2].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="3" Binding="{Binding Cells[3].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="4" Binding="{Binding Cells[4].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="5" Binding="{Binding Cells[5].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="6" Binding="{Binding Cells[6].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="7" Binding="{Binding Cells[7].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="8" Binding="{Binding Cells[8].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="9" Binding="{Binding Cells[9].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="A" Binding="{Binding Cells[10].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="B" Binding="{Binding Cells[11].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="C" Binding="{Binding Cells[12].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="D" Binding="{Binding Cells[13].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="E" Binding="{Binding Cells[14].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-                <DataGridTextColumn Header="F" Binding="{Binding Cells[15].Value, Converter={StaticResource ByteToAsciiConverter}}" Width="15"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
+                        <DataTrigger Binding="{Binding RamViewMode}" Value="Words">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <views:RamWordsView DataContext="{Binding}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+        
         <Button Content="Загрузить" Width="100" Command="{Binding LoadRamCommand}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Height="25"/>
         <Button Content="Сохранить" Width="100" Command="{Binding SaveRamCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Height="25"/>
 

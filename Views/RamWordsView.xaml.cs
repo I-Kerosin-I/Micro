@@ -17,19 +17,20 @@ using System.Windows.Shapes;
 namespace Micro.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RegistersView.xaml
+    /// Логика взаимодействия для RamWordsView.xaml
     /// </summary>
-    public partial class RegistersView : UserControl
+    public partial class RamWordsView : UserControl
     {
-        public RegistersView()
+        public RamWordsView()
         {
             InitializeComponent();
         }
-
-        private void RegisterTextChangedValidator(object sender, TextChangedEventArgs e)
+        // TODO: Вытащить валидаторы в отдельный файл
+        
+        private void RamWordTextChangedValidator(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
-
+            
             // Разрешаем только 0-9, A-F, a-f
 
             if (!Regex.IsMatch(textBox.Text, "^[0-9A-Fa-f]*$")) // В поле не 16-ричное число
@@ -61,7 +62,7 @@ namespace Micro.Views
             textBox.Tag = textBox.Text;
         }
 
-        private void RegisterTextInputValidator(object sender, TextCompositionEventArgs e)
+        private void RamWordTextInputValidator(object sender, TextCompositionEventArgs e) // Валидирует введённый символ, чтобы не ебаться с кареткой в TextChanged
         {
             var textBox = sender as TextBox;
 
