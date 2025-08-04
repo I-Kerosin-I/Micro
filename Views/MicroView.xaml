@@ -9,12 +9,16 @@
         xmlns:resources="clr-namespace:Micro.Resources"
         d:DataContext="{d:DesignInstance Type=viewmodels:MicroViewModel}"
         mc:Ignorable="d"
-        Title="Микропрограммируемый процессор" Height="543" Width="888" MinWidth="635" MinHeight="430">
-    <Window.Resources>
+        Title="Микропрограммируемый процессор" Height="543" Width="888" MinWidth="635" MinHeight="430" WindowStartupLocation="CenterScreen">
     
-    </Window.Resources>
     <Grid>
-        <TabControl x:Name="MainTabs">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="23"/> <!--Строка состояния-->
+        </Grid.RowDefinitions>
+        
+        <TabControl Grid.Row="0" x:Name="MainTabs">
+            
             <TabItem x:Name="WorkTab" Header="Работа">
                 <views:CpuStateView DataContext="{Binding CpuVm}"/>
             </TabItem>
@@ -40,6 +44,11 @@
 
                 </TabControl>
             </TabItem>
+        
         </TabControl>
+
+        <StatusBar Grid.Row="1">
+            <TextBlock Text="{Binding Version}"/>
+        </StatusBar>
     </Grid>
 </Window>

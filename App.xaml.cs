@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Micro.Models;
+using Micro.Views;
 
 namespace Micro
 {
@@ -13,5 +15,12 @@ namespace Micro
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            UpdateService.TryReplaceOldExeIfNeeded();
+            UpdateService.CheckForUpdateAsync();
+
+        }
     }
 }
