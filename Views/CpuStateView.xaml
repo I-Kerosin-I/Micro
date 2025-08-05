@@ -117,7 +117,8 @@
             </Button.Content>
         </Button>
         <Button x:Name="ExecuteMicrocommandButton" Content="Шаг" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
+        <Button x:Name="ExecuteInstructionButton" Content="Команда" Command="{Binding ExecuteInstructionCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="328" Canvas.Top="350" Height="25"/>
         <Button x:Name="SaveTraceButton" Content="Сохранить трассу" Command="{Binding SaveTraceCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="480" Canvas.Top="313" Height="25"/>
-        
+
     </Canvas>
 </UserControl>

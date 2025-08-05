@@ -32,6 +32,14 @@ namespace Micro.ViewModels
         private void OnExecuteMicrocommandCommandExecuted(object p) => _cpuState.Step();
         #endregion
 
+        #region ExecuteInstructionCommand
+
+        public ICommand ExecuteInstructionCommand { get; set; }
+        private bool CanExecuteInstructionCommandExecute(object p) => CpuExecutionState != CpuState.ExecutionState.Stopped && CpuExecutionState != CpuState.ExecutionState.Running;
+        private void OnExecuteInstructionCommandExecuted(object p) => _cpuState.ExecuteInstruction();
+
+        #endregion
+
         #region RunMicroprogrammCommand
 
         public ICommand RunMicroprogrammCommand { get; set; }
@@ -69,9 +77,10 @@ namespace Micro.ViewModels
 
             RestartCpuCommand = new LambdaCommand(OnRestartCpuCommandExecuted, CanRestartCpuCommandExecute);
             ExecuteMicrocommandCommand = new LambdaCommand(OnExecuteMicrocommandCommandExecuted, CanExecuteMicrocommandCommandExecute);
+            ExecuteInstructionCommand = new LambdaCommand(OnExecuteInstructionCommandExecuted, CanExecuteInstructionCommandExecute);
             SaveTraceCommand = new LambdaCommand(OnSaveTraceCommandExecuted, CanSaveTraceCommandExecute);
             RunMicroprogrammCommand = new LambdaCommand(OnRunMicroprogrammCommandExecuted, CanRunMicroprogrammCommandExecute);
-            
+
             #endregion
 
             _fileDialogService = new FileDialogService();

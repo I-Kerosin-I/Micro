@@ -1,18 +1,10 @@
-﻿using Micro.Resources;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 
 
 namespace Micro.Models 
@@ -63,36 +55,6 @@ namespace Micro.Models
             AddressTranslationTable = new AddressTranslationTable();
         }
         #endregion
-        public void RunMicroprogramm()
-        {
-            if (CpuExecutionState == ExecutionState.Running)
-            {
-                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
-                return;
-            }
-
-            SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
-            StartExecutionAsync();
-
-        }
-
-        public async void StartExecutionAsync()
-        {
-            try
-            {
-                while (CpuExecutionState == ExecutionState.Running)
-                {
-                    _executeMicroCommand();
-                    await Task.Delay(10); // чтобы обновить GUI
-                }
-                CommandManager.InvalidateRequerySuggested();
-            }
-            catch (Exception ex)
-            { 
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         public void RestartCpu()
         {
             SetField(ref CpuExecutionState, ExecutionState.ReadyToStart, nameof(CpuExecutionState));
@@ -116,7 +78,18 @@ namespace Micro.Models
 
 
         }
+        public void RunMicroprogramm()
+        {
+            if (CpuExecutionState == ExecutionState.Running)
+            {
+                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
+                return;
+            }
 
+            SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
+            _startExecutionAsync();
+
+        }
         public void Step()
         {
             if (CpuExecutionState == ExecutionState.ReadyToStart)
@@ -124,11 +97,58 @@ namespace Micro.Models
             _executeMicroCommand();
         }
 
+        public void ExecuteInstruction()
+        {
+            if (CpuExecutionState == ExecutionState.Running)
+            {
+                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
+                return;
+            }
+
+            SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
+            _startInstructionExecutionAsync();
+        }
+
+
+        private async void _startExecutionAsync()
+        {
+            try
+            {
+                while (CpuExecutionState == ExecutionState.Running)
+                {
+                    _executeMicroCommand();
+                    await Task.Delay(10); // чтобы обновить GUI
+                }
+                CommandManager.InvalidateRequerySuggested(); // Обновляем кнопку, чтоб неактивной стала
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private async void _startInstructionExecutionAsync()
+        {
+            try
+            {
+                while (CpuExecutionState == ExecutionState.Running && MicroProgramMemory[Registers["CMK"]].CHA != 0)
+                {
+                    _executeMicroCommand();
+                    await Task.Delay(10); // чтобы обновить GUI
+                }
+                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
+                _executeMicroCommand(); // Чтобы выполнить МК с CHA = 0 и перейти к выборке команд
+                CommandManager.InvalidateRequerySuggested(); // Обновляем кнопку, чтоб неактивной стала
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void _executeMicroCommand()
         {
             var mk = MicroProgramMemory[Registers["CMK"]];
-            
 
+            #region A, MA
             Registers["RGA"] = mk.MA switch
             {
                 0 => Registers[mk.A],
@@ -137,6 +157,9 @@ namespace Micro.Models
                 3 => Registers[(Registers["RGK"] & 0b0000000000000111)],
                 _ => Registers["RGA"]
             };
+            #endregion
+
+            #region B, MB
             var dst = mk.MB switch
             {
                 1 => (byte)((Registers["RGK"] & 0b0000011100000000) >> 8),
@@ -145,7 +168,9 @@ namespace Micro.Models
                 _ => mk.B
             };
             Registers["RGB"] = Registers[dst];
+            #endregion
 
+            #region SRC
             ushort r, s;
             switch (mk.SRC)
             {
@@ -184,10 +209,14 @@ namespace Micro.Models
                 default:
                     throw new Exception("Invalid SRC value");
             }
+            #endregion
 
-            byte c0 = mk.CCX;
+            #region CCX
+            var c0 = mk.CCX;
             if ((mk.CCX & 0b10) == 2) c0 = (byte)(Registers["RFI"] & 1);
+            #endregion
 
+            #region ALU
             UInt32 alu32 = mk.ALU switch
             {
                 0 => 0,
@@ -210,6 +239,7 @@ namespace Micro.Models
             };
 
             Alu = (ushort)(alu32 & 0x0000FFFF);
+            #endregion
 
             #region Формирование флагов
 
@@ -228,10 +258,10 @@ namespace Micro.Models
 
             if (mk.F == 1) Registers["RFD"] = Registers["RFI"];
 
+            //TODO: Узнать про формирование Pf и Vf
             #endregion
 
-            //TODO: Узнать про формирование Pf и Vf
-
+            #region SH
             switch (mk.SH)
             {
                 case 0: // Без сдвига
@@ -278,7 +308,9 @@ namespace Micro.Models
                 default:
                     throw new ArgumentException("Invalid SH value");
             }
+            #endregion
 
+            #region WM
             switch (mk.WM)
             {
                 case 1:
@@ -290,8 +322,10 @@ namespace Micro.Models
                 case 3:
                     Registers["ARAM"] = Registers["RGB"];
                     break;
-            } 
+            }
+            #endregion
 
+            #region MEM
             switch (mk.MEM)
             {
                 case 4:
@@ -307,7 +341,9 @@ namespace Micro.Models
                     Memory.Word[Registers["ARAM"]] = Registers["RGW"];
                     break;
             }
+            #endregion
 
+            #region DST
             Registers[dst] = mk.DST switch
             {
                 1 => Registers["RGR"],
@@ -316,12 +352,14 @@ namespace Micro.Models
                 4 => Sda,
                 _ => Registers[dst]
             };
+            #endregion
 
+            #region Формирование условий перехода CC, JFI & 2
             var jmpCond = true;
 
             if ((mk.JFI & 4) == 0)
             {
-                String condFlagRegister = (mk.JFI & 2) == 0 ? "RFI" : "RFD";
+                var condFlagRegister = (mk.JFI & 2) == 0 ? "RFI" : "RFD"; // Учитывается JFI
 
                 jmpCond = mk.CC switch //TODO: Реализовать остальные условия
                 {
@@ -332,8 +370,10 @@ namespace Micro.Models
                 };
 
                 if ((mk.JFI & 1) != 0) jmpCond = !jmpCond;
-            } // Формирование условия (преобразовано с учётом JFI)
+            }
+            #endregion
 
+            #region CHA
             switch (mk.CHA) // TODO: Обработка некорректного ввода адреса перехода
             {
                 case 0:
@@ -403,7 +443,9 @@ namespace Micro.Models
                     Registers["CMK"]++;
                     break;
             }
-            
+            #endregion
+
+            #region Трасса
             Trace.Add(
             [
                 Registers["CMK"], Registers["AX"], Registers["CX"], Registers["DX"], Registers["BX"],
@@ -413,6 +455,7 @@ namespace Micro.Models
                 Registers["RGQ"], Registers["RFI"], Registers["ARAM"], Registers["RGR"],
                 Registers["RGW"], Registers["RACT"]
             ]);
+            #endregion
             
             if (mk.JFI == 5 || Registers["CMK"] > 0x3F) 
             {
@@ -420,6 +463,7 @@ namespace Micro.Models
             }
         }
 
+        #region NotifyPropertyChanged
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -431,5 +475,6 @@ namespace Micro.Models
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
     }
 }
