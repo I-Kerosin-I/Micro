@@ -69,6 +69,10 @@
                             <Style TargetType="Image">
                                 <Style.Triggers>
                                     <!--RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="ReadyToStart">
+                                        <Setter  Property="Source" Value="{StaticResource IconPlay}"/>
+                                    </DataTrigger>
+                                    <!--RUNNING-->
                                     <DataTrigger Binding="{Binding CpuExecutionState}" Value="Running">
                                         <Setter  Property="Source" Value="{StaticResource IconStop}"/>
                                     </DataTrigger>
@@ -88,6 +92,10 @@
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Style.Triggers>
+                                    <!--RUNNING-->
+                                    <DataTrigger Binding="{Binding CpuExecutionState}" Value="ReadyToStart">
+                                        <Setter Property="Text" Value="Пуск"/>
+                                    </DataTrigger>
                                     <!--RUNNING-->
                                     <DataTrigger Binding="{Binding CpuExecutionState}" Value="Running">
                                         <Setter Property="Text" Value="Стоп"/>

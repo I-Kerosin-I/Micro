@@ -28,14 +28,14 @@ namespace Micro.ViewModels
 
         #region ExecuteMicrocommandCommand
         public ICommand ExecuteMicrocommandCommand {get; set; }
-        private bool CanExecuteMicrocommandCommandExecute(object p) => CpuExecutionState != CpuState.ExecutionState.Running;
+        private bool CanExecuteMicrocommandCommandExecute(object p) => CpuExecutionState != CpuState.ExecutionState.Stopped && CpuExecutionState != CpuState.ExecutionState.Running;
         private void OnExecuteMicrocommandCommandExecuted(object p) => _cpuState.Step();
         #endregion
 
         #region RunMicroprogrammCommand
 
         public ICommand RunMicroprogrammCommand { get; set; }
-        private bool CanRunMicroprogrammCommandExecute(object p) => true;
+        private bool CanRunMicroprogrammCommandExecute(object p) => CpuExecutionState != CpuState.ExecutionState.Stopped;
         private void OnRunMicroprogrammCommandExecuted(object p) => _cpuState.RunMicroprogramm();
 
         #endregion

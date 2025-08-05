@@ -1,15 +1,17 @@
-﻿using Microsoft.Win32;
+﻿using Micro.Resources;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Micro.Resources;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Media3D;
 
 
@@ -44,13 +46,13 @@ namespace Micro.Models
 
         public enum ExecutionState
         {
+            ReadyToStart,
             Running,
             Stopped,
             Paused
         }
-        public ExecutionState CpuExecutionState = ExecutionState.Stopped;
+        public ExecutionState CpuExecutionState = ExecutionState.ReadyToStart;
         public List<List<ushort>> Trace = [];
-
 
         #region Constructor
         public CpuState()
@@ -63,24 +65,37 @@ namespace Micro.Models
         #endregion
         public void RunMicroprogramm()
         {
-            switch (CpuExecutionState)
+            if (CpuExecutionState == ExecutionState.Running)
             {
-                case ExecutionState.Running:
-                    SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
-                    break;
-                case ExecutionState.Stopped:
-                    SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
-                    break;
-                case ExecutionState.Paused:
-                    SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
-                    break;
+                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
+                return;
             }
-            
+
+            SetField(ref CpuExecutionState, ExecutionState.Running, nameof(CpuExecutionState));
+            StartExecutionAsync();
+
+        }
+
+        public async void StartExecutionAsync()
+        {
+            try
+            {
+                while (CpuExecutionState == ExecutionState.Running)
+                {
+                    _executeMicroCommand();
+                    await Task.Delay(10); // чтобы обновить GUI
+                }
+                CommandManager.InvalidateRequerySuggested();
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void RestartCpu()
         {
-            SetField(ref CpuExecutionState, ExecutionState.Stopped, nameof(CpuExecutionState));
+            SetField(ref CpuExecutionState, ExecutionState.ReadyToStart, nameof(CpuExecutionState));
             Registers["CMK"] = 0;
             Registers["RFI"] = 0;
             Registers["RFD"] = 0;
@@ -104,7 +119,7 @@ namespace Micro.Models
 
         public void Step()
         {
-            if (CpuExecutionState == ExecutionState.Stopped)
+            if (CpuExecutionState == ExecutionState.ReadyToStart)
                 SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
             _executeMicroCommand();
         }
@@ -264,7 +279,6 @@ namespace Micro.Models
                     throw new ArgumentException("Invalid SH value");
             }
 
-
             switch (mk.WM)
             {
                 case 1:
@@ -340,12 +354,10 @@ namespace Micro.Models
                     {
                         var mask = Convert.ToUInt16(row.Opcode.Replace('0', '1').Replace('X', '0'), 2);
                         var result = Convert.ToUInt16(row.Opcode.Replace('X', '0'), 2);
-                        if ((Registers["RGK"] & mask) == result)
-                        {
-                            Registers["CMK"] = row.Address;
-                            addressFound = true;
-                            break;
-                        }
+                        if ((Registers["RGK"] & mask) != result) continue;
+                        Registers["CMK"] = row.Address;
+                        addressFound = true;
+                        break;
                     }
 
                     if (!addressFound)
@@ -402,9 +414,9 @@ namespace Micro.Models
                 Registers["RGW"], Registers["RACT"]
             ]);
             
-            if (mk.JFI == 5 || Registers["CMK"] > 0x3F) // TODO: Полноценная остановка процессора
+            if (mk.JFI == 5 || Registers["CMK"] > 0x3F) 
             {
-                Registers["CMK"] = 0;
+                SetField(ref CpuExecutionState, ExecutionState.Stopped, nameof(CpuExecutionState));
             }
         }
 
