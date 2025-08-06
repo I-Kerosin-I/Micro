@@ -135,8 +135,11 @@ namespace Micro.Models
                     _executeMicroCommand();
                     await Task.Delay(10); // чтобы обновить GUI
                 }
-                SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
-                _executeMicroCommand(); // Чтобы выполнить МК с CHA = 0 и перейти к выборке команд
+                if (CpuExecutionState == ExecutionState.Running)
+                {
+                    _executeMicroCommand(); // Чтобы выполнить МК с CHA = 0 и перейти к выборке команд
+                    SetField(ref CpuExecutionState, ExecutionState.Paused, nameof(CpuExecutionState));
+                }
                 CommandManager.InvalidateRequerySuggested(); // Обновляем кнопку, чтоб неактивной стала
             }
             catch (Exception ex)
