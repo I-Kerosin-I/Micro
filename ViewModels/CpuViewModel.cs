@@ -1,11 +1,13 @@
-﻿using System;
-using Micro.Infrastructure.Commands;
+﻿using Micro.Infrastructure.Commands;
 using Micro.Infrastructure.Entrys;
 using Micro.Models;
 using Micro.Resources;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -61,14 +63,11 @@ namespace Micro.ViewModels
         private readonly CpuState _cpuState;
         public ObservableCollection<RegisterEntry> Registers { get; }
         public CpuState.ExecutionState CpuExecutionState => _cpuState.CpuExecutionState;
+
+        public ObservableCollection<FlagRow> FlagRows { get; }
         #region Fields
         public string Alu => _cpuState.Alu.ToString("X4");
         public string Sda => _cpuState.Sda.ToString("X4");
-        public string Sf => ((_cpuState.Registers["RFI"] >> 7) & 1).ToString(); 
-        public string Zf => ((_cpuState.Registers["RFI"] >> 6) & 1).ToString();
-        public string Vf => ((_cpuState.Registers["RFI"] >> 11) & 1).ToString();
-        public string Cf => (_cpuState.Registers["RFI"] & 1).ToString();
-        public string Pf => ((_cpuState.Registers["RFI"] >> 2) & 1).ToString();
         #endregion
 
         public CpuViewModel(CpuState cpuState, ObservableCollection<RegisterEntry> registers) {
@@ -103,17 +102,11 @@ namespace Micro.ViewModels
                 }
             };
             Registers = registers;
-            _cpuState.Registers.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "RFI")
-                {
-                    OnPropertyChanged(nameof(Cf));
-                    OnPropertyChanged(nameof(Zf));
-                    OnPropertyChanged(nameof(Vf));
-                    OnPropertyChanged(nameof(Sf));
-                    OnPropertyChanged(nameof(Pf));
-                }
-            };
+            FlagRows =
+            [
+                new FlagRow(_cpuState.Registers,"RFI"),
+                new FlagRow(_cpuState.Registers, "RFD")
+            ];
         }
 
         private void SaveTrace(List<List<ushort>> trace)
@@ -168,6 +161,7 @@ namespace Micro.ViewModels
             }
         }
 
+        #region NotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -182,5 +176,42 @@ namespace Micro.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
+    }
+
+    internal class FlagRow : INotifyPropertyChanged
+    {
+        public string Register { get; }
+        private readonly RegisterMemory _registers;
+        public string Sf => ((_registers[Register] >> 7) & 1).ToString();
+        public string Zf => ((_registers[Register] >> 6) & 1).ToString();
+        public string Vf => ((_registers[Register] >> 11) & 1).ToString();
+        public string Cf => (_registers[Register] & 1).ToString();
+        public string Pf => ((_registers[Register]>> 2) & 1).ToString();
+
+        public FlagRow(RegisterMemory registers, string register)
+        {
+            Register = register;
+            _registers = registers;
+            registers.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName != "RFI" && args.PropertyName != "RFD") return;
+                OnPropertyChanged(nameof(Sf));
+                OnPropertyChanged(nameof(Zf));
+                OnPropertyChanged(nameof(Vf));
+                OnPropertyChanged(nameof(Cf));
+                OnPropertyChanged(nameof(Pf));
+            };
+
+        }
+
+        #region NotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }

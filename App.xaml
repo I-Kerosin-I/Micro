@@ -17,8 +17,9 @@
             <resources:MemoryViewTemplateSelector x:Key="MemoryViewTemplateSelector" />
             
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/ElementStyles.xaml" />
+                <ResourceDictionary Source="Resources/ResourceDictionaries/ElementStyles.xaml" />
                 <ResourceDictionary Source="Resources/ResourceDictionaries/Icons.xaml"/>
+                <ResourceDictionary Source="Resources/ResourceDictionaries/LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

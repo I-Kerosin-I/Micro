@@ -33,7 +33,7 @@ namespace Micro.Models
         "RW"
     };
 
-    private readonly Dictionary<String, ushort> _registers = new Dictionary<string, ushort>
+    private readonly Dictionary<string, ushort> _registers = new Dictionary<string, ushort>
     {
         { "AX",    0x0000 },
         { "CX",    0x0000 },
@@ -77,7 +77,7 @@ namespace Micro.Models
         }
     }   
 
-    public ushort this[String name]
+    public ushort this[string name]
     {
         get => _registers[name];
         set

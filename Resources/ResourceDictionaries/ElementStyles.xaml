@@ -5,7 +5,7 @@
 
     <!--Стиль таблички регистра-->   
     <Style x:Key="RegisterLabelStyle" TargetType="Label">
-        <!--<Setter Property="Height" Value="17"/>-->
+        <Setter Property="Height" Value="25"/>
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="13"/>

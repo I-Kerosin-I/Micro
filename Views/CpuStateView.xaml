@@ -6,13 +6,15 @@
              xmlns:local="clr-namespace:Micro.Views"
              xmlns:vm="clr-namespace:Micro.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="620" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=vm:CpuViewModel, IsDesignTimeCreatable=True}">
 
     <Canvas>
-        <Image Source="/Views/interface.png" Canvas.Top="30"/>
 
-        <UniformGrid Canvas.Left="106" Canvas.Top="46" Rows="4" Columns="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="287">
+
+        <Image Source="/Views/interface.png" Width="1000" />
+
+        <UniformGrid Canvas.Left="170" Canvas.Top="75" Rows="4" Columns="4" HorizontalAlignment="Left" VerticalAlignment="Top" Width="389">
             <Label x:Name="AxValueBlock"  Content='{Binding Registers[0].Value,  Converter={StaticResource RegisterLabelConverter}, ConverterParameter="AX   "}' Style="{StaticResource RegisterLabelStyle}" />
             <Label x:Name="BxValueBlock"  Content='{Binding Registers[3].Value,  Converter={StaticResource RegisterLabelConverter}, ConverterParameter="BX   "}' Style="{StaticResource RegisterLabelStyle}" />
             <Label x:Name="CxValueBlock"  Content='{Binding Registers[1].Value,  Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CX   "}' Style="{StaticResource RegisterLabelStyle}" />
@@ -31,18 +33,18 @@
             <Label x:Name="RwValueBlock"  Content='{Binding Registers[15].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RW   "}' Style="{StaticResource RegisterLabelStyle}" />
         </UniformGrid>
 
-        <Label x:Name="AramValueBlock"   Content='{Binding Registers[19].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ARAM "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name="RgaValueBlock"    Content='{Binding Registers[27].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="117" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Label x:Name="RgbValueBlock"    Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="204" Canvas.Top="139" Height="21" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Label x:Name="AluValueBlock"    Content='{Binding Alu,                 Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="166" Canvas.Top="213" Height="29" Width="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Label x:Name="SdaValueBlock"    Content='{Binding Sda,                 Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="186" Canvas.Top="256" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name="RgqValueBlock"    Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="295" Canvas.Top="173" Height="20" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name="RgrValueBlock"    Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="200" Height="20" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="RgwValueBlock"    Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="29" Canvas.Top="261" Height="20" Width="78" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label x:Name="CmkValueBlock"    Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="451" Canvas.Top="188" Height="20" Width="79" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="RactValueBlock"   Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="419" Canvas.Top="49" Height="20" Width="79" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name="RgrBinValueBlock" Content='{Binding Registers[14].Value, Converter={StaticResource RgkBinaryConverter}}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="465" Canvas.Top="222" Height="20" Width="148" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="Stop" Canvas.Left="551" Canvas.Top="87" >
+        <Label x:Name="AramValueBlock"   Content='{Binding Registers[19].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ARAM "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="34" Canvas.Top="218" Height="22" Width="89" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="RgaValueBlock"    Content='{Binding Registers[27].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="188" Canvas.Top="202" Height="22" Width="89" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="RgbValueBlock"    Content='{Binding Registers[28].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGB  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="324" Canvas.Top="202" Height="22" Width="89" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.795,-0.214"/>
+        <Label x:Name="AluValueBlock"    Content='{Binding Alu,                 Converter={StaticResource RegisterLabelConverter}, ConverterParameter="ALU  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="202" Canvas.Top="333" Height="44" Width="198" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label x:Name="SdaValueBlock"    Content='{Binding Sda,                 Converter={StaticResource RegisterLabelConverter}, ConverterParameter="SDA  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="257" Canvas.Top="414" Height="22" Width="89" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RgqValueBlock"    Content='{Binding Registers[18].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGQ  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="422" Canvas.Top="306" Height="22" Width="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name="RgrValueBlock"    Content='{Binding Registers[20].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGR  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="36" Canvas.Top="301" Height="22" Width="88" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RgwValueBlock"    Content='{Binding Registers[21].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RGW  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="36" Canvas.Top="370" Height="22" Width="88" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="CmkValueBlock"    Content='{Binding Registers[23].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="CMK  "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="685" Canvas.Top="381" Height="23" Width="89" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RactValueBlock"   Content='{Binding Registers[22].Value, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="RACT "}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="591" Canvas.Top="57" Height="22" Width="88" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="RgrBinValueBlock" Content='{Binding Registers[14].Value, Converter={StaticResource RgkBinaryConverter}}' Style="{StaticResource RegisterLabelStyle}" Canvas.Left="727" Canvas.Top="432" Height="22" Width="170" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Stop" Canvas.Left="885" Canvas.Top="108" >
             <Label.Style>
                 <Style TargetType="Label">
                     <Style.Triggers>
@@ -54,17 +56,42 @@
             </Label.Style>
         </Label>
 
-        <UniformGrid Columns="1" Rows="6" Canvas.Left="110" Canvas.Top="194">
-            <Label x:Name="NRfiBlock" Content='{Binding Sf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="N "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="ZRfiBlock" Content='{Binding Zf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="Z "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="VRfiBlock" Content='{Binding Vf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="V "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="CRfiBlock" Content='{Binding Cf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="C "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="PRfiBlock" Content='{Binding Pf, Converter={StaticResource RegisterLabelConverter}, ConverterParameter="P "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <!--<Label x:Name="MRfiBlock" Content='{Binding , Converter={StaticResource RegisterLabelConverter}, ConverterParameter="M "}' Style="{StaticResource RegisterLabelStyle}" Height="17" Width="47" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
-        </UniformGrid>
 
+        <DataGrid
+            IsReadOnly="True"
+            Focusable="False"
+            IsTabStop="False"
+            KeyboardNavigation.TabNavigation="None"
+            KeyboardNavigation.ControlTabNavigation="None"
+            KeyboardNavigation.IsTabStop="False"
+            KeyboardNavigation.DirectionalNavigation="None"
+            IsHitTestVisible="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            CanUserReorderColumns="False"
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            CanUserSortColumns="False"
+            AutoGenerateColumns="False"
+            FontFamily="Consolas"
+            ItemsSource="{Binding FlagRows, UpdateSourceTrigger=PropertyChanged}" Canvas.Left="96" Canvas.Top="416" HorizontalAlignment="Left" VerticalAlignment="Top" >
 
-        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding RestartCpuCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="32" Canvas.Top="313" Height="25">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="N" Binding="{Binding Sf}"  />
+                <DataGridTextColumn Header="Z" Binding="{Binding Zf}" />
+                <DataGridTextColumn Header="V" Binding="{Binding Vf}" />
+                <DataGridTextColumn Header="C" Binding="{Binding Cf}" />
+                <DataGridTextColumn Header="P" Binding="{Binding Pf}" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="IsSelected" Value="False" />
+                    <Setter Property="Header" Value="{Binding Register}" />
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+
+        <Button x:Name="RestartButton" Content="Рестарт" Command="{Binding RestartCpuCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="29" Canvas.Top="524" Height="25">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="7"/>
@@ -72,7 +99,7 @@
             </Button.Resources>
         </Button>
 
-        <Button x:Name="RunMicroprogrammButton" Command="{Binding RunMicroprogrammCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="176" Canvas.Top="313" Height="25">
+        <Button x:Name="RunMicroprogrammButton" Command="{Binding RunMicroprogrammCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="182" Canvas.Top="524" Height="25">
             <Button.Content>
                 <StackPanel x:Name="Panel" Orientation="Horizontal">
                     <Image x:Name="RunButtonIcon" Height="15" Width="30">
@@ -127,9 +154,9 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <Button x:Name="ExecuteMicrocommandButton" Content="Шаг" Command="{Binding ExecuteMicrocommandCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="328" Canvas.Top="313" Height="25"/>
-        <Button x:Name="ExecuteInstructionButton" Content="Команда" Command="{Binding ExecuteInstructionCommand}" Width="113" HorizontalAlignment="Center" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="328" Canvas.Top="350" Height="25"/>
-        <Button x:Name="SaveTraceButton" Content="Сохранить трассу" Command="{Binding SaveTraceCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Center" Canvas.Left="480" Canvas.Top="313" Height="25"/>
+        <Button x:Name="ExecuteMicrocommandButton" Content="Шаг" Command="{Binding ExecuteMicrocommandCommand}" Width="112" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="346" Canvas.Top="524" Height="25"/>
+        <Button x:Name="ExecuteInstructionButton" Content="Команда" Command="{Binding ExecuteInstructionCommand}" Width="112" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="346" Canvas.Top="561" Height="25"/>
+        <Button x:Name="SaveTraceButton" Content="Сохранить трассу" Command="{Binding SaveTraceCommand}" Width="113" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" Canvas.Left="500" Canvas.Top="524" Height="25"/>
 
     </Canvas>
 </UserControl>

@@ -9,7 +9,7 @@
         xmlns:resources="clr-namespace:Micro.Resources"
         d:DataContext="{d:DesignInstance Type=viewmodels:MicroViewModel}"
         mc:Ignorable="d"
-        Title="Микропрограммируемый процессор" Height="543" Width="888" MinWidth="635" MinHeight="430" WindowStartupLocation="CenterScreen">
+        Title="Микропрограммируемый процессор" Height="700" Width="1000" MinWidth="635" MinHeight="430" WindowStartupLocation="CenterScreen">
     
     <Grid>
         <Grid.RowDefinitions>
