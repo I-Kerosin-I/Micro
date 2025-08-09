@@ -31,54 +31,54 @@
         </Grid.RowDefinitions>
         <GroupBox Header="РОНы" Grid.RowSpan="2" Margin="5,0,10,0">
             <UniformGrid Rows="4" Columns="8">
-                <Label  Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="AX" ClipToBounds="True"/>
+                <Label  Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="AX" ClipToBounds="True"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[0].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}"  Content="SP"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}"  Content="SP"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[4].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="CS"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="CS"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[8].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="IP"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="IP"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[12].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="CX"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="CX"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[1].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="BP"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="BP"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[5].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="SS"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="SS"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[9].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="PSW"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="PSW"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[13].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="DX"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="DX"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[2].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="SI"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="SI"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[6].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="DS"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="DS"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[10].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RGK"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RGK"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[14].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="BX"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="BX"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[3].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="DI"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="DI"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[7].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="ES"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="ES"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[11].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RW"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RW"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[15].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </UniformGrid>
         </GroupBox>
         
         <GroupBox Header="Регистры флагов" Grid.Column="1" Grid.Row="0" Margin="0,0,5,0" >
             <UniformGrid>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RFI"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RFI"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[16].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RFD"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RFD"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[17].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </UniformGrid>
         </GroupBox>
 
         <GroupBox Header="Рабочий регистр" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0">
             <UniformGrid Rows="1">
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RGQ"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RGQ"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[18].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </UniformGrid>
         </GroupBox>
@@ -98,30 +98,30 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="CMK"/>
+                <Label Grid.Row="0" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="CMK"/>
                 <TextBox Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=Registers[23].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             
-                <Label Grid.Row="1" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="MUAD"/>
+                <Label Grid.Row="1" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="MUAD"/>
                 <TextBox Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=Registers[24].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             
-                <Label Grid.Row="2" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="STP"/>
+                <Label Grid.Row="2" Grid.Column="0" Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="STP"/>
                 <TextBox Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=Registers[25].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             
-                <Label Grid.Row="0" Grid.Column="2" Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="ERROR"/>
+                <Label Grid.Row="0" Grid.Column="2" Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="ERROR"/>
                 <TextBox Grid.Row="0" Grid.Column="3" TextWrapping="Wrap" Text="{Binding Path=Registers[26].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             
-                <Label Grid.Row="1" Grid.Column="2" Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RACT"/>
+                <Label Grid.Row="1" Grid.Column="2" Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RACT"/>
                 <TextBox Grid.Row="1" Grid.Column="3" TextWrapping="Wrap" Text="{Binding Path=Registers[22].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             
             </Grid>
         </GroupBox>
         <GroupBox Header="Регистры ОП" Grid.Column="1" Grid.Row="2" Margin="0,0,5,0" >
             <UniformGrid Columns="2">
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="ARAM"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="ARAM"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[19].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RGR"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RGR"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[20].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Background="#FFCACACA" Style="{StaticResource RegisterLabelStyle}" Content="RGW"/>
+                <Label Background="#FFCACACA" Style="{StaticResource RegisterViewLabelStyle}" Content="RGW"/>
                 <TextBox TextWrapping="Wrap" Text="{Binding Path=Registers[21].Value}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </UniformGrid>
         </GroupBox>

@@ -4,8 +4,17 @@
                     
 
     <!--Стиль таблички регистра-->   
-    <Style x:Key="RegisterLabelStyle" TargetType="Label">
+    <Style x:Key="CpuStateRegisterLabelStyle" TargetType="Label">
         <Setter Property="Height" Value="25"/>
+        <Setter Property="Padding" Value="0 0 0 0"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+    </Style>
+    <Style x:Key="RegisterViewLabelStyle" TargetType="Label">
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="13"/>
