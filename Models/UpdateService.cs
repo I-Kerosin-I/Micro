@@ -21,17 +21,24 @@ namespace Micro.Models
 
         public static async void CheckForUpdateAsync()
         {
-            using var http = new HttpClient();
-
-            var version = (await http.GetStringAsync(VersionUrl)).Trim();
-            if (version == FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion) return;
-            var notes = await http.GetStringAsync(NotesUrl);
-            var updateWindow = new UpdateWindow
+            try
             {
-                DataContext = new UpdateViewModel(version, notes, BinaryBaseUrl)
-            };
-            updateWindow.Owner = Application.Current.MainWindow;
-            updateWindow.ShowDialog();
+                using var http = new HttpClient();
+
+                var version = (await http.GetStringAsync(VersionUrl)).Trim();
+                if (version == FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion) return;
+                var notes = await http.GetStringAsync(NotesUrl);
+                var updateWindow = new UpdateWindow
+                {
+                    DataContext = new UpdateViewModel(version, notes, BinaryBaseUrl)
+                };
+                updateWindow.Owner = Application.Current.MainWindow;
+                updateWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Упс, проверить наличие обновлений не удалось, проверьте подключение к интернету", "Обновление", MessageBoxButton.OK, MessageBoxImage.Information);
+            } // TODO: Реализовать "Не показывать больше"
         }
 
         public static async Task<string> DownloadUpdateAsync()
